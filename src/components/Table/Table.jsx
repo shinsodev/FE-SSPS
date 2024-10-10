@@ -41,7 +41,7 @@ const Table = () => {
               </td>
               <td className="px-6 py-4">
                 <div className="flex items-center">
-                  <div className="h-2.5 w-2.5 rounded-full bg-green me-2"></div> Success
+                  <div className="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Success
                 </div>
               </td>
               {/* <td className="px-6 py-4 text-center flex items-center gap-3 mt-1">
@@ -87,7 +87,7 @@ const Table = () => {
               </td>
               <td className="px-6 py-4">
                 <div className="flex items-center">
-                  <div className="h-2.5 w-2.5 rounded-full bg-green me-2"></div> Success
+                  <div className="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Success
                 </div>
               </td>
               {/* <td className="px-6 py-4 text-center flex items-center gap-3 mt-1">
@@ -126,7 +126,7 @@ const Table = () => {
               </td>
               <td className="px-6 py-4">
                 <div className="flex items-center">
-                  <div className="h-2.5 w-2.5 rounded-full bg-green me-2"></div> Success
+                  <div className="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Success
                 </div>
               </td>
               {/* <td className="px-6 py-4 text-center flex items-center gap-3 mt-1">
@@ -165,7 +165,7 @@ const Table = () => {
               </td>
               <td className="px-6 py-4">
                 <div className="flex items-center">
-                  <div className="h-2.5 w-2.5 rounded-full bg-green me-2"></div> Success
+                  <div className="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Success
                 </div>
               </td>
               {/* <td className="px-6 py-4 text-center flex items-center gap-3 mt-1">
@@ -204,7 +204,7 @@ const Table = () => {
               </td>
               <td className="px-6 py-4">
                 <div className="flex items-center">
-                  <div className="h-2.5 w-2.5 rounded-full bg-green me-2"></div> Success
+                  <div className="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Success
                 </div>
               </td>
               {/* <td className="px-6 py-4 text-center flex items-center gap-3 mt-1">
@@ -243,7 +243,7 @@ const Table = () => {
               </td>
               <td className="px-6 py-4">
                 <div className="flex items-center">
-                  <div className="h-2.5 w-2.5 rounded-full bg-green me-2"></div> Success
+                  <div className="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Success
                 </div>
               </td>
               {/* <td className="px-6 py-4 text-center flex items-center gap-3 mt-1">
@@ -346,7 +346,7 @@ const Table = () => {
                     <td className="px-6 py-4">
                       {product?.isverify ? (
                         <div className="flex items-center">
-                          <div className="h-2.5 w-2.5 rounded-full bg-green me-2"></div> Yes
+                          <div className="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Yes
                         </div>
                       ) : (
                         <div className="flex items-center">
@@ -362,7 +362,7 @@ const Table = () => {
                           </button>
                         ) : (
                           <button
-                            className={`py-1 px-3 rounded-lg ${product?.isverify ? "bg-green text-white" : "bg-gray-400 text-gray-700 cursor-not-allowed"}`}
+                            className={`py-1 px-3 rounded-lg ${product?.isverify ? "bg-green-500 text-white" : "bg-gray-400 text-gray-700 cursor-not-allowed"}`}
                             onClick={() => handleSellProduct(product._id)}
                             disabled={!product?.isverify}
                           >
@@ -394,7 +394,7 @@ const Table = () => {
                 )}
                 {isWon && (
                   <td className="py-3 px-6">
-                    <button className="bg-green text-white py-1 px-3 rounded-lg" disabled>
+                    <button className="bg-green-500 text-white py-1 px-3 rounded-lg" disabled>
                       Victory
                     </button>
                   </td>
