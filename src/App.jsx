@@ -24,6 +24,8 @@ import Payment from './pages/Sidebar/Payment'
 import UploadFilePage from "./pages/Sidebar/UploadFile";
 import FileConfigurationPage from "./pages/Printer/FileConfiguration";
 import { ToastContainer } from "react-toastify";
+import Report from './pages/Sidebar/Report'
+import StudentReport from './pages/Sidebar/StudentReport'
 // import PrivateRoute from './router/PrivateRoutes'
 
 function App() {
@@ -119,6 +121,30 @@ function App() {
             // </PrivateRoute>
           }
         />
+        <Route
+            path="/studentreport"
+            element={
+              // <PrivateRoute>
+                <Layout>
+                  <DashboardLayout>
+                    <StudentReport />
+                  </DashboardLayout>
+                </Layout>
+              // </PrivateRoute>
+            }
+        />
+        <Route
+            path="/studentreport"
+            element={
+              // <PrivateRoute>
+                <Layout>
+                  <DashboardLayout>
+                    <StudentReport />
+                  </DashboardLayout>
+                </Layout>
+              // </PrivateRoute>
+            }
+        />
 
         <Route
           path="/admin/userlist"
@@ -129,6 +155,30 @@ function App() {
                 <UserList />
               </DashboardLayout>
             </Layout>
+            // </PrivateRoute>
+          }
+        />
+         <Route
+          path="/admin/report"
+          element={
+            // <PrivateRoute>
+              <Layout>
+                <DashboardLayout>
+                  <Report />
+                </DashboardLayout>
+              </Layout>
+            // </PrivateRoute>
+          }
+        />
+         <Route
+          path="/admin/report"
+          element={
+            // <PrivateRoute>
+              <Layout>
+                <DashboardLayout>
+                  <Report />
+                </DashboardLayout>
+              </Layout>
             // </PrivateRoute>
           }
         />
