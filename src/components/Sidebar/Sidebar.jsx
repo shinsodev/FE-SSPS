@@ -11,6 +11,7 @@ import { CgProductHunt } from "react-icons/cg";
 import { TbCurrencyDollar } from "react-icons/tb";
 import { FiUser } from "react-icons/fi";
 import { FaPlusCircle } from "react-icons/fa";
+import { MdReport } from 'react-icons/md';
 
 const Sidebar = () => {
   // const location = useLocation();
@@ -103,7 +104,7 @@ const Sidebar = () => {
                 className={({ isActive }) => getNavLinkClass(isActive)}
               >
                 <span>
-                  <TbCurrencyDollar size={22} />
+                  <MdReport size={22} />
                 </span>
                 <span>Report</span>
               </NavLink>
@@ -118,6 +119,16 @@ const Sidebar = () => {
               <TbCurrencyDollar size={22} />
             </span>
             <span>Payment</span>
+          </NavLink>
+
+          <NavLink
+            to="/studentreport"
+            className={({ isActive }) => getNavLinkClass(isActive)}
+          >
+            <span>
+              <MdReport size={22} />
+            </span>
+            <span>History printer</span>
           </NavLink>
           <NavLink
             to="/favorites"

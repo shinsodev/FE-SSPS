@@ -20,6 +20,8 @@ import UserList from './pages/Sidebar/UserList'
 import UserProfile from './pages/Sidebar/UserProfile'
 import Printers from './pages/Sidebar/Printers'
 import AdminPrinterList from './pages/Sidebar/AdminPrinterList'
+import Report from './pages/Sidebar/Report'
+import StudentReport from './pages/Sidebar/StudentReport'
 // import PrivateRoute from './router/PrivateRoutes'
 
 
@@ -81,6 +83,18 @@ function App() {
               // </PrivateRoute>
             }
         />
+        <Route
+            path="/studentreport"
+            element={
+              // <PrivateRoute>
+                <Layout>
+                  <DashboardLayout>
+                    <StudentReport />
+                  </DashboardLayout>
+                </Layout>
+              // </PrivateRoute>
+            }
+        />
 
         <Route
           path="/admin/userlist"
@@ -89,6 +103,18 @@ function App() {
               <Layout>
                 <DashboardLayout>
                   <UserList />
+                </DashboardLayout>
+              </Layout>
+            // </PrivateRoute>
+          }
+        />
+         <Route
+          path="/admin/report"
+          element={
+            // <PrivateRoute>
+              <Layout>
+                <DashboardLayout>
+                  <Report />
                 </DashboardLayout>
               </Layout>
             // </PrivateRoute>
