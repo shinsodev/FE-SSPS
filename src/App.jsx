@@ -2,10 +2,10 @@
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
-import Header from './components/Header/Header'
-import Footer from './components/Footer/Footer'
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
 
-import Home from './pages/Home/Home'
+import Home from "./pages/Home/Home";
 // import RoomPage from './pages/RoomPage/RoomPage'
 // import RoomDetails from './pages/RoomDetails/RoomDetails'
 
@@ -14,35 +14,39 @@ import Login from './pages/Login/Login'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout/Layout'
 import Sidebar from './components/Sidebar/Sidebar'
-import { Dashboard } from './pages/Sidebar/Dashboard'
+import  { Dashboard } from './pages/Sidebar/Dashboard'
 import DashboardLayout from './components/Layout/DashBoardLayout'
 import UserList from './pages/Sidebar/UserList'
 import UserProfile from './pages/Sidebar/UserProfile'
 import Printers from './pages/Sidebar/Printers'
 import AdminPrinterList from './pages/Sidebar/AdminPrinterList'
 import Payment from './pages/Sidebar/Payment'
+import UploadFilePage from "./pages/Sidebar/UploadFile";
+import FileConfigurationPage from "./pages/Printer/FileConfiguration";
+import { ToastContainer } from "react-toastify";
 // import PrivateRoute from './router/PrivateRoutes'
-
 
 function App() {
   return (
     <>
       <Routes>
-        <Route path="/"
+        <Route
+          path="/"
           element={
             <Layout>
               <Home />
             </Layout>
-          }>
-        </Route>
+          }
+        ></Route>
 
-        <Route path="login"
+        <Route
+          path="login"
           element={
             <Layout>
               <Login />
             </Layout>
-          }>
-        </Route>
+          }
+        ></Route>
 
         <Route
           path="/dashboard"
@@ -78,6 +82,28 @@ function App() {
               </DashboardLayout>
             </Layout>
             // </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/printers/:userId/:fileId"
+          element={
+            <Layout>
+              <DashboardLayout>
+                <FileConfigurationPage />
+              </DashboardLayout>
+            </Layout>
+          }
+        />
+
+        <Route
+          path="/uploadFile"
+          element={
+            <Layout>
+              <DashboardLayout>
+                <UploadFilePage />
+              </DashboardLayout>
+            </Layout>
           }
         />
 
@@ -119,10 +145,10 @@ function App() {
             // </PrivateRoute>
           }
         />
-
       </Routes>
+      <ToastContainer />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
