@@ -15,7 +15,7 @@ import { TbFileUpload } from "react-icons/tb";import { MdReport } from 'react-ic
 
 const Sidebar = () => {
   // const location = useLocation();
-  const role = "student";
+  const role = "admin";
 
   // Corrected template literal for dynamic classes
   const getNavLinkClass = (isActive) =>
