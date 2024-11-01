@@ -40,6 +40,7 @@ function UploadFilePage() {
 
   return (
     <>
+      <div className="min-h-screen">
       <Stack spacing={3} alignItems={"center"} mt={5}>
         <Typography variant="h3" textAlign={"center"}>
           SPSO SMART PRINTING
@@ -108,6 +109,7 @@ function UploadFilePage() {
           </Stack>
         )}
       </Stack>
+      </div>
     </>
   );
 }

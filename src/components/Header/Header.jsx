@@ -1,53 +1,47 @@
-// import React from 'react'
-import { useState, useEffect } from "react"
-import Logo from "../../assets/img/logo.png"
+import React, { useContext } from 'react';
+import { GiHamburgerMenu } from "react-icons/gi";
 import { IoMdNotifications } from "react-icons/io";
-import User1 from "../../assets/img/user1.png"
-import { NavLink } from "react-router-dom";
+import User1 from "../../assets/img/user1.png"; // Hình ảnh người dùng (có thể thay đổi)
+import { NavLink } from "react-router-dom"; // Import NavLink từ react-router-dom
+import logo from "../../assets/img/logo.png"
+// import { AuthContext } from '../../context/AuthContext'; // Đảm bảo import đúng đường dẫn
 
-const Header = () => {
+const Header = ({ toggleSidebar }) => {
+  const user = null;
+
   return (
-    // ${
-      // header ? 'bg-white py-1 shadow-lg' : 'bg-transparent py-5'
-    // } 
-    <header className="
-      bg-white py-1 shadow-lg
-      fixed z-50 w-full transition-all duration-300">
-
-      <div className="container mx-auto flex flex-col items-center 
-      lg:flex-row lg:justify-between lg:gap-y-0
-      ">
-        {/* logo  */}
-        <NavLink to="/">
-            <img className="w-20" src={Logo} alt="logo" />
-        </NavLink>
-
-        {/* nav  */}
-        <nav className="text-primary
-          flex gap-x-4 font-tertiary tracking-[3px] text-[15px]
-          items-center uppercase lg:gap-x-8"
-        >
-          
-          <button>
-            <IoMdNotifications size={25}/>
+    <>
+      <div className="shadow-2xl bg-white flex items-center justify-between py-4 px-6">
+        <div className='flex items-center justify-center'>
+          {/* Hamburger menu */}
+          <button onClick={toggleSidebar} className="lg:hidden">
+            <GiHamburgerMenu size={22} />
           </button>
 
-          <NavLink to="/dashboard" className="flex">
+          <NavLink to="/">
+            <img src={logo} alt="" className='w-20'/>
+          </NavLink>
+        </div>
+
+        {/* Right side (notifications, profile) */}
+        <nav className="text-primary flex gap-x-4 font-tertiary tracking-[3px] text-[15px] items-center uppercase lg:gap-x-8">
+          <button>
+            <IoMdNotifications size={25} />
+          </button>
+          <div className="flex">
             <div className="flex items-center justify-center">
-              <img src={User1} alt="" className="w-10 object-cover rounded-full"/>
+              <img src={User1} alt="User Profile" className="w-10 object-cover rounded-full" />
             </div>
             <div className="flex flex-col mx-4">
-              <div className="font-medium text-[17px]">Quỳnh Quỳnh</div>
-              <div className="text-gray-500 text-[12px]">Student</div>
+              <div className="font-medium text-[17px]">{user ? user.name : 'Quỳnh Quỳnh'}</div>
+              <div className="text-gray-500 text-[12px]">{user ? user.role : 'Admin'}</div>
             </div>
-          </NavLink>
-
-          
+          </div>
         </nav>
       </div>
-      
-    </header>
-  )
-}
+    </>
+  );
+};
 
-export default Header
+
+export default Header;

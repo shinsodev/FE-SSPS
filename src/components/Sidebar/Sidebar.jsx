@@ -11,7 +11,8 @@ import { CgProductHunt } from "react-icons/cg";
 import { TbCurrencyDollar } from "react-icons/tb";
 import { FiUser } from "react-icons/fi";
 import { FaPlusCircle } from "react-icons/fa";
-import { TbFileUpload } from "react-icons/tb";import { MdReport } from 'react-icons/md';
+import { TbFileUpload } from "react-icons/tb";
+import { MdReport } from 'react-icons/md';
 
 const Sidebar = () => {
   // const location = useLocation();
@@ -80,16 +81,6 @@ const Sidebar = () => {
           {role === "admin" && (
             <>
               <NavLink
-                to="/add"
-                className={({ isActive }) => getNavLinkClass(isActive)}
-              >
-                <span>
-                  <FaPlusCircle size={22} />
-                </span>
-                <span>Create Printer</span>
-              </NavLink>
-
-              <NavLink
                 to="/admin/userlist"
                 className={({ isActive }) => getNavLinkClass(isActive)}
               >
@@ -109,15 +100,7 @@ const Sidebar = () => {
                 <span>All Printer List</span>
               </NavLink>
 
-              <NavLink
-                to="/category"
-                className={({ isActive }) => getNavLinkClass(isActive)}
-              >
-                <span>
-                  <MdOutlineCategory size={22} />
-                </span>
-                <span>Categories</span>
-              </NavLink>
+              
 
               <NavLink
                 to="/admin/report"
@@ -150,15 +133,7 @@ const Sidebar = () => {
             </span>
             <span>History printer</span>
           </NavLink>
-          <NavLink
-            to="/favorites"
-            className={({ isActive }) => getNavLinkClass(isActive)}
-          >
-            <span>
-              <IoIosHeartEmpty size={22} />
-            </span>
-            <span>My Favorites</span>
-          </NavLink>
+          
           <NavLink
             to="/profile"
             className={({ isActive }) => getNavLinkClass(isActive)}
