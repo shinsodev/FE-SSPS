@@ -15,16 +15,16 @@ import logoutImage from "../../assets/img/logout.jpg";
 // Sidebar component
 const Sidebar = () => {
   const [isModalOpen, setModalOpen] = useState(false);
-  const { user, logout } = useContext(AuthContext);
+  const { user, logout, getRoleFromToken } = useContext(AuthContext);
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  const role = getRoleFromToken(token);
 
   // Hàm xử lý logout
   const handleLogout = () => {
     logout(); // Gọi hàm logout từ context
     navigate("/"); // Điều hướng về trang home sau khi logout
   };
-
-  const role = "student";
 
   // Dynamic class for active NavLink
   const getNavLinkClass = (isActive) =>
@@ -41,8 +41,8 @@ const Sidebar = () => {
           className="w-32 h-32 rounded-full object-cover"
         />
         <div>
-          <h1 className="capitalize">Sunil B.K</h1>
-          <div>example@gmail.com</div>
+          <h1 className="capitalize">{user?.fullName}</h1>
+          <div>{user?.email}</div>
         </div>
       </div>
 
@@ -55,7 +55,7 @@ const Sidebar = () => {
           <span>Dashboard</span>
         </NavLink>
 
-        {role === "student" && (
+        {role === "ROLE_STUDENT" && (
           <>
             <NavLink
               to="/printers"
@@ -88,7 +88,7 @@ const Sidebar = () => {
           </>
         )}
 
-        {role === "admin" && (
+        {role === "ROLE_ADMIN" && (
           <>
             <NavLink
               to="/admin/userlist"

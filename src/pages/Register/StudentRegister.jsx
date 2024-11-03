@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import RegisterImg from "../../assets/img/login1.jpg"; // Đổi hình ảnh nếu cần
+import { useNavigate, Link } from "react-router-dom";
+import RegisterImg from "../../assets/img/login3.jpg"; // Đổi hình ảnh nếu cần
 import { toast } from "react-toastify";
 import { apiUserRegister } from "../../services/UserService"; // Hàm đăng ký cho sinh viên
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai"; // Import icon mắt
@@ -13,11 +13,22 @@ const StudentRegister = () => {
   const [studentID, setStudentID] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    // Kiểm tra xem mật khẩu và xác nhận mật khẩu có khớp không
+    // Kiểm tra điều kiện cho studentID và password
+    if (!/^\d{7}$/.test(studentID)) {
+      toast.error("Mã số sinh viên phải có đúng 7 số.");
+      return;
+    }
+
+    if (password.length < 8) {
+      toast.error("Mật khẩu phải có ít nhất 8 ký tự.");
+      return;
+    }
+
     if (password !== confirmPassword) {
       toast.error("Mật khẩu xác nhận không khớp.");
       return;
@@ -25,26 +36,32 @@ const StudentRegister = () => {
 
     try {
       // Gọi API đăng ký
-      let res = await apiUserRegister(email, password, fullName, studentID);
-      if (res.ok) {
+      const response = await apiUserRegister(
+        email,
+        password,
+        fullName,
+        studentID
+      );
+
+      if (response.status === 200) {
+        navigate("/login");
         toast.success("Đăng ký thành công!");
       } else {
         toast.error("Đăng ký thất bại, vui lòng thử lại.");
       }
     } catch (error) {
-      toast.error("Có lỗi xảy ra, vui lòng thử lại sau.");
+      toast.error("Đăng ký thất bại, vui lòng kiểm tra lại thông tin.");
     }
   };
 
   return (
     <section className="flex items-center justify-center bg-blue-200 h-screen relative">
       <div className="bg-white flex rounded-2xl shadow-2xl max-w-[900px] max-h-[600px] items-center justify-center">
-        {/* Hình ảnh chỉ hiển thị trên màn hình trung bình và lớn hơn */}
-        <div className="hidden md:block h-[450px] w-[400px] overflow-hidden ml-10 rounded-2xl">
+        <div className="hidden md:block h-[500px] w-[500px] overflow-hidden ml-5 rounded-2xl">
           <img
             src={RegisterImg}
             alt="Register Background"
-            className="h-[500px] w-full object-cover rounded-2xl"
+            className="h-full w-full object-cover rounded-2xl"
           />
         </div>
 

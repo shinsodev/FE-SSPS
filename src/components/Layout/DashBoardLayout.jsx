@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Sidebar from "../Sidebar/Sidebar";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer"; // Import Footer component
 
 const DashboardLayout = ({ children }) => {
   const [isSidebarOpen, setSidebarOpen] = useState(false); // State to track sidebar visibility
-  const role = "admin";
 
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen); // Toggle the sidebar visibility
@@ -13,7 +12,7 @@ const DashboardLayout = ({ children }) => {
 
   return (
     <>
-      <Header toggleSidebar={toggleSidebar} /> 
+      <Header toggleSidebar={toggleSidebar} />
       <section className="bg-gray-200 pb-6 pt-6">
         <div className="flex flex-row relative">
           {/* Sidebar */}
@@ -22,7 +21,7 @@ const DashboardLayout = ({ children }) => {
               isSidebarOpen ? "block" : "hidden"
             } lg:block fixed lg:static z-40 top-0 left-0 w-[65%] lg:w-[20%] bg-white rounded-2xl shadow-2xl px-2 py-4 transition-transform lg:transition-none`}
           >
-            <Sidebar role={role} />
+            <Sidebar />
           </div>
 
           {/* Content area */}

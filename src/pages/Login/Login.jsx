@@ -1,17 +1,20 @@
 import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Logo from "../../assets/img/login.jpg";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai"; // Import icon mắt
+import Logo from "../../assets/img/login5.jpg";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { AuthContext } from "../../context/AuthContext";
 import { apiLogin } from "../../services/UserService";
 import { toast } from "react-toastify";
+import ModalConfirmBasic from "../../components/ModalConfirmBasic/ModalConfirmBasic"; // Import ModalConfirmBasic
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(false); // State cho modal
   const navigate = useNavigate();
-  const { fetchUserData } = useContext(AuthContext);
+  const { fetchStudentData, fetchAdminData, getRoleFromToken } =
+    useContext(AuthContext);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -20,18 +23,33 @@ const Login = () => {
       const response = await apiLogin(email, password);
 
       if (response.status === 200) {
-        const data = response.data;
+        const data = response.data.result;
         localStorage.setItem("token", data.token);
-        await fetchUserData(data.token);
+        const role = getRoleFromToken(data.token);
+
+        if (role === "ROLE_STUDENT") {
+          await fetchStudentData(data.token);
+        } else if (role === "ROLE_ADMIN") {
+          await fetchAdminData(data.token);
+        }
+
         toast.success("Đăng nhập thành công!");
         navigate("/dashboard");
       } else {
-        const errorData = await response.json();
-        toast.error(errorData.message || "Đăng nhập thất bại.");
+        toast.error("Đăng nhập thất bại.");
       }
     } catch (error) {
       toast.error("Đăng nhập thất bại. Vui lòng kiểm tra email và mật khẩu.");
     }
+  };
+
+  const handleRegisterClick = () => {
+    setModalOpen(true); // Mở modal khi nhấn vào Đăng Ký
+  };
+
+  const handleModalConfirmBasic = (role) => {
+    setModalOpen(false);
+    navigate(`/register/${role}`); // Điều hướng đến trang đăng ký tương ứng
   };
 
   return (
@@ -84,7 +102,7 @@ const Login = () => {
           <div className="mt-3 text-xs flex justify-between items-center mb-10">
             <div>{"Bạn chưa có tài khoản?"}</div>
             <button
-              onClick={() => navigate("/register/student")}
+              onClick={handleRegisterClick} // Mở modal khi nhấn vào Đăng Ký
               className="py-2 px-5 bg-white border rounded-xl hover:scale-110 duration-300 border-gray-400"
             >
               Đăng Ký
@@ -93,14 +111,23 @@ const Login = () => {
         </div>
 
         {/* Image only visible on medium screens and larger */}
-        <div className="hidden md:block h-[300px] w-[400px] overflow-hidden mr-10">
+        <div className="hidden md:block h-[400px] w-[400px] overflow-hidden">
           <img
             src={Logo}
             alt=""
-            className="h-full w-full object-cover rounded-2xl"
+            className="h-full w-full object-cover rounded-r-2xl"
           />
         </div>
       </div>
+
+      {/* Modal xác nhận đăng ký */}
+      <ModalConfirmBasic
+        open={isModalOpen}
+        onClose={() => setModalOpen(false)}
+        title="Xác Nhận Đăng Ký"
+        message="Bạn muốn đăng ký dưới vai trò nào?"
+        onConfirm={(role) => handleModalConfirmBasic(role)}
+      />
     </section>
   );
 };
