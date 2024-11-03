@@ -1,7 +1,37 @@
 import axios from "./customize-axios";
 
-const fetchAllUser = () => {
-  return axios.get("/u");
+const apiUserRegister = (email, password, fullName, studentId) => {
+  return axios.post("/ssps/students/register", {
+    email,
+    password,
+    fullName,
+    studentId,
+  });
 };
 
-export { fetchAllUser };
+const apiLogin = (email, password) => {
+  return axios.post("/ssps/auth/login", {
+    email,
+    password,
+  });
+};
+
+// Tùy chỉnh lại hàm fetchUserInfo
+const fetchUserInfo = (token) => {
+  return axios.get("/ssps/students/my-info", {
+    headers: {
+      Authorization: `Bearer ${token}`, // Thêm token vào headers
+    },
+  });
+};
+
+// Tùy chỉnh lại hàm fetchAllUsers
+const fetchAllUsers = (token) => {
+  return axios.get("/users/get-all-customers", {
+    headers: {
+      Authorization: `Bearer ${token}`, // Thêm token vào headers
+    },
+  });
+};
+
+export { apiUserRegister, apiLogin, fetchUserInfo, fetchAllUsers };

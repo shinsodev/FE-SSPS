@@ -1,59 +1,51 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import LoginImg from "../../assets/img/login.jpg";
-import LoginImg1 from "../../assets/img/login1.jpg";
+import { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Logo from "../../assets/img/login.jpg";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai"; // Import icon mắt
+import { AuthContext } from "../../context/AuthContext";
+import { apiLogin } from "../../services/UserService";
+import { toast } from "react-toastify";
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [isAdmin, setIsAdmin] = useState(false); // Toggle for admin login
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const { fetchUserData } = useContext(AuthContext);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const loginUrl = isAdmin
-      ? 'http://localhost:8080/auth/admin/login'
-      : 'http://localhost:8080/auth/login';
 
     try {
-      const response = await fetch(loginUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await apiLogin(email, password);
 
-      if (response.ok) {
-        const data = await response.json();
-        localStorage.setItem('token', data.token);
-        navigate('/dashboard');
+      if (response.status === 200) {
+        const data = response.data;
+        localStorage.setItem("token", data.token);
+        await fetchUserData(data.token);
+        toast.success("Đăng nhập thành công!");
+        navigate("/dashboard");
       } else {
-        setError('Login failed. Please check your username and password.');
+        const errorData = await response.json();
+        toast.error(errorData.message || "Đăng nhập thất bại.");
       }
     } catch (error) {
-      setError('Failed to login');
-      console.error('Error:', error);
+      toast.error("Đăng nhập thất bại. Vui lòng kiểm tra email và mật khẩu.");
     }
   };
 
   return (
-    <section className="bg-blue-200 flex items-center justify-center h-screen">
-      <div
-        className={`bg-white flex rounded-2xl shadow-2xl max-w-[900px] max-h-[500px] lg:h-[400px] lg:w-[800px] items-center overflow-hidden transition-transform duration-700`}
-      >
-        {/* Form Section */}
-        <div className={`md:w-1/2 px-10 transition-all duration-700 ${isAdmin ? 'order-2' : ''}`}>
-          <h2 className="font-bold text-4xl text-primary h2 text-center mb-10 pt-10 lg:pt-0">
-            {isAdmin ? 'Admin Login' : 'Student Login'}
+    <section className="flex items-center justify-center bg-blue-200 h-screen relative">
+      <div className="bg-white flex rounded-2xl shadow-2xl max-w-[900px] max-h-[500px] items-center justify-center">
+        <div className="w-[380px] px-10">
+          <h2 className="font-bold text-4xl text-primary text-center my-10">
+            Đăng Nhập
           </h2>
-
-          {error && <p className="text-red-500 text-center">{error}</p>}
 
           <form onSubmit={handleLogin} className="flex flex-col gap-4">
             <input
               className="p-2 rounded-xl border bg-gray-200"
-              type="email"
-              name="email"
+              type="text"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -62,40 +54,50 @@ const Login = () => {
             <div className="relative">
               <input
                 className="p-2 rounded-xl border w-full bg-gray-200"
-                type="password"
-                name="password"
-                placeholder="Password"
+                type={showPassword ? "text" : "password"}
+                placeholder="Mật khẩu"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              <div
+                className="absolute right-2 top-[10px] cursor-pointer"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? (
+                  <AiFillEye size={20} />
+                ) : (
+                  <AiFillEyeInvisible size={20} />
+                )}
+              </div>
             </div>
-            <button className="bg-blue-500 rounded-xl text-white py-2 hover:scale-105 duration-300">
-              Login
+
+            <Link to="/" className="text-xs text-gray-500">
+              <div className="hover:underline">Quên mật khẩu?</div>
+            </Link>
+
+            <button className="bg-blue-500 rounded-xl text-white py-2 hover:opacity-60 transition-all">
+              Đăng Nhập
             </button>
           </form>
 
-          <div className="text-xs py-4 text-gray-500 hover:underline">
-            <Link to="/">Forgot your password?</Link>
+          <div className="mt-3 text-xs flex justify-between items-center mb-10">
+            <div>{"Bạn chưa có tài khoản?"}</div>
+            <button
+              onClick={() => navigate("/register/student")}
+              className="py-2 px-5 bg-white border rounded-xl hover:scale-110 duration-300 border-gray-400"
+            >
+              Đăng Ký
+            </button>
           </div>
-          <button
-            onClick={() => setIsAdmin(!isAdmin)}
-            className="text-xs text-blue-500 underline mt-2"
-          >
-            {isAdmin ? 'Switch to Student Login' : 'Switch to Admin Login'}
-          </button>
         </div>
 
-        {/* Image Section */}
-        <div
-          className={`md:w-1/2 hidden md:block overflow-hidden transition-transform duration-700 ${
-            isAdmin ? 'transform -translate-x-0' : ''
-          }`}
-        >
+        {/* Image only visible on medium screens and larger */}
+        <div className="hidden md:block h-[300px] w-[400px] overflow-hidden mr-10">
           <img
-            className="rounded-2xl object-cover w-full h-full"
-            src={isAdmin ? LoginImg1 : LoginImg}
-            alt="Login Background"
+            src={Logo}
+            alt=""
+            className="h-full w-full object-cover rounded-2xl"
           />
         </div>
       </div>

@@ -20,14 +20,14 @@ const Printers = () => {
   return (
     <>
       {selectPrinter === null && (
-        <section className="py-10 rounded-2xl bg-gray-100">
+        <section className="py-10 rounded-2xl bg-gray-100 h-full">
           <h3 className="h3 text-[40px] text-primary text-center pb-12 pt-2">
             Printer list
           </h3>
 
           <div className="container mx-auto lg:px-0">
             <div className="grid lg:grid-cols-3 gap-5 px-8">
-              <div className="bg-white min-h-[420px] rounded-2xl shadow-lg border border-gray-300">
+              <div className="bg-white min-h-[420px] min-w-[330px] rounded-2xl shadow-lg border border-gray-300">
                 <div className="overflow-hidden flex items-center justify-center py-6">
                   <img
                     src={printer1}
@@ -67,8 +67,6 @@ const Printers = () => {
               </div>
 
               {/* test  */}
-              
-                
             </div>
           </div>
         </section>

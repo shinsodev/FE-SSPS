@@ -26,6 +26,8 @@ import FileConfigurationPage from "./pages/Printer/FileConfiguration";
 import { ToastContainer } from "react-toastify";
 import Report from "./pages/Sidebar/Report";
 import StudentReport from "./pages/Sidebar/StudentReport";
+import StudentRegister from "./pages/Register/StudentRegister";
+import AdminRegister from "./pages/Register/AdminRegister";
 // import PrivateRoute from './router/PrivateRoutes'
 
 function App() {
@@ -36,7 +38,7 @@ function App() {
           path="/"
           element={
             // <DashboardLayout>
-              <Home />
+            <Home />
             // </DashboardLayout>
           }
         ></Route>
@@ -45,19 +47,22 @@ function App() {
           path="login"
           element={
             // <DashboardLayout>
-              <Login />
+            <Login />
             // </DashboardLayout>
           }
         ></Route>
+
+        <Route path="/register/student" element={<StudentRegister />} />
+        <Route path="/register/admin" element={<AdminRegister />} />
 
         <Route
           path="/dashboard"
           element={
             // <PrivateRoute>
             // <Layout>
-              <DashboardLayout>
-                <Dashboard />
-              </DashboardLayout>
+            <DashboardLayout>
+              <Dashboard />
+            </DashboardLayout>
             // </Layout>
             // </PrivateRoute>
           }
@@ -67,9 +72,9 @@ function App() {
           element={
             // <PrivateRoute>
             // <Layout>
-              <DashboardLayout>
-                <Payment />
-              </DashboardLayout>
+            <DashboardLayout>
+              <Payment />
+            </DashboardLayout>
             // </Layout>
             // </PrivateRoute>
           }
@@ -79,9 +84,9 @@ function App() {
           element={
             // <PrivateRoute>
             // <Layout>
-              <DashboardLayout>
-                <Printers />
-              </DashboardLayout>
+            <DashboardLayout>
+              <Printers />
+            </DashboardLayout>
             // </Layout>
             // </PrivateRoute>
           }
@@ -91,9 +96,9 @@ function App() {
           path="/printers/:userId/:fileId"
           element={
             // <Layout>
-              <DashboardLayout>
-                <FileConfigurationPage />
-              </DashboardLayout>
+            <DashboardLayout>
+              <FileConfigurationPage />
+            </DashboardLayout>
             // </Layout>
           }
         />
@@ -102,9 +107,9 @@ function App() {
           path="/uploadFile"
           element={
             // <Layout>
-              <DashboardLayout>
-                <UploadFilePage />
-              </DashboardLayout>
+            <DashboardLayout>
+              <UploadFilePage />
+            </DashboardLayout>
             // </Layout>
           }
         />
@@ -114,9 +119,9 @@ function App() {
           element={
             // <PrivateRoute>
             // <Layout>
-              <DashboardLayout>
-                <UserProfile />
-              </DashboardLayout>
+            <DashboardLayout>
+              <UserProfile />
+            </DashboardLayout>
             // </Layout>
             // </PrivateRoute>
           }
@@ -127,9 +132,9 @@ function App() {
           element={
             // <PrivateRoute>
             // <Layout>
-              <DashboardLayout>
-                <StudentReport />
-              </DashboardLayout>
+            <DashboardLayout>
+              <StudentReport />
+            </DashboardLayout>
             // </Layout>
             // </PrivateRoute>
           }
@@ -140,9 +145,9 @@ function App() {
           element={
             // <PrivateRoute>
             // <Layout>
-              <DashboardLayout>
-                <UserList />
-              </DashboardLayout>
+            <DashboardLayout>
+              <UserList />
+            </DashboardLayout>
             // </Layout>
             // </PrivateRoute>
           }
@@ -152,9 +157,9 @@ function App() {
           element={
             // <PrivateRoute>
             // <Layout>
-              <DashboardLayout>
-                <Report />
-              </DashboardLayout>
+            <DashboardLayout>
+              <Report />
+            </DashboardLayout>
             // </Layout>
             // </PrivateRoute>
           }
@@ -165,9 +170,9 @@ function App() {
           element={
             // <PrivateRoute>
             // <Layout>
-              <DashboardLayout>
-                <AdminPrinterList />
-              </DashboardLayout>
+            <DashboardLayout>
+              <AdminPrinterList />
+            </DashboardLayout>
             // </Layout>
             // </PrivateRoute>
           }
