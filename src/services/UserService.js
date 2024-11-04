@@ -25,13 +25,4 @@ const fetchUserInfo = (token) => {
   });
 };
 
-// Tùy chỉnh lại hàm fetchAllUsers
-const fetchAllUsers = (token) => {
-  return axios.get("/users/get-all-customers", {
-    headers: {
-      Authorization: `Bearer ${token}`, // Thêm token vào headers
-    },
-  });
-};
-
-export { apiUserRegister, apiLogin, fetchUserInfo, fetchAllUsers };
+export { apiUserRegister, apiLogin, fetchUserInfo };

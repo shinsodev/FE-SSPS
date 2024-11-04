@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect } from "react";
-import { fetchUserInfo, fetchAllUsers } from "../services/UserService";
-import { fetchAdminInfo } from "../services/AdminService";
+import { fetchUserInfo } from "../services/UserService";
+import { fetchAdminInfo, fetchAllUsers } from "../services/AdminService";
 import { jwtDecode } from "jwt-decode";
 
 // Tạo context để quản lý thông tin người dùng
@@ -70,8 +70,8 @@ const AuthProvider = ({ children }) => {
         localStorage.setItem("user", JSON.stringify(userData));
 
         await fetchAllUsersData(token);
-        // const id = setInterval(() => fetchAllUsersData(token), 3000);
-        // setIntervalId(id);
+        const id = setInterval(() => fetchAllUsersData(token), 3000);
+        setIntervalId(id);
       } else {
         console.error("Failed to fetch admin data");
       }
@@ -87,8 +87,8 @@ const AuthProvider = ({ children }) => {
       const response = await fetchAllUsers(token);
       if (response.status === 200) {
         const data = response.data;
-        setUserList(data.userList);
-        localStorage.setItem("userList", JSON.stringify(data.userList));
+        setUserList(data.result);
+        localStorage.setItem("userList", JSON.stringify(data.result));
       } else {
         console.error("Failed to fetch userList");
       }
