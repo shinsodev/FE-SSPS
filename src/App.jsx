@@ -20,6 +20,7 @@ import UserList from "./pages/Sidebar/UserList";
 import UserProfile from "./pages/Sidebar/UserProfile";
 import Printers from "./pages/Sidebar/Printers";
 import AdminPrinterList from "./pages/Sidebar/AdminPrinterList";
+import AddPrinter from "./pages/Sidebar/AddPrinter";
 import Payment from "./pages/Sidebar/Payment";
 import UploadFilePage from "./pages/Sidebar/UploadFile";
 import FileConfigurationPage from "./pages/Printer/FileConfiguration";
@@ -172,6 +173,19 @@ function App() {
             // <Layout>
             <DashboardLayout>
               <AdminPrinterList />
+            </DashboardLayout>
+            // </Layout>
+            // </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/admin/addprinter"
+          element={
+            // <PrivateRoute>
+            // <Layout>
+            <DashboardLayout>
+              <AddPrinter />
             </DashboardLayout>
             // </Layout>
             // </PrivateRoute>

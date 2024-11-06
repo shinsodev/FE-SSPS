@@ -6,6 +6,7 @@ import { MdOutlineDeleteOutline } from "react-icons/md";
 import User1 from "../../assets/img/user1.png";
 import { AuthContext } from "../../context/AuthContext";
 import { useContext } from "react";
+import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 
 const UserList = () => {
   const { user } = useContext(AuthContext);
@@ -66,16 +67,16 @@ const UserList = () => {
                   <td className="px-6 py-4 text-center">
                     <div className="flex items-center gap-3">
                       <NavLink to="#" className="font-medium text-indigo-500">
-                        <TiEyeOutline size={25} />
+                        <FaEye size={20} />
                       </NavLink>
                       <NavLink
                         to={`/category/update/${user.id}`}
                         className="font-medium text-green-500"
                       >
-                        <CiEdit size={25} />
+                        <FaEdit size={20} />
                       </NavLink>
                       <button className="font-medium text-red-500">
-                        <MdOutlineDeleteOutline size={25} />
+                        <FaTrash size={20} />
                       </button>
                     </div>
                   </td>

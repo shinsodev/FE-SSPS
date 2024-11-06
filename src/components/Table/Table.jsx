@@ -2,7 +2,8 @@ import { TiEyeOutline } from "react-icons/ti";
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import { NavLink } from "react-router-dom";
-import printer1 from "../../assets/img/printer1.webp"
+import printer1 from "../../assets/img/printer1.webp";
+import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 
 const Table = () => {
   return (
@@ -41,7 +42,8 @@ const Table = () => {
               </td>
               <td className="px-6 py-4">
                 <div className="flex items-center">
-                  <div className="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Success
+                  <div className="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>{" "}
+                  Success
                 </div>
               </td>
               {/* <td className="px-6 py-4 text-center flex items-center gap-3 mt-1">
@@ -56,26 +58,27 @@ const Table = () => {
                 </button>
               </td> */}
 
-
               <td className="px-6 py-4 text-center">
                 <div className="flex items-center gap-3">
-                  <NavLink to="#" type="button" className="font-medium text-indigo-500">
-                    <TiEyeOutline size={25} />
+                  <NavLink
+                    to="#"
+                    type="button"
+                    className="font-medium text-indigo-500"
+                  >
+                    <FaEye size={20} />
                   </NavLink>
-                  <NavLink to={`/category/update/1000`} className="font-medium text-green-500">
-                    <CiEdit size={25} />
+                  <NavLink
+                    to={`/category/update/1000`}
+                    className="font-medium text-green-500"
+                  >
+                    <FaEdit size={20} />
                   </NavLink>
                   <button className="font-medium text-red-500">
-                    <MdOutlineDeleteOutline size={25} />
+                    <FaTrash size={20} />
                   </button>
                 </div>
               </td>
-
             </tr>
-
-
-
-
 
             {/* test  */}
             <tr className="bg-white border-b hover:bg-gray-50">
@@ -87,7 +90,8 @@ const Table = () => {
               </td>
               <td className="px-6 py-4">
                 <div className="flex items-center">
-                  <div className="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Success
+                  <div className="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>{" "}
+                  Success
                 </div>
               </td>
               {/* <td className="px-6 py-4 text-center flex items-center gap-3 mt-1">
@@ -102,13 +106,19 @@ const Table = () => {
                 </button>
               </td> */}
 
-
               <td className="px-6 py-4 text-center">
                 <div className="flex items-center gap-3">
-                  <NavLink to="#" type="button" className="font-medium text-indigo-500">
+                  <NavLink
+                    to="#"
+                    type="button"
+                    className="font-medium text-indigo-500"
+                  >
                     <TiEyeOutline size={25} />
                   </NavLink>
-                  <NavLink to={`/category/update/1000`} className="font-medium text-green-500">
+                  <NavLink
+                    to={`/category/update/1000`}
+                    className="font-medium text-green-500"
+                  >
                     <CiEdit size={25} />
                   </NavLink>
                   <button className="font-medium text-red-500">
@@ -116,166 +126,191 @@ const Table = () => {
                   </button>
                 </div>
               </td>
-
-            </tr><tr className="bg-white border-b hover:bg-gray-50">
-              <td className="px-6 py-4">1</td>
-              <td className="px-6 py-4">Di An</td>
-              <td className="px-6 py-4">Mono/Color</td>
-              <td className="px-6 py-4">
-                <img className="w-10 h-10" src={printer1} alt="" />
-              </td>
-              <td className="px-6 py-4">
-                <div className="flex items-center">
-                  <div className="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Success
-                </div>
-              </td>
-              {/* <td className="px-6 py-4 text-center flex items-center gap-3 mt-1">
-                <NavLink to="#" type="button" className="font-medium text-indigo-500">
-                  <TiEyeOutline size={25} />
-                </NavLink>
-                <NavLink to="/update-product" type="button" className="font-medium text-green">
-                  <CiEdit size={25} />
-                </NavLink>
-                <button className="font-medium text-red-500">
-                  <MdOutlineDeleteOutline size={25} />
-                </button>
-              </td> */}
-
-
-              <td className="px-6 py-4 text-center">
-                <div className="flex items-center gap-3">
-                  <NavLink to="#" type="button" className="font-medium text-indigo-500">
-                    <TiEyeOutline size={25} />
-                  </NavLink>
-                  <NavLink to={`/category/update/1000`} className="font-medium text-green-500">
-                    <CiEdit size={25} />
-                  </NavLink>
-                  <button className="font-medium text-red-500">
-                    <MdOutlineDeleteOutline size={25} />
-                  </button>
-                </div>
-              </td>
-
-            </tr><tr className="bg-white border-b hover:bg-gray-50">
-              <td className="px-6 py-4">1</td>
-              <td className="px-6 py-4">Di An</td>
-              <td className="px-6 py-4">Mono/Color</td>
-              <td className="px-6 py-4">
-                <img className="w-10 h-10" src={printer1} alt="" />
-              </td>
-              <td className="px-6 py-4">
-                <div className="flex items-center">
-                  <div className="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Success
-                </div>
-              </td>
-              {/* <td className="px-6 py-4 text-center flex items-center gap-3 mt-1">
-                <NavLink to="#" type="button" className="font-medium text-indigo-500">
-                  <TiEyeOutline size={25} />
-                </NavLink>
-                <NavLink to="/update-product" type="button" className="font-medium text-green">
-                  <CiEdit size={25} />
-                </NavLink>
-                <button className="font-medium text-red-500">
-                  <MdOutlineDeleteOutline size={25} />
-                </button>
-              </td> */}
-
-
-              <td className="px-6 py-4 text-center">
-                <div className="flex items-center gap-3">
-                  <NavLink to="#" type="button" className="font-medium text-indigo-500">
-                    <TiEyeOutline size={25} />
-                  </NavLink>
-                  <NavLink to={`/category/update/1000`} className="font-medium text-green-500">
-                    <CiEdit size={25} />
-                  </NavLink>
-                  <button className="font-medium text-red-500">
-                    <MdOutlineDeleteOutline size={25} />
-                  </button>
-                </div>
-              </td>
-
-            </tr><tr className="bg-white border-b hover:bg-gray-50">
-              <td className="px-6 py-4">1</td>
-              <td className="px-6 py-4">Di An</td>
-              <td className="px-6 py-4">Mono/Color</td>
-              <td className="px-6 py-4">
-                <img className="w-10 h-10" src={printer1} alt="" />
-              </td>
-              <td className="px-6 py-4">
-                <div className="flex items-center">
-                  <div className="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Success
-                </div>
-              </td>
-              {/* <td className="px-6 py-4 text-center flex items-center gap-3 mt-1">
-                <NavLink to="#" type="button" className="font-medium text-indigo-500">
-                  <TiEyeOutline size={25} />
-                </NavLink>
-                <NavLink to="/update-product" type="button" className="font-medium text-green">
-                  <CiEdit size={25} />
-                </NavLink>
-                <button className="font-medium text-red-500">
-                  <MdOutlineDeleteOutline size={25} />
-                </button>
-              </td> */}
-
-
-              <td className="px-6 py-4 text-center">
-                <div className="flex items-center gap-3">
-                  <NavLink to="#" type="button" className="font-medium text-indigo-500">
-                    <TiEyeOutline size={25} />
-                  </NavLink>
-                  <NavLink to={`/category/update/1000`} className="font-medium text-green-500">
-                    <CiEdit size={25} />
-                  </NavLink>
-                  <button className="font-medium text-red-500">
-                    <MdOutlineDeleteOutline size={25} />
-                  </button>
-                </div>
-              </td>
-
-            </tr><tr className="bg-white border-b hover:bg-gray-50">
-              <td className="px-6 py-4">1</td>
-              <td className="px-6 py-4">Di An</td>
-              <td className="px-6 py-4">Mono/Color</td>
-              <td className="px-6 py-4">
-                <img className="w-10 h-10" src={printer1} alt="" />
-              </td>
-              <td className="px-6 py-4">
-                <div className="flex items-center">
-                  <div className="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Success
-                </div>
-              </td>
-              {/* <td className="px-6 py-4 text-center flex items-center gap-3 mt-1">
-                <NavLink to="#" type="button" className="font-medium text-indigo-500">
-                  <TiEyeOutline size={25} />
-                </NavLink>
-                <NavLink to="/update-product" type="button" className="font-medium text-green">
-                  <CiEdit size={25} />
-                </NavLink>
-                <button className="font-medium text-red-500">
-                  <MdOutlineDeleteOutline size={25} />
-                </button>
-              </td> */}
-
-
-              <td className="px-6 py-4 text-center">
-                <div className="flex items-center gap-3">
-                  <NavLink to="#" type="button" className="font-medium text-indigo-500">
-                    <TiEyeOutline size={25} />
-                  </NavLink>
-                  <NavLink to={`/category/update/1000`} className="font-medium text-green-500">
-                    <CiEdit size={25} />
-                  </NavLink>
-                  <button className="font-medium text-red-500">
-                    <MdOutlineDeleteOutline size={25} />
-                  </button>
-                </div>
-              </td>
-
             </tr>
+            <tr className="bg-white border-b hover:bg-gray-50">
+              <td className="px-6 py-4">1</td>
+              <td className="px-6 py-4">Di An</td>
+              <td className="px-6 py-4">Mono/Color</td>
+              <td className="px-6 py-4">
+                <img className="w-10 h-10" src={printer1} alt="" />
+              </td>
+              <td className="px-6 py-4">
+                <div className="flex items-center">
+                  <div className="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>{" "}
+                  Success
+                </div>
+              </td>
+              {/* <td className="px-6 py-4 text-center flex items-center gap-3 mt-1">
+                <NavLink to="#" type="button" className="font-medium text-indigo-500">
+                  <TiEyeOutline size={25} />
+                </NavLink>
+                <NavLink to="/update-product" type="button" className="font-medium text-green">
+                  <CiEdit size={25} />
+                </NavLink>
+                <button className="font-medium text-red-500">
+                  <MdOutlineDeleteOutline size={25} />
+                </button>
+              </td> */}
 
+              <td className="px-6 py-4 text-center">
+                <div className="flex items-center gap-3">
+                  <NavLink
+                    to="#"
+                    type="button"
+                    className="font-medium text-indigo-500"
+                  >
+                    <TiEyeOutline size={25} />
+                  </NavLink>
+                  <NavLink
+                    to={`/category/update/1000`}
+                    className="font-medium text-green-500"
+                  >
+                    <CiEdit size={25} />
+                  </NavLink>
+                  <button className="font-medium text-red-500">
+                    <MdOutlineDeleteOutline size={25} />
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr className="bg-white border-b hover:bg-gray-50">
+              <td className="px-6 py-4">1</td>
+              <td className="px-6 py-4">Di An</td>
+              <td className="px-6 py-4">Mono/Color</td>
+              <td className="px-6 py-4">
+                <img className="w-10 h-10" src={printer1} alt="" />
+              </td>
+              <td className="px-6 py-4">
+                <div className="flex items-center">
+                  <div className="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>{" "}
+                  Success
+                </div>
+              </td>
+              {/* <td className="px-6 py-4 text-center flex items-center gap-3 mt-1">
+                <NavLink to="#" type="button" className="font-medium text-indigo-500">
+                  <TiEyeOutline size={25} />
+                </NavLink>
+                <NavLink to="/update-product" type="button" className="font-medium text-green">
+                  <CiEdit size={25} />
+                </NavLink>
+                <button className="font-medium text-red-500">
+                  <MdOutlineDeleteOutline size={25} />
+                </button>
+              </td> */}
 
+              <td className="px-6 py-4 text-center">
+                <div className="flex items-center gap-3">
+                  <NavLink
+                    to="#"
+                    type="button"
+                    className="font-medium text-indigo-500"
+                  >
+                    <TiEyeOutline size={25} />
+                  </NavLink>
+                  <NavLink
+                    to={`/category/update/1000`}
+                    className="font-medium text-green-500"
+                  >
+                    <CiEdit size={25} />
+                  </NavLink>
+                  <button className="font-medium text-red-500">
+                    <MdOutlineDeleteOutline size={25} />
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr className="bg-white border-b hover:bg-gray-50">
+              <td className="px-6 py-4">1</td>
+              <td className="px-6 py-4">Di An</td>
+              <td className="px-6 py-4">Mono/Color</td>
+              <td className="px-6 py-4">
+                <img className="w-10 h-10" src={printer1} alt="" />
+              </td>
+              <td className="px-6 py-4">
+                <div className="flex items-center">
+                  <div className="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>{" "}
+                  Success
+                </div>
+              </td>
+              {/* <td className="px-6 py-4 text-center flex items-center gap-3 mt-1">
+                <NavLink to="#" type="button" className="font-medium text-indigo-500">
+                  <TiEyeOutline size={25} />
+                </NavLink>
+                <NavLink to="/update-product" type="button" className="font-medium text-green">
+                  <CiEdit size={25} />
+                </NavLink>
+                <button className="font-medium text-red-500">
+                  <MdOutlineDeleteOutline size={25} />
+                </button>
+              </td> */}
+
+              <td className="px-6 py-4 text-center">
+                <div className="flex items-center gap-3">
+                  <NavLink
+                    to="#"
+                    type="button"
+                    className="font-medium text-indigo-500"
+                  >
+                    <TiEyeOutline size={25} />
+                  </NavLink>
+                  <NavLink
+                    to={`/category/update/1000`}
+                    className="font-medium text-green-500"
+                  >
+                    <CiEdit size={25} />
+                  </NavLink>
+                  <button className="font-medium text-red-500">
+                    <MdOutlineDeleteOutline size={25} />
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr className="bg-white border-b hover:bg-gray-50">
+              <td className="px-6 py-4">1</td>
+              <td className="px-6 py-4">Di An</td>
+              <td className="px-6 py-4">Mono/Color</td>
+              <td className="px-6 py-4">
+                <img className="w-10 h-10" src={printer1} alt="" />
+              </td>
+              <td className="px-6 py-4">
+                <div className="flex items-center">
+                  <div className="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>{" "}
+                  Success
+                </div>
+              </td>
+              {/* <td className="px-6 py-4 text-center flex items-center gap-3 mt-1">
+                <NavLink to="#" type="button" className="font-medium text-indigo-500">
+                  <TiEyeOutline size={25} />
+                </NavLink>
+                <NavLink to="/update-product" type="button" className="font-medium text-green">
+                  <CiEdit size={25} />
+                </NavLink>
+                <button className="font-medium text-red-500">
+                  <MdOutlineDeleteOutline size={25} />
+                </button>
+              </td> */}
+
+              <td className="px-6 py-4 text-center">
+                <div className="flex items-center gap-3">
+                  <NavLink
+                    to="#"
+                    type="button"
+                    className="font-medium text-indigo-500"
+                  >
+                    <TiEyeOutline size={25} />
+                  </NavLink>
+                  <NavLink
+                    to={`/category/update/1000`}
+                    className="font-medium text-green-500"
+                  >
+                    <CiEdit size={25} />
+                  </NavLink>
+                  <button className="font-medium text-red-500">
+                    <MdOutlineDeleteOutline size={25} />
+                  </button>
+                </div>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -408,4 +443,4 @@ const Table = () => {
   );
 }; */
 
-export default Table
+export default Table;
