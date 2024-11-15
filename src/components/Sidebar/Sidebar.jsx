@@ -64,13 +64,13 @@ const Sidebar = () => {
               <MdOutlineCategory size={22} />
               <span>Printers</span>
             </NavLink>
-            <NavLink
+            {/* <NavLink
               to="/uploadFile"
               className={({ isActive }) => getNavLinkClass(isActive)}
             >
               <TbFileUpload size={22} />
               <span>Upload File</span>
-            </NavLink>
+            </NavLink> */}
             <NavLink
               to="/payment"
               className={({ isActive }) => getNavLinkClass(isActive)}

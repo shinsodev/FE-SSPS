@@ -94,7 +94,7 @@ function App() {
         />
 
         <Route
-          path="/printers/:userId/:fileId"
+          path="/uploadFile/fileConfigurationPage"
           element={
             // <Layout>
             <DashboardLayout>

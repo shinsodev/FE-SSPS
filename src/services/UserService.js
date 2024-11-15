@@ -25,4 +25,76 @@ const fetchUserInfo = (token) => {
   });
 };
 
-export { apiUserRegister, apiLogin, fetchUserInfo };
+const buyPaper = (token, amount) => {
+  return axios.post(
+   "/ssps/students/recharge", // Gửi amount qua query params
+    {}, 
+    {
+      headers: {
+        Authorization: `Bearer ${token}`, 
+      },
+      params: {
+        amount: amount,
+      }
+    }
+  );
+};
+
+// export async function uploadFile(file, uploadConfig) {
+//   try {
+//     const token = localStorage.getItem("token");
+
+//     if (!token) {
+//       throw new Error("No authentication token found");
+//     }
+
+//     // Chuẩn bị dữ liệu upload
+//     const formData = new FormData();
+//     formData.append("file", file);
+
+//     const result = await axios.post("/ssps/students/upload", formData, {
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//         "Content-Type": "multipart/form-data",
+//       },
+//     });
+
+//     return result;
+//   } catch (error) {
+//     console.error("Error uploading file:", error);
+//     return { success: false, error: error.message || error };
+//   }
+// }
+
+export async function uploadFile(file, uploadConfig) {
+  try {
+    const token = localStorage.getItem("token");
+    //console.log("Token:", token);
+    
+    if (!token) {
+      throw new Error("No authentication token found");
+    }
+
+    // Chuẩn bị dữ liệu upload
+    const formData = new FormData();
+    formData.append("file", file); // Upload file
+    formData.append("uploadConfig", JSON.stringify(uploadConfig)); // Upload cấu hình in dưới dạng JSON
+    console.log("File:", file);
+    console.log("Upload Config:", uploadConfig);
+
+    const result = await axios.post("/ssps/students/upload", formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        //"Content-Type": "multipart/form-data",
+      },
+    });
+
+    return result; // Trả về kết quả của API
+  } catch (error) {
+    console.error("Error uploading file:", error);
+    return { success: false, error: error.message || error };
+  }
+}
+
+
+export { apiUserRegister, apiLogin, fetchUserInfo, buyPaper };
