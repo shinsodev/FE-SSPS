@@ -1,8 +1,9 @@
 import { Box, Button, Grid2, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { useState } from "react";
+import React, { useState, useRef } from 'react';
 import FileComp from "../Printer/FileComponent";
+import FileConfigurationPage from "../Printer/FileConfiguration";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -17,99 +18,138 @@ const VisuallyHiddenInput = styled("input")({
 });
 function UploadFilePage() {
   const [file, setFile] = useState(null);
+  const [selectPrinter, setSelectPrinter] = useState(null);
+  const [fileContent, setFileContent] = useState(null);
+  //const navigate = useNavigate();
+  const fileInputRef = useRef(null); 
 
-  function handleUploadFile(e) {
+
+  function handleSelectPrinter(e) {//dùng để lấy id máy in , sau này thêm vào
+    setSelectPrinter({ id: 3 });
+    //navigate("/uploadFile/fileConfigurationPage");
+  }
+
+  const handleUploadFile = (e) => {
     const fileData = e.target.files[0];
-    // pdf file
+    if (!fileData) return;
+    console.log(fileData)
     if (fileData.type === "application/pdf") {
-      console.log("oke");
-      setFile({ type: "pdf", name: fileData.name });
+      setFile({ type: "pdf", name: fileData.name }); // Lưu toàn bộ file
     } else if (
       fileData.type ===
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     ) {
-      // file type docx
-      setFile({ type: "docx", name: fileData.name });
+      setFile({ type: "docx", name: fileData.name }); // Lưu toàn bộ file
     }
-    // console.log(fileData);
-  }
+    else if (fileData.type.startsWith("image/")) {
+      // Kiểm tra nếu là file ảnh
+      setFile({ type: "image", name: fileData.name }); // Lưu toàn bộ file ảnh
+    }else if (
+      fileData.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
+      fileData.type === "application/vnd.ms-excel"
+    ) {
+      // Kiểm tra nếu là file Excel (xlsx hoặc xls)
+      setFile({ type: "excel", name: fileData.name }); // Lưu toàn bộ file Excel
+    }
+    else{
+      alert("File tải lên không được hỗ trợ.")
+    }
+    setFileContent(fileData)
+    e.target.value = ""; // Reset giá trị của input file
+  };//file lưu file tải lên
+
 
   function handleCancel(e) {
-    setFile(null);
+    setFile(null); // Reset state file
+
+    // Kiểm tra và reset giá trị input file nếu tồn tại
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   }
 
   return (
     <>
-      <div className="min-h-screen">
-      <Stack spacing={3} alignItems={"center"} mt={5}>
-        <Typography variant="h3" textAlign={"center"}>
-          SPSO SMART PRINTING
-        </Typography>
-        <Typography variant="h5">Select file to upload</Typography>
-        <Button
-          component="label"
-          role={undefined}
-          variant="contained"
-          tabIndex={-1}
-          startIcon={<CloudUploadIcon />}
-        >
-          Upload file
-          <VisuallyHiddenInput type="file" onChange={handleUploadFile} />
-        </Button>
-        {file !== null && (
-          <>
-            <Box
-              component="section"
-              sx={{
-                p: 2,
-                border: "1px dashed grey",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
+      {selectPrinter === null && (
+        <div className="min-h-screen">
+          <Stack spacing={3} alignItems={"center"} mt={5}>
+            <Typography variant="h3" textAlign={"center"}>
+              HỆ THỐNG IN THÔNG MINH
+            </Typography>
+            <Typography variant="h5">Chọn file để in</Typography>
+            <Button
+              component="label"
+              role={undefined}
+              variant="contained"
+              tabIndex={-1}
+              startIcon={<CloudUploadIcon />}
             >
-              <FileComp file={file} />
-            </Box>
-          </>
-        )}
+              Tải lên
+              <VisuallyHiddenInput id="fileInput" type="file" onChange={handleUploadFile} />
 
-        {file != null && (
-          <Stack
-            width={"70%"}
-            sx={{
-              p: 2,
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-          >
-            <Grid2
-              container
-              spacing={2}
-              width={"100%"}
-              textAlign={"center"}
-              mt={5}
-            >
-              <Grid2 size={{ xs: 12, md: 6 }}>
-                <Button
-                  variant="contained"
-                  color="error"
-                  size="large"
-                  onClick={handleCancel}
+            </Button>
+            {file !== null && (
+              <>
+                <Box
+                  component="section"
+                  sx={{
+                    p: 2,
+                    border: "1px dashed grey",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
                 >
-                  Cancel
-                </Button>
-              </Grid2>
-              <Grid2 size={{ xs: 12, md: 6 }}>
-                <Button variant="contained" color="success" size="large">
-                  Submit
-                </Button>
-              </Grid2>
-            </Grid2>
+                  <FileComp file={file} />
+                </Box>
+              </>
+            )}
+
+            {file != null && (
+              <Stack
+                width={"70%"}
+                sx={{
+                  p: 2,
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Grid2
+                  container
+                  spacing={2}
+                  width={"100%"}
+                  textAlign={"center"}
+                  mt={5}
+                >
+                  <Grid2 size={{ xs: 12, md: 6 }}>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      size="large"
+                      onClick={handleCancel}
+                    >
+                      Hủy
+                    </Button>
+                  </Grid2>
+                  <Grid2 size={{ xs: 12, md: 6 }}>
+                    <Button variant="contained" color="success" size="large"
+                      onClick={handleSelectPrinter}
+                    >
+                      Cấu hình in
+                    </Button>
+                  </Grid2>
+                </Grid2>
+              </Stack>
+            )}
           </Stack>
-        )}
-      </Stack>
-      </div>
+        </div>)}
+      {selectPrinter !== null && (
+        <>
+          <FileConfigurationPage printerId={selectPrinter.id} uploadedFile={fileContent} />
+        </>
+      )}
+
     </>
   );
 }

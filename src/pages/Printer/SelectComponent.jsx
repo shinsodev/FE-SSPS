@@ -19,7 +19,7 @@ const MenuProps = {
 };
 
 function SelectComponent(props) {
-  const { listSelect, label } = props;
+  const { listSelect, label, value, onChange } = props;
 
   const [data, setData] = useState("");
 
@@ -30,7 +30,7 @@ function SelectComponent(props) {
 
   return (
     <>
-      <FormControl sx={{ width: "100%" }}>
+      {/* <FormControl sx={{ width: "100%" }}>
         <InputLabel id="demo-multiple-name-label">{label}</InputLabel>
         <Select
           labelId="demo-multiple-name-label"
@@ -46,7 +46,34 @@ function SelectComponent(props) {
             </MenuItem>
           ))}
         </Select>
+      </FormControl> */}
+
+
+      <FormControl sx={{ width: "100%" }}>
+        <InputLabel id="select-label">{label}</InputLabel>
+        <Select
+          labelId="select-label"
+          id="select"
+          value={value} // Giá trị được kiểm soát bởi prop `value`
+          onChange={onChange} // Gọi callback `onChange` khi giá trị thay đổi
+          input={<OutlinedInput label={label} />}
+          MenuProps={{
+            PaperProps: {
+              style: {
+                maxHeight: 224,
+                width: 250,
+              },
+            },
+          }}
+        >
+          {listSelect.map((item, index) => (
+            <MenuItem key={index} value={item}>
+              {item}
+            </MenuItem>
+          ))}
+        </Select>
       </FormControl>
+
     </>
   );
 }

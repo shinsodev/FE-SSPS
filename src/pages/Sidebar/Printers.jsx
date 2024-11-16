@@ -8,7 +8,7 @@ import { NavLink } from "react-router-dom";
 import { HiOutlineUsers } from "react-icons/hi2";
 import printer1 from "../../assets/img/printer1.webp";
 import SelectFile from "../Printer/SelectFile";
-
+import UploadFilePage from "./UploadFile";
 const Printers = () => {
   const [selectPrinter, setSelectPrinter] = useState(null);
 
@@ -53,7 +53,9 @@ const Printers = () => {
                   </div>
 
                   <div className="flex items-center justify-center my-6">
-                    <button className="py-3 px-8 mr-3 rounded-lg bg-blue-500 text-[17px] font-medium text-white hover:opacity-60">
+                    <button className="py-3 px-8 mr-3 rounded-lg bg-blue-500 text-[17px] font-medium text-white hover:opacity-60"
+                    
+                    >
                       Detail
                     </button>
                     <button
@@ -73,7 +75,7 @@ const Printers = () => {
       )}
       {selectPrinter !== null && (
         <>
-          <SelectFile />
+          <UploadFilePage />
         </>
       )}
     </>
