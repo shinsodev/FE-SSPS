@@ -1,10 +1,12 @@
 import React, { useState, useRef } from "react";
 import { MdSearch, MdFilterList } from 'react-icons/md';
+import { confirmReceive } from "../../services/UserService";
+import { toast } from "react-toastify";
 
 const initialData = [
     { id: 1, location: "Li Thuong Kiet", building: "A1", floor: 1, fileName: "Network layer", date: "Dec 20 2024", pages: 35, size: "A4", status: "Success" },
-    { id: 2, location: "Di An", building: "B6", floor: 4, fileName: "Transport layer", date: "Nov 2 2024", pages: 30, size: "A3", status: "Success" },
-    { id: 3, location: "Di An", building: "H1", floor: 6, fileName: "Database system", date: "Sep 5 2024", pages: 35, size: "A2", status: "Fail" },
+    { id: 2, location: "Di An", building: "B6", floor: 4, fileName: "Transport layer", date: "Nov 2 2024", pages: 30, size: "A3", status: "Fail" },
+    { id: 3, location: "Di An", building: "H1", floor: 6, fileName: "Database system", date: "Sep 5 2024", pages: 35, size: "A2", status: "Printing" },
 ];
 
 const StudentReport = () => {
@@ -17,6 +19,8 @@ const StudentReport = () => {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [isFilterVisible, setIsFilterVisible] = useState(false); // State to control filter visibility
+
+    const [selectedItem, setSelectedItem] = useState(null);
 
     const handleSearch = (event) => {
         const value = event.target.value.toLowerCase();
@@ -46,6 +50,13 @@ const StudentReport = () => {
         setIsFilterVisible(true); // Show filter fields when filter button is clicked
     };
 
+    const handleRowClick = (item) => {
+        if (item.status === "Printing") { 
+            setSelectedItem(item); 
+            setIsModalOpen(true);
+        }
+    };
+
     const handleCloseModal = () => {
         setIsModalOpen(false);
     };
@@ -61,7 +72,23 @@ const StudentReport = () => {
         });
 
         setFilteredData(filtered);
-        setIsFilterVisible(false); // Hide filter fields after applying
+        setIsFilterVisible(false); 
+    };
+
+    const handleConfirmReceive = async (printingId) => {
+        const token = localStorage.getItem("token");
+        try {
+            const response = await confirmReceive(token, printingId);
+            if (response.data.result) {
+                toast.success("Confirmation successful!");
+            } else {
+                toast.error("Error confirming receive.");
+            }
+        } catch (error) {
+            toast.error(`Error confirming receive: ${error.message || "Unknown error"}`);
+        } finally {
+            setIsModalOpen(false);
+        }
     };
 
     return (
@@ -140,7 +167,7 @@ const StudentReport = () => {
                     <tbody>
                         {filteredData.length > 0 ? (
                             filteredData.map((item) => (
-                                <tr key={item.id} className="bg-white border-b hover:bg-gray-50">
+                                <tr key={item.id} className={`bg-white border-b hover:bg-gray-50 ${item.status === "Printing" ? 'cursor-pointer' : ''}`} onClick={item.status === "Printing" ? () => handleRowClick(item) : undefined}>
                                     <td className="px-6 py-4 text-center">{item.id}</td>
                                     <td className="px-6 py-4 capitalize text-center">{item.location}</td>
                                     <td className="px-6 py-4 text-center">{item.building}</td>
@@ -149,26 +176,62 @@ const StudentReport = () => {
                                     <td className="px-6 py-4 text-center">{item.date}</td>
                                     <td className="px-6 py-4 text-center">{item.pages}</td>
                                     <td className="px-6 py-4 text-center">{item.size}</td>
-                                    <td className="px-6 py-4 text-center">
-                                        <div className="flex items-center justify-center">
+                                    <td className="px-6 py-4 text-left">
+                                        <div className="flex items-center">
                                             <div
-                                                className={`h-2.5 w-2.5 rounded-full ${item.status === "Success" ? "bg-green-500" : "bg-red-500"} mr-2`}
+                                                    className={`h-2.5 w-2.5 rounded-full 
+                                                        ${item.status === "Success" ? "bg-green-500" : 
+                                                        item.status === "Fail" ? "bg-red-500" : 
+                                                        item.status === "Printing" ? "bg-yellow-500" : ""}
+                                                        mr-2`}
                                             ></div>
-                                            {item.status}
+                                                {item.status}
                                         </div>
                                     </td>
                                 </tr>
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="9" className="text-center py-4">No results found.</td>
+                                <td colSpan="9" className="text-center py-4">No matching data found</td>
                             </tr>
                         )}
                     </tbody>
                 </table>
             </div>
+
+            {selectedItem && isModalOpen && (
+                    <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
+                        <div className="bg-white p-6 rounded-lg max-w-md w-full relative">
+                            <button
+                                onClick={handleCloseModal}
+                                className="absolute top-1 right-3 text-gray-500 hover:text-gray-700 text-3xl"
+                                aria-label="Close modal"
+                            >
+                                &times;
+                            </button>
+                            
+                            <h2 className="text-xl font-semibold mb-4">Xác nhận tài liệu</h2>
+                            <p>
+                                Bạn đã nhận được tài liệu in?
+                            </p>
+                            <div className="flex justify-end gap-4 mt-6">
+                                <button
+                                    onClick={() => handleConfirmReceive(selectedItem.id)}
+                                    className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                                >
+                                    Đã nhận
+                                </button>
+                                <button
+                                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                                >
+                                    Báo cáo
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
         </section>
     );
 };
 
-export default StudentReport
+export default StudentReport;

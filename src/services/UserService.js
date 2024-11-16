@@ -24,5 +24,27 @@ const fetchUserInfo = (token) => {
     },
   });
 };
+const buyPaper = (token, amount) => {
+  return axios.post(
+   "/ssps/students/recharge", // Gửi amount qua query params
+    {}, 
+    {
+      headers: {
+        Authorization: `Bearer ${token}`, 
+      },
+      params: {
+        amount: amount,
+      }
+    }
+  );
+};
+const confirmReceive = (token, printingId) => {
+  return axios.post('/ssps/students/confirm-receive', null, {
+    params: { printingId: printingId },
+    headers: {
+        'Authorization': `Bearer ${token}`,
+    }
+  })
+};
 
-export { apiUserRegister, apiLogin, fetchUserInfo };
+export { apiUserRegister, apiLogin, fetchUserInfo, buyPaper, confirmReceive };
