@@ -20,4 +20,22 @@ const fetchAllUsers = (token) => {
   });
 };
 
-export { apiAdminRegister, fetchAdminInfo, fetchAllUsers };
+async function addPrinter(token, dataInput) {
+  try {
+    const result = await axios.post("/ssps/admin/add-printer", dataInput, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (result.status === 200) {
+      return { success: true };
+    } else {
+      throw result.data.error;
+    }
+  } catch (err) {
+    console.error(err.message);
+    return { success: false, error: err.message };
+  }
+}
+
+export { apiAdminRegister, fetchAdminInfo, fetchAllUsers, addPrinter };
