@@ -1,22 +1,29 @@
 import { NavLink } from "react-router-dom";
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
+import printer1 from "../../assets/img/printer1.webp";
+
 function ItemPriter(props) {
-  const { id, location, color, imgSrc, status } = props.item;
+  const { printerID, printerLocation, status, papersLeft, availableDocType } =
+    props.item;
   const { editPrinter } = props;
   function handleEditPrinter() {
-    editPrinter(id);
+    editPrinter(printerID);
   }
   return (
     <tr className="bg-white border-b hover:bg-gray-50">
-      <td className="px-6 py-4">{id}</td>
-      <td className="px-6 py-4">{location}</td>
-      <td className="px-6 py-4">{color}</td>
+      <td className="px-6 py-4">{printerID}</td>
+      <td className="px-6 py-4">{printerLocation}</td>
+      <td className="px-6 py-4">{papersLeft}</td>
       <td className="px-6 py-4">
-        <img className="w-10 h-10" src={imgSrc} alt="" />
+        <img className="w-10 h-10" src={printer1} alt="" />
       </td>
       <td className="px-6 py-4">
         <div className="flex items-center">
-          <div className="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>{" "}
+          {status === "ONLINE" ? (
+            <div className="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
+          ) : (
+            <div className="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
+          )}
           {status}
         </div>
       </td>

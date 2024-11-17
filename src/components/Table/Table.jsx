@@ -44,37 +44,49 @@ const listPrinter = [
 ];
 
 const Table = () => {
+  const [printerList, setPrinterList] = useState([]);
+  const [totalPages, setTotalPages] = useState(10);
 
-  // const [printerList, setPrinterList] = useState([])
-  // const [totalPages, setTotalPages] = useState(10)
+  async function getListPrinter(pageN) {
+    const token = localStorage.getItem("token");
+    try {
+      const data = await axios.get(
+        "http://localhost:8080/ssps/admin/get-all-printers",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            page: pageN,
+            size: 5,
+          },
+        }
+      );
+      if (data.status === 200) {
+        console.log("data: ", data.data.result);
+        setPrinterList(data.data.result);
+      } else {
+        throw "Error from fetching data";
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
 
-  // async function getListPrinter(pageN){
-  //   const token = localStorage.getItem("token")
-  //   try {
-  //     const data = await axios.get("http://localhost:8080/ssps/admin/get-all-printers", {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`
-  //       }
-  //     })
-  //     console.log("data: ", data.data.result)
-  //     setPrinterList(data.data.result)
-  //   } catch(err){
-  //     console.log("Error")
-  //   }
-  // }
+  useEffect(() => {
+    getListPrinter(0);
+  }, []);
 
-  // useEffect(()=>{
-  //   getListPrinter()
-  // },[])
-
-  // async function handlePageClick(e){
-  //   try{
-  //     await getListPrinter(e.selected)
-  //     console.log("oke")
-  //   } catch(err){
-  //     console.log("Failed")
-  //   }
-  // }
+  async function handlePageClick(e) {
+    try {
+      const result = await getListPrinter(e.selected);
+      if (result.status !== 200) {
+        throw "Error from fetching data page";
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
 
   const [isEdit, setEdit] = useState(false);
   function EditPrinter(id) {
@@ -98,7 +110,7 @@ const Table = () => {
                 Location
               </th>
               <th scope="col" className="px-6 py-3">
-                Color
+                Paper left
               </th>
               <th scope="col" className="px-6 py-3">
                 Image
@@ -112,33 +124,37 @@ const Table = () => {
             </tr>
           </thead>
           <tbody>
-            {listPrinter.map((item) => (
-              <ItemPriter item={item} key={item.id} editPrinter={EditPrinter} />
+            {printerList.map((item) => (
+              <ItemPriter
+                item={item}
+                key={item.printerId}
+                editPrinter={EditPrinter}
+              />
             ))}
           </tbody>
         </table>
       </div>
       <EditDialog open={isEdit} setOpenEdit={setOpenEdit} />
-      {/* <ReactPaginate
-       breakLabel="..."
-       nextLabel="NEXT →"
-       onPageChange={handlePageClick}
-       pageRangeDisplayed={5}
-       pageCount={totalPages}
-       previousLabel="← PREVIOUS"
-       className="flex space-x-2 items-center justify-center my-8"
-       pageClassName="page-item"
-       pageLinkClassName="page-link px-4 py-2 hover:bg-gray-900/10 rounded-md shadow-2xl"
-       activeLinkClassName="active bg-black text-white" // Active page style
-       previousClassName="page-item"
-       previousLinkClassName="page-link hover:bg-gray-900/10 px-4 py-2 rounded-md"
-       nextClassName="page-item"
-       nextLinkClassName="page-link hover:bg-gray-900/10 px-4 py-2 rounded-md"
-       breakClassName="page-item"
-       breakLinkClassName="page-link"
-       disabledLinkClassName="text-gray-400 cursor-not-allowed"
-       containerClassName="pagination"
-     /> */}
+      <ReactPaginate
+        breakLabel="..."
+        nextLabel="NEXT →"
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={5}
+        pageCount={totalPages}
+        previousLabel="← PREVIOUS"
+        className="flex space-x-2 items-center justify-center my-8"
+        pageClassName="page-item"
+        pageLinkClassName="page-link px-4 py-2 hover:bg-gray-900/10 rounded-md shadow-2xl"
+        activeLinkClassName="active bg-black text-white" // Active page style
+        previousClassName="page-item"
+        previousLinkClassName="page-link hover:bg-gray-900/10 px-4 py-2 rounded-md"
+        nextClassName="page-item"
+        nextLinkClassName="page-link hover:bg-gray-900/10 px-4 py-2 rounded-md"
+        breakClassName="page-item"
+        breakLinkClassName="page-link"
+        disabledLinkClassName="text-gray-400 cursor-not-allowed"
+        containerClassName="pagination"
+      />
     </>
   );
 };
