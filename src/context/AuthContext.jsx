@@ -1,6 +1,10 @@
 import { createContext, useState, useEffect } from "react";
 import { fetchUserInfo } from "../services/UserService";
-import { fetchAdminInfo, fetchAllUsers } from "../services/AdminService";
+import {
+  deleteDocumentsExpired,
+  fetchAdminInfo,
+  fetchAllUsers,
+} from "../services/AdminService";
 import { jwtDecode } from "jwt-decode";
 
 // Tạo context để quản lý thông tin người dùng
@@ -22,6 +26,7 @@ const AuthProvider = ({ children }) => {
         fetchStudentData(token);
       } else if (role === "ROLE_ADMIN") {
         fetchAdminData(token);
+        deleteDocumentsExpired();
       }
     } else {
       setLoading(false);
@@ -63,7 +68,7 @@ const AuthProvider = ({ children }) => {
   const fetchAdminData = async (token) => {
     try {
       const response = await fetchAdminInfo(token);
-      console.log(response);
+      // console.log(response);
       if (response && response.status === 200) {
         const userData = response.data.result;
         setUser(userData);
