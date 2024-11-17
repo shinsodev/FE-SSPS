@@ -20,4 +20,26 @@ const fetchAllUsers = (token) => {
   });
 };
 
+export async function deleteDocumentsExpired() {
+  try {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      throw new Error("No authentication token found");
+    }
+
+    const result = await axios.delete("/ssps/admin/document-expired", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(result.data.result);
+
+    return result; // Trả về kết quả của API
+  } catch (error) {
+    console.error("Error uploading file:", error);
+    return { success: false, error: error.message || error };
+  }
+}
+
 export { apiAdminRegister, fetchAdminInfo, fetchAllUsers };

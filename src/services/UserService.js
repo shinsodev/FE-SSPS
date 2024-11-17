@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import axios from "./customize-axios";
 
 const apiUserRegister = (email, password, fullName, studentId) => {
@@ -27,15 +28,15 @@ const fetchUserInfo = (token) => {
 
 const buyPaper = (token, amount) => {
   return axios.post(
-   "/ssps/students/recharge", // Gửi amount qua query params
-    {}, 
+    "/ssps/students/recharge", // Gửi amount qua query params
+    {},
     {
       headers: {
-        Authorization: `Bearer ${token}`, 
+        Authorization: `Bearer ${token}`,
       },
       params: {
         amount: amount,
-      }
+      },
     }
   );
 };
@@ -70,7 +71,7 @@ export async function uploadFile(file, uploadConfig) {
   try {
     const token = localStorage.getItem("token");
     //console.log("Token:", token);
-    
+
     if (!token) {
       throw new Error("No authentication token found");
     }
@@ -92,9 +93,12 @@ export async function uploadFile(file, uploadConfig) {
     return result; // Trả về kết quả của API
   } catch (error) {
     console.error("Error uploading file:", error);
+    if (error.message === "Request failed with status code 413") {
+      toast.error("File quá lớn");
+    }
+
     return { success: false, error: error.message || error };
   }
 }
-
 
 export { apiUserRegister, apiLogin, fetchUserInfo, buyPaper };
