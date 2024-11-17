@@ -33,8 +33,6 @@ export async function deleteDocumentsExpired() {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(result.data.result);
-
     return result; // Trả về kết quả của API
   } catch (error) {
     console.error("Error uploading file:", error);
@@ -60,4 +58,29 @@ async function addPrinter(token, dataInput) {
   }
 }
 
-export { apiAdminRegister, fetchAdminInfo, fetchAllUsers, addPrinter };
+async function deletePrinter(token, printerId) {
+  try {
+    const result = await axios.delete(
+      `/ssps/admin/delete-printer/${printerId}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    if (result.status === 200) {
+      return { success: true };
+    } else {
+      throw "Error from delete";
+    }
+  } catch (err) {
+    console.error(err.message);
+    return { success: false, error: err.message };
+  }
+}
+
+export {
+  apiAdminRegister,
+  fetchAdminInfo,
+  fetchAllUsers,
+  addPrinter,
+  deletePrinter,
+};

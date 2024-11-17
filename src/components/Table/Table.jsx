@@ -1,47 +1,11 @@
 import { useEffect, useState } from "react";
-import printer1 from "../../assets/img/printer1.webp";
 import EditDialog from "./EditPrinter";
 import ItemPriter from "./printerItemList";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
-
-const listPrinter = [
-  {
-    id: 1,
-    location: "Di an",
-    color: "Mono/Color",
-    imgSrc: printer1,
-    status: "Success",
-  },
-  {
-    id: 2,
-    location: "Di an",
-    color: "Mono/Color",
-    imgSrc: printer1,
-    status: "Success",
-  },
-  {
-    id: 3,
-    location: "Di an",
-    color: "Mono/Color",
-    imgSrc: printer1,
-    status: "Success",
-  },
-  {
-    id: 4,
-    location: "Di an",
-    color: "Mono/Color",
-    imgSrc: printer1,
-    status: "Success",
-  },
-  {
-    id: 5,
-    location: "Di an",
-    color: "Mono/Color",
-    imgSrc: printer1,
-    status: "Success",
-  },
-];
+import { deletePrinter } from "../../services/AdminService";
+import { notifyError } from "../Notification/NotifyError";
+import { notifySuccess } from "../Notification/NotifySuccess";
 
 const Table = () => {
   const [printerList, setPrinterList] = useState([]);
@@ -63,7 +27,6 @@ const Table = () => {
         }
       );
       if (data.status === 200) {
-        console.log("data: ", data.data.result);
         setPrinterList(data.data.result);
       } else {
         throw "Error from fetching data";
@@ -79,10 +42,7 @@ const Table = () => {
 
   async function handlePageClick(e) {
     try {
-      const result = await getListPrinter(e.selected);
-      if (result.status !== 200) {
-        throw "Error from fetching data page";
-      }
+      await getListPrinter(e.selected);
     } catch (err) {
       console.error(err.message);
     }
@@ -90,11 +50,30 @@ const Table = () => {
 
   const [isEdit, setEdit] = useState(false);
   function EditPrinter(id) {
-    console.log("Edit printer with id: ", id);
     setEdit(true);
   }
   function setOpenEdit(open) {
     setEdit(open);
+  }
+
+  async function deletePrinterWithId(id) {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      notifyError("token missing");
+    }
+
+    try {
+      const result = await deletePrinter(token, id);
+      if (result.success) {
+        await getListPrinter(0);
+        notifySuccess("Delete printer success!!!!");
+      } else {
+        throw "Delete failed!!!";
+      }
+    } catch (err) {
+      console.error(err.message);
+      notifyError(err.message);
+    }
   }
 
   return (
@@ -127,8 +106,9 @@ const Table = () => {
             {printerList.map((item) => (
               <ItemPriter
                 item={item}
-                key={item.printerId}
+                key={item.printerID}
                 editPrinter={EditPrinter}
+                deletePrinter={deletePrinterWithId}
               />
             ))}
           </tbody>
