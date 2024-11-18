@@ -101,4 +101,13 @@ export async function uploadFile(file, uploadConfig) {
   }
 }
 
-export { apiUserRegister, apiLogin, fetchUserInfo, buyPaper };
+const confirmReceive = (token, printingId) => {
+  return axios.post("/ssps/students/confirm-receive", null, {
+    params: { printingId: printingId },
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export { apiUserRegister, apiLogin, fetchUserInfo, buyPaper, confirmReceive };

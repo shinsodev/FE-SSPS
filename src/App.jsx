@@ -29,6 +29,7 @@ import Report from "./pages/Sidebar/Report";
 import StudentReport from "./pages/Sidebar/StudentReport";
 import StudentRegister from "./pages/Register/StudentRegister";
 import AdminRegister from "./pages/Register/AdminRegister";
+import PrintRequests from "./pages/Sidebar/PrintRequests";
 // import PrivateRoute from './router/PrivateRoutes'
 
 function App() {
@@ -189,6 +190,14 @@ function App() {
             </DashboardLayout>
             // </Layout>
             // </PrivateRoute>
+          }
+        />
+        <Route
+          path="/admin/printrequests"
+          element={
+            <DashboardLayout>
+              <PrintRequests />
+            </DashboardLayout>
           }
         />
       </Routes>

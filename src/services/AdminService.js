@@ -42,4 +42,27 @@ export async function deleteDocumentsExpired() {
   }
 }
 
-export { apiAdminRegister, fetchAdminInfo, fetchAllUsers };
+const fetchPrintRequests = (token, printerId, page = 0, size = 3) => {
+  return axios.get(`/ssps/admin/get-print-requests/${printerId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    params: { page, size },
+  });
+};
+
+const fetchApprovePrint = (token, printId) => {
+  return axios.post(`/ssps/admin/print/${printId}`, null, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export {
+  apiAdminRegister,
+  fetchAdminInfo,
+  fetchAllUsers,
+  fetchPrintRequests,
+  fetchApprovePrint,
+};

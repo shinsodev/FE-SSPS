@@ -7,6 +7,7 @@ import { MdOutlineCategory, MdReport } from "react-icons/md";
 import { TbFileUpload, TbCurrencyDollar } from "react-icons/tb";
 import { FiUser } from "react-icons/fi";
 import { CgProductHunt } from "react-icons/cg";
+import { FaSignalMessenger } from "react-icons/fa6";
 import ModalConfirm from "../ModalConfirm/ModalConfirm";
 import { AuthContext } from "../../context/AuthContext";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -96,6 +97,13 @@ const Sidebar = () => {
             >
               <FiUser size={22} />
               <span>All Users</span>
+            </NavLink>
+            <NavLink
+              to="/admin/printrequests"
+              className={({ isActive }) => getNavLinkClass(isActive)}
+            >
+              <FaSignalMessenger size={22} />
+              <span>Print Request</span>
             </NavLink>
             <NavLink
               to="/admin/printerlist"
