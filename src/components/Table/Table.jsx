@@ -1,55 +1,39 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import printer1 from "../../assets/img/printer1.webp";
 import EditDialog from "./EditPrinter";
 import ItemPriter from "./printerItemList";
-
-const listPrinter = [
-  {
-    id: 1,
-    location: "Di an",
-    color: "Mono/Color",
-    imgSrc: printer1,
-    status: "Success",
-  },
-  {
-    id: 2,
-    location: "Di an",
-    color: "Mono/Color",
-    imgSrc: printer1,
-    status: "Success",
-  },
-  {
-    id: 3,
-    location: "Di an",
-    color: "Mono/Color",
-    imgSrc: printer1,
-    status: "Success",
-  },
-  {
-    id: 4,
-    location: "Di an",
-    color: "Mono/Color",
-    imgSrc: printer1,
-    status: "Success",
-  },
-  {
-    id: 5,
-    location: "Di an",
-    color: "Mono/Color",
-    imgSrc: printer1,
-    status: "Success",
-  },
-];
+import { fetchAllPrinters } from "../../services/AdminService";
 
 const Table = () => {
+  const [selectedPrinter, setSelectedPrinter] = useState(null);
+
+  const [listPrinter, setListPrinter] = useState([]);
   const [isEdit, setEdit] = useState(false);
-  function EditPrinter(id) {
-    console.log("Edit printer with id: ", id);
-    setEdit(true);
+
+  function EditPrinter(printer) {
+    setSelectedPrinter(printer); // Store selected printer
+    setEdit(true); // Open the dialog
   }
+  
+  // function EditPrinter(id) {
+  //   console.log("Edit printer with id: ", id);
+  //   setEdit(true);
+  // }
   function setOpenEdit(open) {
     setEdit(open);
   }
+
+
+  const fecthAllDataPrinters = async () =>{
+    const token = localStorage.getItem('token');
+    const response = await fetchAllPrinters(token);
+    console.log(response);
+    setListPrinter(response.data.result)
+  }
+
+  useEffect(()=>{
+    fecthAllDataPrinters();
+  }, [])
 
   return (
     <>
@@ -64,10 +48,10 @@ const Table = () => {
                 Location
               </th>
               <th scope="col" className="px-6 py-3">
-                Color
+                AvailableDocType
               </th>
               <th scope="col" className="px-6 py-3">
-                Image
+                paperLeft
               </th>
               <th scope="col" className="px-6 py-3">
                 Status
@@ -79,12 +63,18 @@ const Table = () => {
           </thead>
           <tbody>
             {listPrinter.map((item) => (
-              <ItemPriter item={item} key={item.id} editPrinter={EditPrinter} />
+              <ItemPriter item={item} key={item.printerID} editPrinter={EditPrinter}  />
             ))}
           </tbody>
         </table>
       </div>
-      <EditDialog open={isEdit} setOpenEdit={setOpenEdit} />
+      <EditDialog 
+  open={isEdit} 
+  setOpenEdit={setOpenEdit} 
+  printer={selectedPrinter} // Pass the selected printer
+/>
+
+      {/* <EditDialog open={isEdit} setOpenEdit={setOpenEdit} /> */}
     </>
   );
 };

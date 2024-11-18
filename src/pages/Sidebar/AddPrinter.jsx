@@ -5,14 +5,15 @@ import Select from 'react-select';
 import { FaCalendarAlt, FaCloudUploadAlt } from 'react-icons/fa';
 import { VscCircleLargeFilled } from "react-icons/vsc";
 function AddPrinter() {
+    // String printerLocation;
+    // PrinterStatus status;
+    // int papersLeft;
+    // List<String> availableDocType;
     const [printer, setPrinter] = useState({
-        name: '',
-        model: '',
-        id: '',
-        manufacturingYear: null,
-        position: '',
-        type: '',
-        status: ''
+        printerLocation: '',
+        status: '',
+        papersLeft: 0,
+        availableDocType: []
     });
     const [images, setImages] = useState([]);
     const [showConfirmation, setShowConfirmation] = useState(false);

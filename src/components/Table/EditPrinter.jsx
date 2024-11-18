@@ -9,17 +9,29 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { Box, CardMedia, Grid2, MenuItem, Select, Stack } from "@mui/material";
 import CircleIcon from "@mui/icons-material/Circle";
 import printer1 from "../../assets/img/printer1.webp";
-
+import { updatePrinter } from "../../services/AdminService";
+import { useNavigate } from "react-router-dom";
 export default function EditDialog(props) {
+  const navigate = useNavigate();
   const { setOpenEdit } = props;
+  const [printerID, setPrinterID] = React.useState("");
   const [open, setOpen] = React.useState(props.open);
-  const [position, setPosition] = React.useState("None");
+  const [printerLocation, setPrinterLocation] = React.useState("None");
+  const [availableDocTypeString, setAvailableDocTypeString] = React.useState('');
   const [status, setStatus] = React.useState("None");
+  const [papersLeft, setPapersLeft] = React.useState(0);
   const [openImage, setOpenImage] = React.useState(false);
   const handleClickOpen = () => {
     setOpenEdit(true);
     // setOpen(true);
   };
+
+  const handleOnApply =  ()  => {
+    const token = localStorage.getItem('token');
+    const availableDocType = availableDocTypeString.split(',').map((item) => item.trim());
+    const response = updatePrinter(token, printerID, printerLocation, status, papersLeft, availableDocType);
+    window.location.reload();
+  }
 
   const handleClose = () => {
     // setOpen(false);
@@ -30,10 +42,47 @@ export default function EditDialog(props) {
     setOpenImage(false);
   }
 
+  // const handleAvailabDoctypeOnChange = (e) =>{
+  //   setAvailableDocType(e.target.value)
+  // }
+  // const handleAvailabDoctypeOnChange = (e) => {
+  //   // Split the input value by commas and remove any leading/trailing spaces
+  //   const docTypeArray = e.target.value.split(',').map(item => item.trim());
+  //   // Update the state with the array
+  //   setAvailableDocType(docTypeArray);
+  // };
+  const handleAvailabDoctypeStringOnChange = (e) => {
+    setAvailableDocTypeString(e.target.value)
+  };
+  
+
+  const handlePrinterLocationOnChange = (e) => {
+    setPrinterLocation(e.target.value);
+  }
+
+  // const handlePapersLeftOnChange = (e) => {
+  //   setPapersLeft(e.target.value);
+  // }
+  const handlePapersLeftOnChange = (e) => {
+    // Parse the value to ensure it's a number
+    const newValue = parseInt(e.target.value, 10) || 0; // Fallback to 0 if NaN
+    setPapersLeft(newValue);
+  };
+
   React.useEffect(() => {
     setOpen(props.open);
   }, [props.open]);
 
+  React.useEffect(() => {
+    if (props.printer) {
+      setPrinterID(props.printer.printerID || 0);
+      setPrinterLocation(props.printer.printerLocation || "None");
+      setAvailableDocTypeString(props.printer.availableDocType.join(", ") || "");
+      setStatus(props.printer.status || "None");
+      setPapersLeft(props.printer.papersLeft || 0);
+    }
+  }, [props.printer]); // Update when printer changes
+  
   return (
     <React.Fragment>
       <Dialog
@@ -92,38 +141,36 @@ export default function EditDialog(props) {
                   id="filled-basic"
                   variant="outlined"
                   size="small"
-                  value={"ID1"}
+                  value={printerID}
                   disabled
                   fullWidth
                   sx={{
                     backgroundColor: (theme) =>
                       theme.palette.action.disabledBackground,
-                  }}
+                  }
+                  }
                 />
               </Grid2>
             </Grid2>
             {/* Name */}
-            <Grid2 container spacing={1}>
+            {/* <Grid2 container spacing={1}>
               <Grid2
                 size={{ xs: 12, sm: 2 }}
                 alignSelf={"center"}
                 fontWeight={"bold"}
               >
-                {/* <Item>size=8</Item> */}
                 Name:
               </Grid2>
               <Grid2 size={{ xs: 12, sm: 9 }}>
-                {/* <Item>size=4</Item> */}
                 <TextField
                   id="filled-basic"
                   variant="outlined"
                   size="small"
                   value={"Printer1"}
-                  //   disabled
                   fullWidth
                 />
               </Grid2>
-            </Grid2>
+            </Grid2> */}
             {/* Model */}
             <Grid2 container spacing={1}>
               <Grid2
@@ -131,17 +178,16 @@ export default function EditDialog(props) {
                 alignSelf={"center"}
                 fontWeight={"bold"}
               >
-                {/* <Item>size=8</Item> */}
-                Model:
+                AvailabDoctype:
               </Grid2>
               <Grid2 size={{ xs: 12, sm: 9 }}>
-                {/* <Item>size=4</Item> */}
                 <TextField
                   id="filled-basic"
                   variant="outlined"
                   size="small"
-                  value={"model1"}
+                  value={availableDocTypeString}
                   fullWidth
+                  onChange={handleAvailabDoctypeStringOnChange}
                 />
               </Grid2>
             </Grid2>
@@ -156,6 +202,16 @@ export default function EditDialog(props) {
                 Location:
               </Grid2>
               <Grid2 size={{ xs: 12, sm: 9 }}>
+                <TextField
+                  id="filled-basic"
+                  variant="outlined"
+                  size="small"
+                  value={printerLocation}
+                  fullWidth
+                  onChange={handlePrinterLocationOnChange}
+                />
+              </Grid2>
+              {/* <Grid2 size={{ xs: 12, sm: 9 }}>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
@@ -167,7 +223,7 @@ export default function EditDialog(props) {
                   <MenuItem value={10}>CS1</MenuItem>
                   <MenuItem value={20}>CS2</MenuItem>
                 </Select>
-              </Grid2>
+              </Grid2> */}
             </Grid2>
             {/* Paper left */}
             <Grid2 container spacing={1}>
@@ -184,14 +240,15 @@ export default function EditDialog(props) {
                   variant="outlined"
                   size="small"
                   type="number"
-                  defaultValue={0}
+                  defaultValue={papersLeft}
                   slotProps={{ htmlInput: { min: 0, step: 1 } }}
                   fullWidth
+                  onChange={handlePapersLeftOnChange}
                 />
               </Grid2>
             </Grid2>
             {/* Status */}
-            <Grid2 container spacing={1}>
+            {/* <Grid2 container spacing={1}>
               <Grid2
                 size={{ xs: 12, sm: 2 }}
                 alignSelf={"center"}
@@ -209,7 +266,7 @@ export default function EditDialog(props) {
                   onChange={(e) => setStatus(e.target.value)}
                 >
                   {/* Running */}
-                  <MenuItem
+                  {/* <MenuItem
                     value={"Running"}
                     sx={{ display: "flex", alignItems: "center" }}
                   >
@@ -224,12 +281,12 @@ export default function EditDialog(props) {
                           marginLeft: 5,
                         }}
                       >
-                        Running
+                        ONLINE
                       </span>
                     </div>
-                  </MenuItem>
+                  </MenuItem> */}
                   {/* Maintaince */}
-                  <MenuItem
+                  {/* <MenuItem
                     value={"Maintaince"}
                     sx={{ display: "flex", alignItems: "center" }}
                   >
@@ -247,9 +304,9 @@ export default function EditDialog(props) {
                         Maintaince
                       </span>
                     </div>
-                  </MenuItem>
+                  </MenuItem> */}
                   {/* Error */}
-                  <MenuItem
+                  {/* <MenuItem
                     value={"Running"}
                     sx={{ display: "flex", alignItems: "center" }}
                   >
@@ -264,20 +321,20 @@ export default function EditDialog(props) {
                           marginLeft: 5,
                         }}
                       >
-                        Error
+                        OFFLINE
                       </span>
                     </div>
                   </MenuItem>
                 </Select>
               </Grid2>
-            </Grid2>
+            </Grid2> */} 
           </Stack>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} sx={{ color: "#1976d2" }}>
             Cancel
           </Button>
-          <Button variant="contained" color="success">
+          <Button variant="contained" color="success" onClick={handleOnApply}>
             Apply
           </Button>
         </DialogActions>

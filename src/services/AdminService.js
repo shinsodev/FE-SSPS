@@ -42,4 +42,68 @@ export async function deleteDocumentsExpired() {
   }
 }
 
-export { apiAdminRegister, fetchAdminInfo, fetchAllUsers };
+
+// "printerLocation": "New Location",
+// "status": "ONLINE",  // Must exactly match the enum name
+// "papersLeft": 50,
+// "availableDocType": ["Passport", "ID Card"]
+const fetchAllPrinters = (token) => {
+  return axios.get("/ssps/admin/get-all-printers", {
+    headers: {
+      Authorization: `Bearer ${token}`, // Thêm token vào headers
+    },
+  });
+};
+
+const updatePrinter = (token, printerID, printerLocation, status, papersLeft, availableDocType) => {
+  return axios.patch(`/ssps/admin/update-printer/${printerID}`,
+    {
+      printerLocation: printerLocation,
+      // status: status,
+      papersLeft: papersLeft,
+      availableDocType: availableDocType
+    }
+    ,{
+    headers: {
+      Authorization: `Bearer ${token}`, // Thêm token vào headers
+    },
+  });
+};
+
+
+
+// @PutMapping("/enable-printer/{printerId}")
+// ApiResponse<String> enablePrinter(@PathVariable Long printerId) {
+//     printerService.enablePrinter(printerId);
+//     return ApiResponse.<String>builder()
+//             .result("Printer enabled successfully")
+//             .build();
+// }
+
+const enablePrinter = (token, printerID) => {
+  return axios.put(`/ssps/admin/enable-printer/${printerID}`,{}, {
+    headers: {
+      Authorization: `Bearer ${token}`, // Thêm token vào headers
+    },
+  });
+};
+
+// @PutMapping("/disable-printer/{printerId}")
+// ApiResponse<String> disablePrinter(@PathVariable Long printerId) {
+//     printerService.disablePrinter(printerId);
+//     return ApiResponse.<String>builder()
+//             .result("Printer disabled successfully")
+//             .build();
+// }
+
+const disablePrinter = (token, printerID) => {
+  return axios.put(`/ssps/admin/disable-printer/${printerID}`,{}, {
+    headers: {
+      Authorization: `Bearer ${token}`, // Thêm token vào headers
+    },
+  });
+};
+
+
+
+export { apiAdminRegister, fetchAdminInfo, fetchAllUsers, fetchAllPrinters, updatePrinter, enablePrinter, disablePrinter};
