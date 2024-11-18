@@ -10,6 +10,7 @@ import { notifySuccess } from "../Notification/NotifySuccess";
 const Table = () => {
   const [printerList, setPrinterList] = useState([]);
   const [totalPages, setTotalPages] = useState(10);
+  const [pageCurr, setPageCurr] = useState(0);
 
   async function getListPrinter(pageN) {
     const token = localStorage.getItem("token");
@@ -42,6 +43,7 @@ const Table = () => {
 
   async function handlePageClick(e) {
     try {
+      setPageCurr(e.selected);
       await getListPrinter(e.selected);
     } catch (err) {
       console.error(err.message);
@@ -65,6 +67,7 @@ const Table = () => {
     try {
       const result = await deletePrinter(token, id);
       if (result.success) {
+        setPageCurr(0);
         await getListPrinter(0);
         notifySuccess("Delete printer success!!!!");
       } else {
@@ -134,6 +137,7 @@ const Table = () => {
         breakLinkClassName="page-link"
         disabledLinkClassName="text-gray-400 cursor-not-allowed"
         containerClassName="pagination"
+        forcePage={pageCurr}
       />
     </>
   );

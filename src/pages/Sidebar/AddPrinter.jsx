@@ -31,7 +31,7 @@ function AddPrinter() {
   const [dataPrinter, setDataPrinter] = useState({
     printerLocation: "",
     status: "",
-    paperLeft: 0,
+    papersLeft: 0,
     availableDocType: [],
   });
   const [listTypeSelect, setListTypeSelect] = useState([]);
@@ -68,7 +68,7 @@ function AddPrinter() {
         ...prev,
         [name]: newData,
       }));
-    } else if (name === "paperLeft") {
+    } else if (name === "papersLeft") {
       let valNum = Math.floor(value);
       setDataPrinter((prev) => ({
         ...prev,
@@ -111,6 +111,7 @@ function AddPrinter() {
 
     // Process call api to add printer
     try {
+      console.log(dataPrinter);
       const result = await addPrinter(token, dataPrinter);
       if (result.success) {
         notifySuccess("Add printer success");
@@ -203,9 +204,9 @@ function AddPrinter() {
         size="small"
         sx={{ m: 1, width: 500 }}
         type="number"
-        value={dataPrinter.paperLeft}
+        value={dataPrinter.papersLeft}
         onChange={handleChange}
-        name="paperLeft"
+        name="papersLeft"
         inputProps={{
           min: 0,
           step: 1,
