@@ -13,7 +13,9 @@ const PrintRequests = () => {
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedPrinterId, setSelectedPrintId] = useState(null);
-  const [printerIdInput, setPrinterIdInput] = useState("1"); 
+  const [printerIdInput, setPrinterIdInput] = useState("1");
+  const [isConfirm, setIsConfirm] = useState(false);
+  const [approving, setApproving] = useState(false);
 
   const [page, setPage] = useState(0); // Số trang hiện tại
   const [totalPages, setTotalPages] = useState(0); // Tổng số trang từ API
@@ -23,15 +25,19 @@ const PrintRequests = () => {
   // Fetch print requests from the API on component mount
   useEffect(() => {
     const getPrintRequests = async () => {
-      if (!printerIdInput) return; 
+      if (!printerIdInput) return;
 
       try {
         setLoading(true);
-        const response = await fetchPrintRequests(token, printerIdInput, page, 5);
+        const response = await fetchPrintRequests(
+          token,
+          printerIdInput,
+          page,
+          6
+        );
         setPrintRequests(response.data.result);
 
-        setTotalPages(10); // Đảm bảo totalPages được cập nhật chính xác
-
+        setTotalPages(Math.ceil(response.data.result.length / 6 + 1)); // Đảm bảo totalPages được cập nhật chính xác
         setEmpty(response.data.result.length === 0);
         setError(null);
       } catch (err) {
@@ -45,18 +51,22 @@ const PrintRequests = () => {
     };
 
     getPrintRequests();
-    const intervalId = setInterval(getPrintRequests, 10000);
-    return () => clearInterval(intervalId);
-  }, [printerIdInput,page]);
+  }, [printerIdInput, page, isConfirm]);
 
   const approvePrintRequest = async (printerId) => {
     try {
+      setApproving(true);
       await fetchApprovePrint(token, printerId);
       toast.success("Print request approved successfully!");
     } catch (err) {
-      toast.error(`Error approving print request: ${err.message || "Unknown error"}`);
+      toast.error(
+        `Error approving print request: ${err.message || "Unknown error"}`
+      );
+    } finally {
+      setApproving(false);
+      setShowModal(false);
+      setIsConfirm(!isConfirm);
     }
-    setShowModal(false);
   };
 
   const handleApprove = (printerId) => {
@@ -66,7 +76,10 @@ const PrintRequests = () => {
   const handlePageClick = (event) => {
     setPage(event.selected);
   };
- 
+  const handlePrintInput = (value) => {
+    setPrinterIdInput(value);
+    setPage(0);
+  }
 
   return (
     <section className="p-8">
@@ -74,18 +87,26 @@ const PrintRequests = () => {
         <h2 className="font-medium text-3xl">User Print Requests</h2>
       </div>
       <hr className="my-5" />
-      <div className="mt-4 mb-6">
-        <label htmlFor="printerIdInput" className="mr-2 font-medium">
-          Enter Printer ID:
-        </label>
-        <input
-          type="text"
-          id="printerIdInput"
-          value={printerIdInput}
-          onChange={(e) => setPrinterIdInput(e.target.value)}
-          className="px-3 py-2 border border-gray-300 rounded-md"
-          placeholder="Enter printer ID"
-        />
+      <div className="mt-4 mb-4 flex items-center justify-between">
+        <div>
+          <label htmlFor="printerIdInput" className="mr-2 font-medium">
+            Enter Printer ID:
+          </label>
+          <input
+            type="text"
+            id="printerIdInput"
+            value={printerIdInput}
+            onChange={(e) => handlePrintInput(e.target.value)}
+            className="px-3 py-2 border border-gray-300 rounded-md"
+            placeholder="Enter printer ID"
+          />
+        </div>
+        <button
+          className="ml-6 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700"
+          onClick={() => handleApprove(printerIdInput)}
+        >
+          Approve
+        </button>
       </div>
 
       <div className="relative overflow-x-auto rounded-lg">
@@ -106,11 +127,7 @@ const PrintRequests = () => {
           <tbody>
             {!empty &&
               printRequests.map((request) => (
-                <tr
-                  key={request.id}
-                  className="border-b hover:bg-gray-50"
-                  onClick={() => handleApprove(request.printerToPrintID)}
-                >
+                <tr key={request.id} className="border-b hover:bg-gray-50">
                   <td className="px-6 py-4">{request.printerToPrintID}</td>
                   <td className="px-6 py-4">{request.document.fileName}</td>
                   <td className="px-6 py-4">{request.document.pageCount}</td>
@@ -158,7 +175,7 @@ const PrintRequests = () => {
           </div>
         )}
         {!loading && empty && (
-          <div className="mt-4 p-4 bg-green-100 text-green-800 rounded-md">
+          <div className="text-sm text-gray-700 px-6 py-4 text-center">
             Hiện tại chưa có yêu cầu in nào.
           </div>
         )}
@@ -171,14 +188,16 @@ const PrintRequests = () => {
             <p>Xác nhận yêu cầu in của máy in {selectedPrinterId}</p>
             <div className="flex justify-end gap-4 mt-6">
               <button
-                onClick={() => approvePrintRequest(selectedPrinterId)}
                 className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                onClick={() => approvePrintRequest(selectedPrinterId)}
+                disabled={approving}
               >
-                Xác nhận
+                {approving ? "Processing..." : "Xác nhận"}
               </button>
               <button
-                onClick={() => setShowModal(false)}
                 className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                onClick={() => setShowModal(false)}
+                disabled={approving}
               >
                 Hủy
               </button>
@@ -187,25 +206,26 @@ const PrintRequests = () => {
         </div>
       )}
       <ReactPaginate
-       breakLabel="..."
-       nextLabel="NEXT →"
-       onPageChange={handlePageClick}
-       pageRangeDisplayed={5}
-       pageCount={totalPages}
-       previousLabel="← PREVIOUS"
-       className="flex space-x-2 items-center justify-center my-8"
-       pageClassName="page-item"
-       pageLinkClassName="page-link px-4 py-2 hover:bg-gray-900/10 rounded-md shadow-2xl"
-       activeLinkClassName="active bg-black text-white" // Active page style
-       previousClassName="page-item"
-       previousLinkClassName="page-link hover:bg-gray-900/10 px-4 py-2 rounded-md"
-       nextClassName="page-item"
-       nextLinkClassName="page-link hover:bg-gray-900/10 px-4 py-2 rounded-md"
-       breakClassName="page-item"
-       breakLinkClassName="page-link"
-       disabledLinkClassName="text-gray-400 cursor-not-allowed"
-       containerClassName="pagination"
-     />
+        breakLabel="..."
+        nextLabel="NEXT →"
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={5}
+        pageCount={totalPages}
+        forcePage={page}
+        previousLabel="← PREVIOUS"
+        className="flex space-x-2 items-center justify-center my-8"
+        pageClassName="page-item"
+        pageLinkClassName="page-link px-4 py-2 hover:bg-gray-900/10 rounded-md shadow-2xl"
+        activeLinkClassName="active bg-black text-white" // Active page style
+        previousClassName="page-item"
+        previousLinkClassName="page-link hover:bg-gray-900/10 px-4 py-2 rounded-md"
+        nextClassName="page-item"
+        nextLinkClassName="page-link hover:bg-gray-900/10 px-4 py-2 rounded-md"
+        breakClassName="page-item"
+        breakLinkClassName="page-link"
+        disabledLinkClassName="text-gray-400 cursor-not-allowed"
+        containerClassName="pagination"
+      />
     </section>
   );
 };

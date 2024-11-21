@@ -30,6 +30,7 @@ import StudentReport from "./pages/Sidebar/StudentReport";
 import StudentRegister from "./pages/Register/StudentRegister";
 import AdminRegister from "./pages/Register/AdminRegister";
 import PrintRequests from "./pages/Sidebar/PrintRequests";
+import ConfirmDocument from "./pages/Sidebar/ConfirmDocument";
 // import PrivateRoute from './router/PrivateRoutes'
 
 function App() {
@@ -136,6 +137,18 @@ function App() {
             // <Layout>
             <DashboardLayout>
               <StudentReport />
+            </DashboardLayout>
+            // </Layout>
+            // </PrivateRoute>
+          }
+        />
+        <Route
+          path="/confirm"
+          element={
+            // <PrivateRoute>
+            // <Layout>
+            <DashboardLayout>
+              <ConfirmDocument />
             </DashboardLayout>
             // </Layout>
             // </PrivateRoute>

@@ -1,40 +1,32 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import ReactPaginate from "react-paginate";
 import { MdSearch, MdFilterList } from 'react-icons/md';
-import { confirmReceive } from "../../services/UserService";
-import { toast } from "react-toastify";
-
-const initialData = [
-    { id: 1, location: "Li Thuong Kiet", building: "A1", floor: 1, fileName: "Network layer", date: "Dec 20 2024", pages: 35, size: "A4", status: "Success" },
-    { id: 2, location: "Di An", building: "B6", floor: 4, fileName: "Transport layer", date: "Nov 2 2024", pages: 30, size: "A3", status: "Fail" },
-    { id: 3, location: "Di An", building: "H1", floor: 6, fileName: "Database system", date: "Sep 5 2024", pages: 35, size: "A2", status: "Printing" },
-];
+import { getPrintLogs } from "../../services/UserService";
 
 const StudentReport = () => {
     const inputRef = useRef(null);
 
     const [searchTerm, setSearchTerm] = useState("");
-    const [filteredData, setFilteredData] = useState(initialData);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
+    const [initialData, setInitialData] = useState([]);
+    const [filteredData, setFilteredData] = useState([]);
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
-    const [isFilterVisible, setIsFilterVisible] = useState(false); // State to control filter visibility
+    const [isFilterVisible, setIsFilterVisible] = useState(false);
 
-    const [selectedItem, setSelectedItem] = useState(null);
+    const [page, setPage] = useState(0);
+    const itemsPerPage = 7; // Số dòng mỗi trang
 
     const handleSearch = (event) => {
         const value = event.target.value.toLowerCase();
         setSearchTerm(value);
 
         const filtered = initialData.filter(item =>
-            item.id.toString().includes(value) ||
-            item.location.toLowerCase().includes(value) ||
-            item.building.toLowerCase().includes(value) ||
-            item.fileName.toLowerCase().includes(value) ||
-            item.date.toLowerCase().includes(value) ||
-            item.pages.toString().includes(value) ||
-            item.size.toLowerCase().includes(value) ||
-            item.status.toLowerCase().includes(value)
+            item.logId.toString().includes(value) ||
+            item.documentName.toLowerCase().includes(value) ||
+            item.pagesPrinted.toLowerCase().includes(value) ||
+            item.printingStartTime.toLowerCase().includes(value) ||
+            item.printingEndTime.toLowerCase().includes(value) ||
+            item.printerToPrintID.toString().includes(value)
         );
 
         setFilteredData(filtered);
@@ -47,49 +39,61 @@ const StudentReport = () => {
     };
 
     const handleFilterClick = () => {
-        setIsFilterVisible(true); // Show filter fields when filter button is clicked
-    };
-
-    const handleRowClick = (item) => {
-        if (item.status === "Printing") { 
-            setSelectedItem(item); 
-            setIsModalOpen(true);
-        }
-    };
-
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
+        setIsFilterVisible(true); // Hiển thị các trường lọc khi nhấn nút lọc
     };
 
     const handleApplyFilter = () => {
-        // Filter logic based on date range
+        const startDateObj = startDate ? new Date(startDate) : null;
+        const endDateObj = endDate ? new Date(endDate) : null;
+    
+        if (startDateObj) {
+            startDateObj.setHours(0, 0, 0, 0);  // Set to midnight
+        }
+        if (endDateObj) {
+            endDateObj.setHours(23, 59, 59, 999);  // Set to end of day
+        }
+    
         const filtered = initialData.filter(item => {
-            const itemDate = new Date(item.date);
+            const itemDate = new Date(item.printingStartTime);  
             return (
-                (!startDate || itemDate >= new Date(startDate)) &&
-                (!endDate || itemDate <= new Date(endDate))
+                (!startDateObj || itemDate >= startDateObj) &&
+                (!endDateObj || itemDate <= endDateObj)
             );
         });
-
+    
         setFilteredData(filtered);
-        setIsFilterVisible(false); 
+        setIsFilterVisible(false);
     };
 
-    const handleConfirmReceive = async (printingId) => {
-        const token = localStorage.getItem("token");
-        try {
-            const response = await confirmReceive(token, printingId);
-            if (response.data.result) {
-                toast.success("Confirmation successful!");
-            } else {
-                toast.error("Error confirming receive.");
-            }
-        } catch (error) {
-            toast.error(`Error confirming receive: ${error.message || "Unknown error"}`);
-        } finally {
-            setIsModalOpen(false);
-        }
+    const handlePageClick = (event) => {
+        setPage(event.selected); // Chuyển sang trang mới
     };
+
+    useEffect(() => {
+        const handleGetPrintLogs = async () => {
+            const token = localStorage.getItem("token"); 
+            if (!token) {
+              console.error("No token found. Please log in again.");
+              return;
+            }
+          
+            try {
+              const response = await getPrintLogs(token);
+              if (response.data.result) {
+                setInitialData(response.data.result);
+                setFilteredData(response.data.result);
+              } else {
+                console.error("No result data found in API response.");
+              }
+            } catch (error) {
+              console.error("Failed to fetch print logs:", error.response?.data || error.message);
+            }
+        };
+
+        handleGetPrintLogs();
+    }, []);
+
+    const displayedData = filteredData.slice(page * itemsPerPage, (page + 1) * itemsPerPage); // Lấy dữ liệu của trang hiện tại
 
     return (
         <section className="p-8">
@@ -153,83 +157,59 @@ const StudentReport = () => {
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-100">
                         <tr>
-                            <th scope="col" className="px-6 py-5 text-center">ID Printer</th>
-                            <th scope="col" className="px-6 py-5 text-center">Location</th>
-                            <th scope="col" className="px-6 py-5 text-center">Building</th>
-                            <th scope="col" className="px-6 py-5 text-center">Floor</th>
-                            <th scope="col" className="px-6 py-5 text-center">File Name</th>
-                            <th scope="col" className="px-6 py-3 text-center">Date</th>
-                            <th scope="col" className="px-6 py-3 text-center">Pages Number</th>
-                            <th scope="col" className="px-6 py-3 text-center">Size</th>
-                            <th scope="col" className="px-6 py-3 text-center">Status</th>
+                            <th scope="col" className="px-6 py-5">ID</th>
+                            <th scope="col" className="px-6 py-5">File Name</th>
+                            <th scope="col" className="px-6 py-5">Page number</th>
+                            <th scope="col" className="px-6 py-5">Start time</th>
+                            <th scope="col" className="px-6 py-3">End time</th>
+                            <th scope="col" className="px-6 py-3">Printer ID</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredData.length > 0 ? (
-                            filteredData.map((item) => (
-                                <tr key={item.id} className={`bg-white border-b hover:bg-gray-50 ${item.status === "Printing" ? 'cursor-pointer' : ''}`} onClick={item.status === "Printing" ? () => handleRowClick(item) : undefined}>
-                                    <td className="px-6 py-4 text-center">{item.id}</td>
-                                    <td className="px-6 py-4 capitalize text-center">{item.location}</td>
-                                    <td className="px-6 py-4 text-center">{item.building}</td>
-                                    <td className="px-6 py-4 capitalize text-center">{item.floor}</td>
-                                    <td className="px-6 py-4 capitalize text-center">{item.fileName}</td>
-                                    <td className="px-6 py-4 text-center">{item.date}</td>
-                                    <td className="px-6 py-4 text-center">{item.pages}</td>
-                                    <td className="px-6 py-4 text-center">{item.size}</td>
-                                    <td className="px-6 py-4 text-left">
-                                        <div className="flex items-center">
-                                            <div
-                                                    className={`h-2.5 w-2.5 rounded-full 
-                                                        ${item.status === "Success" ? "bg-green-500" : 
-                                                        item.status === "Fail" ? "bg-red-500" : 
-                                                        item.status === "Printing" ? "bg-yellow-500" : ""}
-                                                        mr-2`}
-                                            ></div>
-                                                {item.status}
-                                        </div>
-                                    </td>
+                        {displayedData.length > 0 ? (
+                            displayedData.map((item, index) => (
+                                <tr key={index} className="border-b hover:bg-gray-50">
+                                    <td className="px-6 py-4 ">{item.logId}</td>
+                                    <td className="px-6 py-4 capitalize ">{item.documentName}</td>
+                                    <td className="px-6 py-4 ">{item.pagesPrinted}</td>
+                                    <td className="px-6 py-4 ">{new Date(item.printingStartTime).toLocaleString("vi-VN")}</td>
+                                    <td className="px-6 py-4 ">{new Date(item.printingEndTime).toLocaleString("vi-VN")}</td>
+                                    <td className="px-6 py-4 ">{item.printerToPrintID}</td>
                                 </tr>
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="9" className="text-center py-4">No matching data found</td>
+                                <td colSpan="6" className="px-6 py-4 text-center">No data found</td>
                             </tr>
                         )}
                     </tbody>
                 </table>
             </div>
 
-            {selectedItem && isModalOpen && (
-                    <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
-                        <div className="bg-white p-6 rounded-lg max-w-md w-full relative">
-                            <button
-                                onClick={handleCloseModal}
-                                className="absolute top-1 right-3 text-gray-500 hover:text-gray-700 text-3xl"
-                                aria-label="Close modal"
-                            >
-                                &times;
-                            </button>
-                            
-                            <h2 className="text-xl font-semibold mb-4">Xác nhận tài liệu</h2>
-                            <p>
-                                Bạn đã nhận được tài liệu in?
-                            </p>
-                            <div className="flex justify-end gap-4 mt-6">
-                                <button
-                                    onClick={() => handleConfirmReceive(selectedItem.id)}
-                                    className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-                                >
-                                    Đã nhận
-                                </button>
-                                <button
-                                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                                >
-                                    Báo cáo
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                )}
+            {/* Pagination */}
+            <div className="flex justify-center mt-4">
+                <ReactPaginate
+                    breakLabel="..."
+                    nextLabel="NEXT →"
+                    pageRangeDisplayed={5}
+                    pageCount={Math.ceil(filteredData.length / itemsPerPage)}
+                    onPageChange={handlePageClick}
+                    forcePage={page}
+                    previousLabel="← PREVIOUS"
+                    className="flex space-x-2 items-center justify-center my-8"
+                    pageClassName="page-item"
+                    pageLinkClassName="page-link px-4 py-2 hover:bg-gray-900/10 rounded-md shadow-2xl"
+                    activeLinkClassName="active bg-black text-white" // Active page style
+                    previousClassName="page-item"
+                    previousLinkClassName="page-link hover:bg-gray-900/10 px-4 py-2 rounded-md"
+                    nextClassName="page-item"
+                    nextLinkClassName="page-link hover:bg-gray-900/10 px-4 py-2 rounded-md"
+                    breakClassName="page-item"
+                    breakLinkClassName="page-link"
+                    disabledLinkClassName="text-gray-400 cursor-not-allowed"
+                    containerClassName="pagination"
+                />
+            </div>
         </section>
     );
 };
