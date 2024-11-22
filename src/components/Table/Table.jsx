@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import EditDialog from "./EditPrinter";
 import ItemPriter from "./printerItemList";
-// import axios from "axios";
 import axios from "../../services/customize-axios";
 import ReactPaginate from "react-paginate";
 import { deletePrinter } from "../../services/AdminService";

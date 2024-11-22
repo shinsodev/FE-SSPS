@@ -52,7 +52,11 @@ export default function FilterPrinter(props) {
           }}
           style={{ width: 420 }}
           renderInput={(params) => (
-            <TextField {...params} label="Filter type" />
+            <TextField
+              {...params}
+              label="Filter type"
+              sx={{ backgroundColor: "white" }}
+            />
           )}
         />
 
