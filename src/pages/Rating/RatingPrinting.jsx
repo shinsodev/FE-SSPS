@@ -10,18 +10,20 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "../../services/customize-axios";
 import { notifySuccess } from "../../components/Notification/NotifySuccess";
 import { notifyError } from "../../components/Notification/NotifyError";
-
-const ratingData = {
-  rating: 4,
-  comment:
-    "rating 1rating 1rating 1rating  1rating 1rating 1rating 1rating  1rating 1rating 1rating 1rating  1rating 1rating 1rating 1rating  1rating 1rating 1rating 1rating  1",
-};
+import EditRatingPopUp from "./PopUpEditRating";
 
 function RatingPageStudent() {
   const { idPrinting } = useParams();
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [isWriteRating, setWriteRating] = useState(false);
+  const [ratingEdit, setRatingEdit] = useState(null);
+  const [ratingData, setRatingData] = useState({
+    idRating: 1,
+    rating: 4,
+    comment:
+      "rating 1rating 1rating 1rating  1rating 1rating 1rating 1ratinng 1rating  1rating 1rating 1rating 1rating  1",
+  });
 
   async function handleCreateRating() {
     if (isWriteRating === false) {
@@ -64,7 +66,18 @@ function RatingPageStudent() {
     }
   }
 
-  useEffect(() => {}, []);
+  function editRating(idRating) {
+    setRatingEdit(idRating);
+  }
+
+  function closeEdit() {
+    setRatingEdit(null);
+  }
+
+  function restoreDefaultEdit() {
+    setRatingEdit(null);
+  }
+
   return (
     <>
       <section className="p-8">
@@ -135,7 +148,12 @@ function RatingPageStudent() {
               }}
             >
               <Box mr={1}>
-                <Button size="small" variant="outlined" color="success">
+                <Button
+                  size="small"
+                  variant="outlined"
+                  color="success"
+                  onClick={editRating}
+                >
                   <Box mr={1}>
                     <EditIcon />
                   </Box>
@@ -238,6 +256,16 @@ function RatingPageStudent() {
                 </Box>
               </Box>
             </Box>
+          </>
+        )}
+        {ratingEdit !== null && (
+          <>
+            <EditRatingPopUp
+              open={ratingEdit !== null ? true : false}
+              closeEdit={closeEdit}
+              data={ratingData}
+              restoreDefault={restoreDefaultEdit}
+            />
           </>
         )}
       </section>
