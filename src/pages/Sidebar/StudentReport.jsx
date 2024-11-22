@@ -2,6 +2,8 @@ import React, { useState, useRef } from "react";
 import { MdSearch, MdFilterList } from 'react-icons/md';
 import { confirmReceive } from "../../services/UserService";
 import { toast } from "react-toastify";
+import { Button } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const initialData = [
     { id: 1, location: "Li Thuong Kiet", building: "A1", floor: 1, fileName: "Network layer", date: "Dec 20 2024", pages: 35, size: "A4", status: "Success" },
@@ -162,6 +164,7 @@ const StudentReport = () => {
                             <th scope="col" className="px-6 py-3 text-center">Pages Number</th>
                             <th scope="col" className="px-6 py-3 text-center">Size</th>
                             <th scope="col" className="px-6 py-3 text-center">Status</th>
+                            <th scope="col" className="px-6 py-3 text-center">Rating</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -187,6 +190,14 @@ const StudentReport = () => {
                                             ></div>
                                                 {item.status}
                                         </div>
+                                    </td>
+                                    <td className="px-6 py-4 text-center">
+                                        {item.status !== "Printing" && 
+                                        <Link
+                                            to={`/student/rating/${item.id}`}    
+                                        >
+                                            Rating
+                                        </Link>}
                                     </td>
                                 </tr>
                             ))

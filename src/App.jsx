@@ -30,6 +30,7 @@ import StudentReport from "./pages/Sidebar/StudentReport";
 import StudentRegister from "./pages/Register/StudentRegister";
 import AdminRegister from "./pages/Register/AdminRegister";
 import PrintRequests from "./pages/Sidebar/PrintRequests";
+import { RatingPageStudent } from "./pages/Rating/RatingPrinting";
 // import PrivateRoute from './router/PrivateRoutes'
 
 function App() {
@@ -140,6 +141,15 @@ function App() {
             // </Layout>
             // </PrivateRoute>
           }
+        />
+
+        <Route
+          path="/student/rating/:idPrinting"
+          element={
+            <DashboardLayout>
+              <RatingPageStudent />
+            </DashboardLayout>
+          } 
         />
 
         <Route
