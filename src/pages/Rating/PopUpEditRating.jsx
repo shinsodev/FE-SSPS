@@ -44,6 +44,8 @@ export default function EditRatingPopUp(props) {
       if (result.status === 200) {
         notifySuccess("Update success");
         restoreDefault();
+      } else {
+        throw "Update rating failed!!!";
       }
     } catch (err) {
       notifyError("Update rating failed!!!");

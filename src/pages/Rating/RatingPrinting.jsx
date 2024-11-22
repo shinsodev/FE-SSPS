@@ -1,12 +1,11 @@
 import { Box, Button, Rating, TextField, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import RateReviewIcon from "@mui/icons-material/RateReview";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import submitIcon from "../../assets/img/send.png";
 import cancleIcon from "../../assets/img/cancle.png";
 import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "../../services/customize-axios";
 import { notifySuccess } from "../../components/Notification/NotifySuccess";
 import { notifyError } from "../../components/Notification/NotifyError";
@@ -19,7 +18,7 @@ function RatingPageStudent() {
   const [isWriteRating, setWriteRating] = useState(false);
   const [ratingEdit, setRatingEdit] = useState(null);
   const [ratingData, setRatingData] = useState({
-    idRating: 1,
+    idRating: 4,
     rating: 4,
     comment:
       "rating 1rating 1rating 1rating  1rating 1rating 1rating 1ratinng 1rating  1rating 1rating 1rating 1rating  1",
@@ -67,6 +66,7 @@ function RatingPageStudent() {
   }
 
   function editRating(idRating) {
+    console.log(idRating);
     setRatingEdit(idRating);
   }
 
@@ -152,20 +152,12 @@ function RatingPageStudent() {
                   size="small"
                   variant="outlined"
                   color="success"
-                  onClick={editRating}
+                  onClick={() => editRating(1)} // 1 la id rating mau, khi list danh sach cac rating thi thay bang idRating
                 >
                   <Box mr={1}>
                     <EditIcon />
                   </Box>
                   Edit
-                </Button>
-              </Box>
-              <Box>
-                <Button size="small" variant="outlined" color="error">
-                  <Box mr={1}>
-                    <DeleteIcon />
-                  </Box>
-                  Delete
                 </Button>
               </Box>
             </Box>

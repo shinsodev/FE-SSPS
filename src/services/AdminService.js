@@ -93,6 +93,20 @@ async function deletePrinter(token, printerId) {
   }
 }
 
+async function deleteRating(idRating) {
+  const token = localStorage.getItem("token");
+  try {
+    const result = await axios.delete(`/ssps/admin/delete-rating/${idRating}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (result.status === 200) {
+      notifySuccess("Delete rating success");
+    }
+  } catch (err) {
+    notifyError("Delete failed!!!");
+  }
+}
+
 export {
   apiAdminRegister,
   fetchAdminInfo,
@@ -101,4 +115,5 @@ export {
   fetchApprovePrint,
   addPrinter,
   deletePrinter,
+  deleteRating,
 };
