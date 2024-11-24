@@ -4,11 +4,14 @@ import EditDialog from "./EditPrinter";
 import ItemPriter from "./printerItemList";
 import { fetchAllPrinters } from "../../services/AdminService";
 
-const Table = () => {
+const Table = ({ currentPage, size, getTotalPages }) => {
   const [selectedPrinter, setSelectedPrinter] = useState(null);
-
   const [listPrinter, setListPrinter] = useState([]);
   const [isEdit, setEdit] = useState(false);
+
+  const handleSetTotalPages = (totalPages) => {
+    getTotalPages(totalPages);
+  }
 
   function EditPrinter(printer) {
     setSelectedPrinter(printer); // Store selected printer
@@ -26,14 +29,18 @@ const Table = () => {
 
   const fecthAllDataPrinters = async () =>{
     const token = localStorage.getItem('token');
-    const response = await fetchAllPrinters(token);
-    console.log(response);
+    ///
+    const response = await fetchAllPrinters(token, currentPage, size);
+    console.log(">>page", currentPage)
+    handleSetTotalPages(response.data.totalPages);
+    //
+        
     setListPrinter(response.data.result)
   }
 
   useEffect(()=>{
     fecthAllDataPrinters();
-  }, [])
+  }, [currentPage])
 
   return (
     <>

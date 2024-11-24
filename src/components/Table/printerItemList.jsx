@@ -2,11 +2,33 @@ import { NavLink } from "react-router-dom";
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { enablePrinter, disablePrinter } from "../../services/AdminService";
+
+
+
+const listType = [
+  { value: "application/pdf", name: "pdf" },
+  { value: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", name: "excel" },
+  { value: "image/tiff", name: "TIFF" },
+  { value: "image/jpeg", name: "jpeg" },
+  { value: "image/gif", name: "gif" },
+];
 function ItemPriter(props) {
   const { printerID, printerLocation, availableDocType, papersLeft, status } = props.item;
   const { editPrinter } = props;
 
   const [currentStatus, setCurrentStatus] = useState(status);
+
+
+    // Chuyển đổi `availableDocType` từ value sang name
+    const getReadableDocTypes = (types) => {
+      return types
+        .map((type) => {
+          const docType = listType.find((item) => item.value === type);
+          return docType ? docType.name : type;
+        })
+        .join(", ");
+    };
+
 
   function handleEditPrinter() {
     const printer = {
@@ -59,7 +81,8 @@ function ItemPriter(props) {
     <tr className="bg-white border-b hover:bg-gray-50">
       <td className="px-6 py-4">{printerID}</td>
       <td className="px-6 py-4">{printerLocation}</td>
-      <td className="px-6 py-4">{availableDocType.join("/")}</td>
+      <td className="px-6 py-4">{getReadableDocTypes(availableDocType)}</td>
+      {/* <td className="px-6 py-4">{availableDocType.join("/")}</td> */}
       <td className="px-6 py-4">{papersLeft}</td>
       <td className="px-6 py-4">
         <div className="flex items-center">

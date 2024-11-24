@@ -101,4 +101,24 @@ export async function uploadFile(file, uploadConfig) {
   }
 }
 
-export { apiUserRegister, apiLogin, fetchUserInfo, buyPaper };
+
+// @GetMapping("/ratings/my-ratings")
+// public ApiResponse<List<RatingResponse>> getRatingOfCurrentStudent() {
+//     List<RatingResponse> ratings = ratingService.getRatingOfCurrentStudent();
+//     return ApiResponse.<List<RatingResponse>>builder()
+//             .result(ratings)
+//             .build();
+// }
+//get my rating
+const getMyRating = (token) => {
+  return axios.get(`/ssps/students/ratings/my-ratings`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    }
+  ); 
+}
+
+export { apiUserRegister, apiLogin, fetchUserInfo, buyPaper, getMyRating  };

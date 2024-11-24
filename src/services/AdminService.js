@@ -47,8 +47,8 @@ export async function deleteDocumentsExpired() {
 // "status": "ONLINE",  // Must exactly match the enum name
 // "papersLeft": 50,
 // "availableDocType": ["Passport", "ID Card"]
-const fetchAllPrinters = (token) => {
-  return axios.get("/ssps/admin/get-all-printers", {
+const fetchAllPrinters = (token, currentPage, size) => {
+  return axios.get(`/ssps/admin/get-all-printers?page=${currentPage - 1}&size=${size}`, {
     headers: {
       Authorization: `Bearer ${token}`, // Thêm token vào headers
     },
@@ -104,6 +104,36 @@ const disablePrinter = (token, printerID) => {
   });
 };
 
+//get rating by printing id
+const getRatingByPrintingId = (token, printingId, page, size) => {
+  return axios.put(`/ssps/admin/get-all-ratings/${printingId}?page=${page}&size=${size}`,{}, {
+    headers: {
+      Authorization: `Bearer ${token}`, // Thêm token vào headers
+    },
+  });
+};
 
+//get all rating
+const getAllRating = (token, page, size) => {
+  return axios.put(`/ssps/admin/get-all-ratings?page=${page}&size=${size}`,{}, {
+    headers: {
+      Authorization: `Bearer ${token}`, // Thêm token vào headers
+    },
+  });
+};
 
-export { apiAdminRegister, fetchAdminInfo, fetchAllUsers, fetchAllPrinters, updatePrinter, enablePrinter, disablePrinter};
+//get rating by student id
+const getRatingByStudentId = (token, studentId, page, size) => {
+  return axios.put(`/ssps/admin/get-ratings-by-student-id/${studentId}?page=${page}&size=${size}`,{}, {
+    headers: {
+      Authorization: `Bearer ${token}`, // Thêm token vào headers
+    },
+  });
+};
+
+export {
+  apiAdminRegister, fetchAdminInfo, fetchAllUsers,
+  fetchAllPrinters, updatePrinter, enablePrinter,
+  disablePrinter, getRatingByPrintingId, getAllRating,
+  getRatingByStudentId
+};

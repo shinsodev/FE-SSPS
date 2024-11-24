@@ -11,13 +11,21 @@ import CircleIcon from "@mui/icons-material/Circle";
 import printer1 from "../../assets/img/printer1.webp";
 import { updatePrinter } from "../../services/AdminService";
 import { useNavigate } from "react-router-dom";
+
+const listType = [
+  { value: "application/pdf", name: "pdf" },
+  { value: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", name: "excel" },
+  { value: "image/tiff", name: "TIFF" },
+  { value: "image/jpeg", name: "jpeg" },
+  { value: "image/gif", name: "gif" },
+];
 export default function EditDialog(props) {
   const navigate = useNavigate();
   const { setOpenEdit } = props;
   const [printerID, setPrinterID] = React.useState("");
   const [open, setOpen] = React.useState(props.open);
   const [printerLocation, setPrinterLocation] = React.useState("None");
-  const [availableDocTypeString, setAvailableDocTypeString] = React.useState('');
+  const [availableDocType, setAvailableDocType] = React.useState([]);
   const [status, setStatus] = React.useState("None");
   const [papersLeft, setPapersLeft] = React.useState(0);
   const [openImage, setOpenImage] = React.useState(false);
@@ -26,12 +34,19 @@ export default function EditDialog(props) {
     // setOpen(true);
   };
 
+
+  const handleAvailableDocTypeChange = (event) => {
+    const { value } = event.target;
+    setAvailableDocType(typeof value === "string" ? value.split(",") : value);
+  };
+
   const handleOnApply =  ()  => {
     const token = localStorage.getItem('token');
-    const availableDocType = availableDocTypeString.split(',').map((item) => item.trim());
     const response = updatePrinter(token, printerID, printerLocation, status, papersLeft, availableDocType);
     window.location.reload();
   }
+
+
 
   const handleClose = () => {
     // setOpen(false);
@@ -41,19 +56,6 @@ export default function EditDialog(props) {
   function handleCloseImage() {
     setOpenImage(false);
   }
-
-  // const handleAvailabDoctypeOnChange = (e) =>{
-  //   setAvailableDocType(e.target.value)
-  // }
-  // const handleAvailabDoctypeOnChange = (e) => {
-  //   // Split the input value by commas and remove any leading/trailing spaces
-  //   const docTypeArray = e.target.value.split(',').map(item => item.trim());
-  //   // Update the state with the array
-  //   setAvailableDocType(docTypeArray);
-  // };
-  const handleAvailabDoctypeStringOnChange = (e) => {
-    setAvailableDocTypeString(e.target.value)
-  };
   
 
   const handlePrinterLocationOnChange = (e) => {
@@ -77,7 +79,7 @@ export default function EditDialog(props) {
     if (props.printer) {
       setPrinterID(props.printer.printerID || 0);
       setPrinterLocation(props.printer.printerLocation || "None");
-      setAvailableDocTypeString(props.printer.availableDocType.join(", ") || "");
+      setAvailableDocType(props.printer.availableDocType || []);
       setStatus(props.printer.status || "None");
       setPapersLeft(props.printer.papersLeft || 0);
     }
@@ -152,26 +154,6 @@ export default function EditDialog(props) {
                 />
               </Grid2>
             </Grid2>
-            {/* Name */}
-            {/* <Grid2 container spacing={1}>
-              <Grid2
-                size={{ xs: 12, sm: 2 }}
-                alignSelf={"center"}
-                fontWeight={"bold"}
-              >
-                Name:
-              </Grid2>
-              <Grid2 size={{ xs: 12, sm: 9 }}>
-                <TextField
-                  id="filled-basic"
-                  variant="outlined"
-                  size="small"
-                  value={"Printer1"}
-                  fullWidth
-                />
-              </Grid2>
-            </Grid2> */}
-            {/* Model */}
             <Grid2 container spacing={1}>
               <Grid2
                 size={{ xs: 12, sm: 2 }}
@@ -181,14 +163,29 @@ export default function EditDialog(props) {
                 AvailabDoctype:
               </Grid2>
               <Grid2 size={{ xs: 12, sm: 9 }}>
-                <TextField
-                  id="filled-basic"
-                  variant="outlined"
-                  size="small"
-                  value={availableDocTypeString}
-                  fullWidth
-                  onChange={handleAvailabDoctypeStringOnChange}
-                />
+                {/* Available DocType */}
+                <Box>
+                  <Select
+                    multiple
+                    value={availableDocType}
+                    onChange={handleAvailableDocTypeChange}
+                    renderValue={(selected) =>
+                      selected
+                        .map((val) => {
+                          const type = listType.find((item) => item.value === val);
+                          return type ? type.name : val;
+                        })
+                        .join(", ")
+                    }
+                    fullWidth
+                  >
+                    {listType.map((type) => (
+                      <MenuItem key={type.value} value={type.value}>
+                        {type.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </Box>
               </Grid2>
             </Grid2>
             {/* Location */}
@@ -211,19 +208,7 @@ export default function EditDialog(props) {
                   onChange={handlePrinterLocationOnChange}
                 />
               </Grid2>
-              {/* <Grid2 size={{ xs: 12, sm: 9 }}>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={position}
-                  size="small"
-                  fullWidth
-                  onChange={(e) => setPosition(e.target.value)}
-                >
-                  <MenuItem value={10}>CS1</MenuItem>
-                  <MenuItem value={20}>CS2</MenuItem>
-                </Select>
-              </Grid2> */}
+
             </Grid2>
             {/* Paper left */}
             <Grid2 container spacing={1}>
@@ -247,87 +232,7 @@ export default function EditDialog(props) {
                 />
               </Grid2>
             </Grid2>
-            {/* Status */}
-            {/* <Grid2 container spacing={1}>
-              <Grid2
-                size={{ xs: 12, sm: 2 }}
-                alignSelf={"center"}
-                fontWeight={"bold"}
-              >
-                Status:
-              </Grid2>
-              <Grid2 size={{ xs: 12, sm: 9 }}>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={status}
-                  size="small"
-                  fullWidth
-                  onChange={(e) => setStatus(e.target.value)}
-                >
-                  {/* Running */}
-                  {/* <MenuItem
-                    value={"Running"}
-                    sx={{ display: "flex", alignItems: "center" }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                      }}
-                    >
-                      <CircleIcon sx={{ color: "green", width: "17px" }} />{" "}
-                      <span
-                        style={{
-                          marginLeft: 5,
-                        }}
-                      >
-                        ONLINE
-                      </span>
-                    </div>
-                  </MenuItem> */}
-                  {/* Maintaince */}
-                  {/* <MenuItem
-                    value={"Maintaince"}
-                    sx={{ display: "flex", alignItems: "center" }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                      }}
-                    >
-                      <CircleIcon sx={{ color: "orange", width: "17px" }} />{" "}
-                      <span
-                        style={{
-                          marginLeft: 5,
-                        }}
-                      >
-                        Maintaince
-                      </span>
-                    </div>
-                  </MenuItem> */}
-                  {/* Error */}
-                  {/* <MenuItem
-                    value={"Running"}
-                    sx={{ display: "flex", alignItems: "center" }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                      }}
-                    >
-                      <CircleIcon sx={{ color: "red", width: "17px" }} />{" "}
-                      <span
-                        style={{
-                          marginLeft: 5,
-                        }}
-                      >
-                        OFFLINE
-                      </span>
-                    </div>
-                  </MenuItem>
-                </Select>
-              </Grid2>
-            </Grid2> */} 
+
           </Stack>
         </DialogContent>
         <DialogActions>
