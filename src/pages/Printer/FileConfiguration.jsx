@@ -8,14 +8,15 @@ import { TextField, Box } from "@mui/material";
 import { uploadFile } from "../../services/UserService";
 const listSelect = ["A1", "A2", "A3", "A4"];
 const listSelect1 = ["1 mặt", "2 mặt"];
+const listSelect2 = ["Có", "Không"];
 
 import PropTypes from 'prop-types';
 
 function FileConfigurationPage({ printerId, uploadedFile }) {
-
   const [copies, setCopies] = useState(1);
   const [size, setSize] = useState("A1"); // Kích thước mặc định
   const [printType, setPrintType] = useState("1 mặt"); // Loại in mặc định
+  const [color, setColor] = useState("Không"); // Màu in mặc định
   // const { userId, fileId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -30,46 +31,59 @@ function FileConfigurationPage({ printerId, uploadedFile }) {
     }
   }
 
-  async function handleSubmit(uploadedFile, printerId, copies, size, printType) {
-    console.log(copies)
-    console.log(size)
-    console.log(printType)
+  async function handleSubmit(
+    uploadedFile,
+    printerId,
+    copies,
+    size,
+    printType,
+    color
+  ) {
+    console.log(copies);
+    console.log(size);
+    console.log(printType);
+    console.log(color);
     try {
       const uploadConfig = {
         printerId,
         paperSize: size,
         sidedType: printType === "1 mặt" ? "single" : "double",
         numberOfCopies: copies,
-      }
+        colorPrint: color === "Có" ? true : false,
+      };
       const response = await uploadFile(uploadedFile, uploadConfig);
       console.log("Response:", response);
       // if (response.status === 200) {
       //   const responseData = response.data; // Lấy dữ liệu trả về từ API
       //   const message = ` ${JSON.stringify(responseData)}`;
-        
+
       //   notifySuccess(message); // Hiển thị thông báo với dữ liệu từ response
       //   navigate("/studentreport"); // Chuyển hướng sau khi thành công
       // }
       // if (response.status === 200) {
-      //   const { result } = response.data; 
-      //   notifySuccess(` ${result}`); 
+      //   const { result } = response.data;
+      //   notifySuccess(` ${result}`);
       //   navigate("/studentreport");
       // }
 
-      if (response.status === 200) { // có thể thêm các trường hợp response khác nếu có
-        const { result } = response.data; 
-      
+      if (response.status === 200) {
+        // có thể thêm các trường hợp response khác nếu có
+        const { result } = response.data;
+
         notifySuccess(result); // Hiển thị thông báo
-        
-        if (result.includes("Student's account doesn't have enough pages to print this document")) {
+
+        if (
+          result.includes(
+            "Student's account doesn't have enough pages to print this document"
+          )
+        ) {
           navigate("/payment"); // Chuyển hướng đến trang thanh toán
         } else if (result.includes("not supported")) {
           navigate("/printers"); // Chuyển hướng đến trang tải tài liệu
         } else {
           navigate("/studentreport"); // Chuyển hướng đến trang báo cáo
         }
-      }
-      else {
+      } else {
         console.error("Lỗi cấu hình:", response.data);
       }
     } catch (error) {
@@ -93,56 +107,74 @@ function FileConfigurationPage({ printerId, uploadedFile }) {
           spacing={2}
         >
           {/* Orientation */}
-      <Grid2 container width={"100%"} spacing={1}>
-        <Grid2
-          size={{ xs: 12, md: 4 }}
-          sx={{
-            alignContent: "center",
-            fontSize: 27,
-            fontWeight: "bold",
-            opacity: "90%",
-          }}
-        >
-          Kích thước:
-        </Grid2>
-        <Grid2 size={{ xs: 12, md: 8 }}>
-          <SelectComponent
-            listSelect={listSelect} // Danh sách kích thước
-            label={"Kích thước"}
-            value={size} // Giá trị hiện tại
-            onChange={(e) => setSize(e.target.value)} // Cập nhật trạng thái cho "Kích thước"
-          />
-        </Grid2>
-      </Grid2>
+          <Grid2 container width={"100%"} spacing={1}>
+            <Grid2
+              size={{ xs: 12, md: 4 }}
+              sx={{
+                alignContent: "center",
+                fontSize: 27,
+                fontWeight: "bold",
+                opacity: "90%",
+              }}
+            >
+              Kích thước:
+            </Grid2>
+            <Grid2 size={{ xs: 12, md: 8 }}>
+              <SelectComponent
+                listSelect={listSelect} // Danh sách kích thước
+                label={"Kích thước"}
+                value={size} // Giá trị hiện tại
+                onChange={(e) => setSize(e.target.value)} // Cập nhật trạng thái cho "Kích thước"
+              />
+            </Grid2>
+          </Grid2>
 
-      {/* Print type */}
-      {console.log("thay doi ko123")}
-      <Grid2 container width={"100%"} spacing={1}>
-        <Grid2
-          size={{ xs: 12, md: 4 }}
-          sx={{
-            alignContent: "center",
-            fontSize: 27,
-            fontWeight: "bold",
-            opacity: "90%",
-          }}
-        >
-          Số mặt:
-        </Grid2>
-        <Grid2 size={{ xs: 12, md: 8 }}>
-          <SelectComponent
-            listSelect={listSelect1} // Danh sách số mặt
-            label={"Số mặt"}
-            value={printType} // Giá trị hiện tại
-            onChange={(e) => setPrintType(e.target.value)} // Cập nhật trạng thái cho "Số mặt"
-          />
-        </Grid2>
-      </Grid2>
-    
+          {/* Print type */}
+          {console.log("thay doi ko123")}
+          <Grid2 container width={"100%"} spacing={1}>
+            <Grid2
+              size={{ xs: 12, md: 4 }}
+              sx={{
+                alignContent: "center",
+                fontSize: 27,
+                fontWeight: "bold",
+                opacity: "90%",
+              }}
+            >
+              Số mặt:
+            </Grid2>
+            <Grid2 size={{ xs: 12, md: 8 }}>
+              <SelectComponent
+                listSelect={listSelect1} // Danh sách số mặt
+                label={"Số mặt"}
+                value={printType} // Giá trị hiện tại
+                onChange={(e) => setPrintType(e.target.value)} // Cập nhật trạng thái cho "Số mặt"
+              />
+            </Grid2>
+          </Grid2>
 
-
-
-
+          <Grid2 container width={"100%"} spacing={1}>
+            {/* color */}
+            <Grid2
+              size={{ xs: 12, md: 4 }}
+              sx={{
+                alignContent: "center",
+                fontSize: 27,
+                fontWeight: "bold",
+                opacity: "90%",
+              }}
+            >
+              In màu
+            </Grid2>
+            <Grid2 size={{ xs: 12, md: 8 }}>
+              <SelectComponent
+                listSelect={listSelect2} // Danh sách số mặt
+                label={"In màu"}
+                value={color} // Giá trị hiện tại
+                onChange={(e) => setColor(e.target.value)} // Cập nhật trạng thái cho "Số mặt"
+              />
+            </Grid2>
+          </Grid2>
 
           {/* Print copies */}
           <Grid2 container width={"100%"} spacing={1}>
@@ -204,7 +236,16 @@ function FileConfigurationPage({ printerId, uploadedFile }) {
                 variant="contained"
                 color="success"
                 size="large"
-                onClick={() => handleSubmit(uploadedFile, printerId, copies, size, printType)}
+                onClick={() =>
+                  handleSubmit(
+                    uploadedFile,
+                    printerId,
+                    copies,
+                    size,
+                    printType,
+                    color
+                  )
+                }
               >
                 Submit
               </Button>
@@ -222,4 +263,3 @@ function FileConfigurationPage({ printerId, uploadedFile }) {
 // };
 
 export default FileConfigurationPage;
-
