@@ -12,10 +12,13 @@ const fetchAdminInfo = (token) => {
   });
 };
 
-const fetchAllUsers = (token) => {
+const fetchAllUsers = (token, page) => {
   return axios.get("/ssps/admin/get-all-students", {
     headers: {
       Authorization: `Bearer ${token}`, // Thêm token vào headers
+    },
+    params: {
+      page,
     },
   });
 };
