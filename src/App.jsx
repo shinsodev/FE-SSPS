@@ -30,6 +30,7 @@ import StudentReport from "./pages/Sidebar/StudentReport";
 import StudentRegister from "./pages/Register/StudentRegister";
 import AdminRegister from "./pages/Register/AdminRegister";
 import PrintRequests from "./pages/Sidebar/PrintRequests";
+import GenerateReport from "./pages/Sidebar/GenerateReport";
 // import PrivateRoute from './router/PrivateRoutes'
 
 function App() {
@@ -197,6 +198,14 @@ function App() {
           element={
             <DashboardLayout>
               <PrintRequests />
+            </DashboardLayout>
+          }
+        />
+        <Route
+          path="/admin/generate"
+          element={
+            <DashboardLayout>
+              <GenerateReport />
             </DashboardLayout>
           }
         />

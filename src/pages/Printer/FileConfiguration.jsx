@@ -9,6 +9,8 @@ import { uploadFile } from "../../services/UserService";
 const listSelect = ["A1", "A2", "A3", "A4"];
 const listSelect1 = ["1 mặt", "2 mặt"];
 
+import PropTypes from 'prop-types';
+
 function FileConfigurationPage({ printerId, uploadedFile }) {
 
   const [copies, setCopies] = useState(1);
@@ -213,5 +215,11 @@ function FileConfigurationPage({ printerId, uploadedFile }) {
     </>
   );
 }
+
+// FileConfigurationPage.propTypes = {
+//   printerId: PropTypes.string.isRequired,  // Yêu cầu `printerId` là chuỗi và bắt buộc
+//   uploadedFile: PropTypes.object.isRequired,  // Yêu cầu `uploadedFile` là một object và bắt buộc
+// };
+
 export default FileConfigurationPage;
 
