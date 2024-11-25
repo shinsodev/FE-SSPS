@@ -16,7 +16,8 @@ const VisuallyHiddenInput = styled("input")({
   whiteSpace: "nowrap",
   width: 1,
 });
-function UploadFilePage() {
+function UploadFilePage(props) {
+  const {idPrinter} = props
   const [file, setFile] = useState(null);
   const [selectPrinter, setSelectPrinter] = useState(null);
   const [fileContent, setFileContent] = useState(null);
@@ -25,7 +26,7 @@ function UploadFilePage() {
 
 
   function handleSelectPrinter(e) {//dùng để lấy id máy in , sau này thêm vào
-    setSelectPrinter({ id: 3 });
+    setSelectPrinter({ id: idPrinter });
     //navigate("/uploadFile/fileConfigurationPage");
   }
 

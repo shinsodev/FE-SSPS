@@ -1,57 +1,70 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { Box, CardMedia, Grid2, MenuItem, Select, Stack } from "@mui/material";
-import CircleIcon from "@mui/icons-material/Circle";
+import { Box, CardMedia, Grid2, Stack } from "@mui/material";
 import printer1 from "../../assets/img/printer1.webp";
 
-export default function EditDialog(props) {
-  const { setOpenEdit } = props;
+export default function PrinterDetail(props) {
+  const { closeDetailDialog, detailPrinter } = props;
   const [open, setOpen] = React.useState(props.open);
-  const [position, setPosition] = React.useState("None");
-  const [status, setStatus] = React.useState("None");
   const [openImage, setOpenImage] = React.useState(false);
+  const [availableDocType, setAvailableDocType] = React.useState("");
 
   const handleClose = () => {
-    setOpenEdit(false);
+    closeDetailDialog();
   };
 
   function handleCloseImage() {
     setOpenImage(false);
   }
 
+  function handleDocType(data) {
+    let arrDocType = "";
+    const lengthList = detailPrinter.availableDocType.length;
+    detailPrinter.availableDocType.map((item, index) => {
+      switch (item) {
+        case "application/pdf":
+          arrDocType += "pdf";
+          break;
+        case "pplication/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+          arrDocType += "excel";
+          break;
+        case "image/tiff":
+          arrDocType += "TIFF";
+          break;
+        case "image/jpeg":
+          arrDocType += "jpeg";
+          break;
+        case "image/gif":
+          arrDocType += "gif";
+          break;
+      }
+      if (index !== lengthList - 1) {
+        arrDocType += ", ";
+      }
+    });
+    setAvailableDocType(arrDocType);
+  }
+
   React.useEffect(() => {
     setOpen(props.open);
   }, [props.open]);
 
+  React.useEffect(() => {
+    handleDocType();
+  }, []);
+
   return (
     <React.Fragment>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        PaperProps={{
-          component: "form",
-          onSubmit: (event) => {
-            event.preventDefault();
-            const formData = new FormData(event.currentTarget);
-            const formJson = Object.fromEntries(formData.entries());
-            const email = formJson.email;
-            console.log(email);
-            handleClose();
-          },
-        }}
-        fullWidth
-      >
+      <Dialog open={open} onClose={handleClose} fullWidth>
         <DialogTitle
           alignSelf={"center"}
           className="font-medium text-3xl"
           color="#6A88B9"
         >
-          EDIT PRINTER
+          PRINTER DETAIL
         </DialogTitle>
         <DialogContent>
           <Stack spacing={2}>
@@ -77,65 +90,19 @@ export default function EditDialog(props) {
                 alignSelf={"center"}
                 fontWeight={"bold"}
               >
-                {/* <Item>size=8</Item> */}
                 ID Printer:
               </Grid2>
               <Grid2 size={{ xs: 12, sm: 9 }}>
-                {/* <Item>size=4</Item> */}
                 <TextField
                   id="filled-basic"
                   variant="outlined"
                   size="small"
-                  value={"ID1"}
-                  disabled
+                  value={detailPrinter.printerID}
                   fullWidth
                   sx={{
                     backgroundColor: (theme) =>
                       theme.palette.action.disabledBackground,
                   }}
-                />
-              </Grid2>
-            </Grid2>
-            {/* Name */}
-            <Grid2 container spacing={1}>
-              <Grid2
-                size={{ xs: 12, sm: 2 }}
-                alignSelf={"center"}
-                fontWeight={"bold"}
-              >
-                {/* <Item>size=8</Item> */}
-                Name:
-              </Grid2>
-              <Grid2 size={{ xs: 12, sm: 9 }}>
-                {/* <Item>size=4</Item> */}
-                <TextField
-                  id="filled-basic"
-                  variant="outlined"
-                  size="small"
-                  value={"Printer1"}
-                  //   disabled
-                  fullWidth
-                />
-              </Grid2>
-            </Grid2>
-            {/* Model */}
-            <Grid2 container spacing={1}>
-              <Grid2
-                size={{ xs: 12, sm: 2 }}
-                alignSelf={"center"}
-                fontWeight={"bold"}
-              >
-                {/* <Item>size=8</Item> */}
-                Model:
-              </Grid2>
-              <Grid2 size={{ xs: 12, sm: 9 }}>
-                {/* <Item>size=4</Item> */}
-                <TextField
-                  id="filled-basic"
-                  variant="outlined"
-                  size="small"
-                  value={"model1"}
-                  fullWidth
                 />
               </Grid2>
             </Grid2>
@@ -146,21 +113,16 @@ export default function EditDialog(props) {
                 alignSelf={"center"}
                 fontWeight={"bold"}
               >
-                {/* <Item>size=8</Item> */}
                 Location:
               </Grid2>
               <Grid2 size={{ xs: 12, sm: 9 }}>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={position}
+                <TextField
+                  id="filled-basic"
+                  variant="outlined"
                   size="small"
+                  value={detailPrinter.printerLocation}
                   fullWidth
-                  onChange={(e) => setPosition(e.target.value)}
-                >
-                  <MenuItem value={10}>CS1</MenuItem>
-                  <MenuItem value={20}>CS2</MenuItem>
-                </Select>
+                />
               </Grid2>
             </Grid2>
             {/* Paper left */}
@@ -178,8 +140,7 @@ export default function EditDialog(props) {
                   variant="outlined"
                   size="small"
                   type="number"
-                  defaultValue={0}
-                  slotProps={{ htmlInput: { min: 0, step: 1 } }}
+                  value={detailPrinter.papersLeft}
                   fullWidth
                 />
               </Grid2>
@@ -194,67 +155,36 @@ export default function EditDialog(props) {
                 Status:
               </Grid2>
               <Grid2 size={{ xs: 12, sm: 9 }}>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={status}
+                <TextField
+                  id="filled-basic"
+                  variant="outlined"
                   size="small"
+                  value={detailPrinter.status}
                   fullWidth
-                  onChange={(e) => setStatus(e.target.value)}
-                >
-                  {/* ONLINE */}
-                  <MenuItem
-                    value={"ONLINE"}
-                    sx={{ display: "flex", alignItems: "center" }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                      }}
-                    >
-                      <CircleIcon sx={{ color: "green", width: "17px" }} />{" "}
-                      <span
-                        style={{
-                          marginLeft: 5,
-                        }}
-                      >
-                        ONLINE
-                      </span>
-                    </div>
-                  </MenuItem>
-                  {/* OFFLINE */}
-                  <MenuItem
-                    value={"OFFLINE"}
-                    sx={{ display: "flex", alignItems: "center" }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                      }}
-                    >
-                      <CircleIcon sx={{ color: "red", width: "17px" }} />{" "}
-                      <span
-                        style={{
-                          marginLeft: 5,
-                        }}
-                      >
-                        OFFLINE
-                      </span>
-                    </div>
-                  </MenuItem>
-                </Select>
+                />
+              </Grid2>
+            </Grid2>
+            {/* Available doc type */}
+            <Grid2 container spacing={1}>
+              <Grid2
+                size={{ xs: 12, sm: 2 }}
+                alignSelf={"center"}
+                fontWeight={"bold"}
+              >
+                Available Doc type:
+              </Grid2>
+              <Grid2 size={{ xs: 12, sm: 9 }}>
+                <TextField
+                  id="filled-basic"
+                  variant="outlined"
+                  size="small"
+                  value={availableDocType}
+                  fullWidth
+                />
               </Grid2>
             </Grid2>
           </Stack>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} sx={{ color: "#1976d2" }}>
-            Cancel
-          </Button>
-          <Button variant="contained" color="success">
-            Apply
-          </Button>
-        </DialogActions>
       </Dialog>
 
       <Dialog

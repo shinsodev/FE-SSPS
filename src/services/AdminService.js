@@ -1,3 +1,5 @@
+import { notifyError } from "../components/Notification/NotifyError";
+import { notifySuccess } from "../components/Notification/NotifySuccess";
 import axios from "./customize-axios";
 
 const apiAdminRegister = (email, password, fullName) => {
@@ -104,10 +106,10 @@ const viewPrintLogs = async (token, startDate, endDate, page = 0, size = 3) => {
       },
       params: { startDate, endDate, page, size },
     });
-    return response.data; 
+    return response.data;
   } catch (error) {
     console.error("Error fetching print logs:", error.response || error);
-    throw error; 
+    throw error;
   }
 };
 
@@ -121,8 +123,8 @@ const generateUsageReports = async (token, frequency) => {
         frequency: frequency,
       },
     });
-   // console.log("API Response:", response.data);
-    return response.data; 
+    // console.log("API Response:", response.data);
+    return response.data;
   } catch (error) {
     if (error.response) {
       console.error("Server responded with an error:", error.response.data);
@@ -132,9 +134,23 @@ const generateUsageReports = async (token, frequency) => {
     } else {
       console.error("Error setting up request:", error.message);
     }
-    throw error; 
+    throw error;
   }
 };
+
+async function deleteRatingAdmin(idRating) {
+  const token = localStorage.getItem("token");
+  try {
+    const result = await axios.delete(`/ssps/admin/delete-rating/${idRating}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (result.status === 200) {
+      notifySuccess("Delete rating success");
+    }
+  } catch (err) {
+    notifyError("Delete failed!!!");
+  }
+}
 
 export {
   apiAdminRegister,
@@ -146,4 +162,5 @@ export {
   deletePrinter,
   viewPrintLogs,
   generateUsageReports,
+  deleteRatingAdmin,
 };
