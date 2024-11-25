@@ -48,6 +48,10 @@ const Table = () => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
+          params: {
+            page: 0,
+            size: 5
+          }
         }
       );
 

@@ -1,5 +1,7 @@
 import { toast } from "react-toastify";
 import axios from "./customize-axios";
+import { notifyError } from "../components/Notification/NotifyError";
+import { notifySuccess } from "../components/Notification/NotifySuccess";
 
 const apiUserRegister = (email, password, fullName, studentId) => {
   return axios.post("/ssps/students/register", {
@@ -126,4 +128,18 @@ const getPrintRequests = (token) => {
   });
 };
 
-export { apiUserRegister, apiLogin, fetchUserInfo, buyPaper, confirmReceive, getPrintLogs, getPrintRequests };
+async function deleteRatingStudents(idRating) {
+  const token = localStorage.getItem("token");
+  try {
+    const result = await axios.delete(`/ssps/students/delete-rating/${idRating}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (result.status === 200) {
+      notifySuccess("Delete rating success");
+    }
+  } catch (err) {
+    notifyError("Delete failed!!!");
+  }
+}
+
+export { apiUserRegister, apiLogin, fetchUserInfo, buyPaper, confirmReceive, getPrintLogs, getPrintRequests, deleteRatingStudents };

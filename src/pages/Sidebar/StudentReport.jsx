@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import ReactPaginate from "react-paginate";
 import { MdSearch, MdFilterList } from "react-icons/md";
 import { getPrintLogs } from "../../services/UserService";
+import { Link } from "react-router-dom";
 
 const StudentReport = () => {
   const inputRef = useRef(null);
@@ -182,6 +183,9 @@ const StudentReport = () => {
               <th scope="col" className="px-6 py-3">
                 Printer ID
               </th>
+              <th scope="col" className="px-6 py-3">
+                Rating
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -198,6 +202,9 @@ const StudentReport = () => {
                     {new Date(item.printingEndTime).toLocaleString("vi-VN")}
                   </td>
                   <td className="px-6 py-4 ">{item.printerToPrintID}</td>
+                  <td className="px-6 py-4 ">
+                    <Link to={`/student/rating/${item.logId}`}>Rating</Link>
+                  </td>
                 </tr>
               ))
             ) : (

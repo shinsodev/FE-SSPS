@@ -1,3 +1,5 @@
+import { notifyError } from "../components/Notification/NotifyError";
+import { notifySuccess } from "../components/Notification/NotifySuccess";
 import axios from "./customize-axios";
 
 const apiAdminRegister = (email, password, fullName) => {
@@ -136,7 +138,7 @@ const generateUsageReports = async (token, frequency) => {
   }
 };
 
-async function deleteRating(idRating) {
+async function deleteRatingAdmin(idRating) {
   const token = localStorage.getItem("token");
   try {
     const result = await axios.delete(`/ssps/admin/delete-rating/${idRating}`, {
@@ -160,5 +162,5 @@ export {
   deletePrinter,
   viewPrintLogs,
   generateUsageReports,
-  deleteRating,
+  deleteRatingAdmin,
 };

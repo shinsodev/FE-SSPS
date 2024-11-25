@@ -1,6 +1,7 @@
 import { MdSearch } from "react-icons/md";
 import React, { useState, useEffect, useRef } from "react";
 import { viewPrintLogs } from "../../services/AdminService";
+import { Link } from "react-router-dom";
 
 const Report = () => {
   const inputRef = useRef(null);
@@ -199,6 +200,9 @@ const Report = () => {
                 <th className="px-6 py-5 text-center font-bold">
                   Student Email
                 </th>
+                <th className="px-6 py-5 text-center font-bold">
+                  Rating
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -222,6 +226,11 @@ const Report = () => {
                     </td>
                     <td className="px-6 py-4 text-center">{item.studentId}</td>
                     <td className="px-6 py-4 text-center">{item.email}</td>
+                    <td className="px-6 py-4 text-center">
+                      <Link to={`/admin/rating/${item.printingLogId}`}>
+                        Rating
+                      </Link>
+                    </td>
                   </tr>
                 ))
               ) : (

@@ -58,6 +58,10 @@ const Printers = () => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
+          params: {
+            page : 0,
+            size : 3
+          }
         }
       );
 
@@ -213,7 +217,7 @@ const Printers = () => {
       )}
       {selectPrinter !== null && (
         <>
-          <UploadFilePage />
+          <UploadFilePage idPrinter={selectPrinter.id}/>
         </>
       )}
       {printerDetail !== null && (

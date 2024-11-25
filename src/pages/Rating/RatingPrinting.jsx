@@ -2,6 +2,7 @@ import { Box, Button, Rating, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import RateReviewIcon from "@mui/icons-material/RateReview";
+import DeleteIcon from "@mui/icons-material/Delete";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import submitIcon from "../../assets/img/send.png";
 import cancleIcon from "../../assets/img/cancle.png";
@@ -10,6 +11,7 @@ import axios from "../../services/customize-axios";
 import { notifySuccess } from "../../components/Notification/NotifySuccess";
 import { notifyError } from "../../components/Notification/NotifyError";
 import EditRatingPopUp from "./PopUpEditRating";
+import { deleteRatingStudents } from "../../services/UserService";
 
 function RatingPageStudent() {
   const { idPrinting } = useParams();
@@ -61,13 +63,23 @@ function RatingPageStudent() {
         restoreData();
       }
     } catch (err) {
-      notifyError("Error from creating rating!!!");
+      console.log(err.message);
+      notifyError(
+        "You have submitted receiving file and cannot create rating!!!"
+      );
     }
   }
 
   function editRating(idRating) {
-    console.log(idRating);
     setRatingEdit(idRating);
+  }
+
+  async function deleteRatingData(idRating) {
+    try {
+      await deleteRatingStudents(idRating);
+    } catch (err) {
+      console.log(err.message);
+    }
   }
 
   function closeEdit() {
@@ -152,12 +164,25 @@ function RatingPageStudent() {
                   size="small"
                   variant="outlined"
                   color="success"
-                  onClick={() => editRating(1)} // 1 la id rating mau, khi list danh sach cac rating thi thay bang idRating
+                  onClick={() => editRating(3)} // 1 la id rating mau, khi list danh sach cac rating thi thay bang idRating
                 >
                   <Box mr={1}>
                     <EditIcon />
                   </Box>
                   Edit
+                </Button>
+              </Box>
+              <Box>
+                <Button
+                  size="small"
+                  variant="outlined"
+                  color="error"
+                  onClick={() => deleteRatingData(3)} // 1 la id rating mau, khi list danh sach cac rating thi thay bang idRating
+                >
+                  <Box mr={1}>
+                    <DeleteIcon />
+                  </Box>
+                  Delete
                 </Button>
               </Box>
             </Box>

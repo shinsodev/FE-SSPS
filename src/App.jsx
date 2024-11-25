@@ -33,6 +33,7 @@ import PrintRequests from "./pages/Sidebar/PrintRequests";
 import GenerateReport from "./pages/Sidebar/GenerateReport";
 import ConfirmDocument from "./pages/Sidebar/ConfirmDocument";
 import { RatingPageStudent } from "./pages/Rating/RatingPrinting";
+import { RatingPageAdmin } from "./pages/Rating/RatingPrintingAdmin";
 // import PrivateRoute from './router/PrivateRoutes'
 
 function App() {
@@ -162,6 +163,15 @@ function App() {
           element={
             <DashboardLayout>
               <RatingPageStudent />
+            </DashboardLayout>
+          }
+        />
+        
+        <Route
+          path="/admin/rating/:idPrinting"
+          element={
+            <DashboardLayout>
+              <RatingPageAdmin />
             </DashboardLayout>
           }
         />
