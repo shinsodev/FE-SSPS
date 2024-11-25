@@ -3,7 +3,7 @@ import User1 from "../../assets/img/user1.png";
 import { CiGrid41 } from "react-icons/ci";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoIosLogOut } from "react-icons/io";
-import { MdOutlineCategory, MdReport } from "react-icons/md";
+import { MdOutlineCategory, MdReport,MdBarChart } from "react-icons/md";
 import { TbFileUpload, TbCurrencyDollar } from "react-icons/tb";
 import { FiUser } from "react-icons/fi";
 import { CgProductHunt } from "react-icons/cg";
@@ -117,8 +117,16 @@ const Sidebar = () => {
               className={({ isActive }) => getNavLinkClass(isActive)}
             >
               <MdReport size={22} />
-              <span>Report</span>
+              <span>Printing Log</span>
             </NavLink>
+            <NavLink
+              to="/admin/generate"
+              className={({ isActive }) => getNavLinkClass(isActive)}
+            >
+              <MdBarChart size={22} />
+              <span>Generate reports</span>
+            </NavLink>
+
           </>
         )}
 
