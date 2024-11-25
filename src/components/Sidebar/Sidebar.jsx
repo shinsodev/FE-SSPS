@@ -5,6 +5,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { IoIosLogOut } from "react-icons/io";
 import { MdOutlineCategory, MdReport,MdBarChart } from "react-icons/md";
 import { TbFileUpload, TbCurrencyDollar } from "react-icons/tb";
+import { AiOutlineFileProtect } from "react-icons/ai";
 import { FiUser } from "react-icons/fi";
 import { CgProductHunt } from "react-icons/cg";
 import { FaSignalMessenger } from "react-icons/fa6";
@@ -78,6 +79,13 @@ const Sidebar = () => {
             >
               <TbCurrencyDollar size={22} />
               <span>Payment</span>
+            </NavLink>
+            <NavLink
+              to="/confirm"
+              className={({ isActive }) => getNavLinkClass(isActive)}
+            >
+              <AiOutlineFileProtect size={22} />
+              <span>Confirmation</span>
             </NavLink>
             <NavLink
               to="/studentreport"

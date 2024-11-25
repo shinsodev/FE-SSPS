@@ -110,4 +110,20 @@ const confirmReceive = (token, printingId) => {
   });
 };
 
-export { apiUserRegister, apiLogin, fetchUserInfo, buyPaper, confirmReceive };
+const getPrintLogs = (token) => {
+  return axios.get("/ssps/students/print-logs", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+const getPrintRequests = (token) => {
+  return axios.get("/ssps/students/get-print-requests", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export { apiUserRegister, apiLogin, fetchUserInfo, buyPaper, confirmReceive, getPrintLogs, getPrintRequests };
