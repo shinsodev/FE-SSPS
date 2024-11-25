@@ -14,7 +14,9 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [userList, setUserList] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [intervalId, setIntervalId] = useState(null);
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0); // Tổng số trang từ API
+  // const [intervalId, setIntervalId] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -25,17 +27,17 @@ const AuthProvider = ({ children }) => {
       if (role === "ROLE_STUDENT") {
         fetchStudentData(token);
       } else if (role === "ROLE_ADMIN") {
-        fetchAdminData(token);
+        fetchAdminData(token, page);
         deleteDocumentsExpired();
       }
     } else {
       setLoading(false);
     }
 
-    return () => {
-      if (intervalId) clearInterval(intervalId);
-    };
-  }, []);
+    // return () => {
+    //   if (intervalId) clearInterval(intervalId);
+    // };
+  }, [page]);
 
   const getRoleFromToken = (token) => {
     try {
@@ -65,7 +67,7 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const fetchAdminData = async (token) => {
+  const fetchAdminData = async (token, page) => {
     try {
       const response = await fetchAdminInfo(token);
       // console.log(response);
@@ -74,9 +76,9 @@ const AuthProvider = ({ children }) => {
         setUser(userData);
         localStorage.setItem("user", JSON.stringify(userData));
 
-        await fetchAllUsersData(token);
-        const id = setInterval(() => fetchAllUsersData(token), 3000);
-        setIntervalId(id);
+        await fetchAllUsersData(token, page);
+        // const id = setInterval(() => fetchAllUsersData(token), 3000);
+        // setIntervalId(id);
       } else {
         console.error("Failed to fetch admin data");
       }
@@ -87,13 +89,14 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const fetchAllUsersData = async (token) => {
+  const fetchAllUsersData = async (token, page) => {
     try {
-      const response = await fetchAllUsers(token);
+      const response = await fetchAllUsers(token, page);
       if (response.status === 200) {
         const data = response.data;
         setUserList(data.result);
         localStorage.setItem("userList", JSON.stringify(data.result));
+        setTotalPages(data.totalPages);
       } else {
         console.error("Failed to fetch userList");
       }
@@ -108,7 +111,7 @@ const AuthProvider = ({ children }) => {
     localStorage.removeItem("userList");
     setUser(null);
     setUserList(null);
-    if (intervalId) clearInterval(intervalId);
+    // if (intervalId) clearInterval(intervalId);
   };
 
   return (
@@ -121,6 +124,9 @@ const AuthProvider = ({ children }) => {
         loading,
         fetchStudentData,
         fetchAdminData,
+        page,
+        setPage,
+        totalPages,
         getRoleFromToken, // Cung cấp hàm này cho các component khác nếu cần
       }}
     >

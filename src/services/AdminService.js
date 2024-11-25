@@ -12,10 +12,13 @@ const fetchAdminInfo = (token) => {
   });
 };
 
-const fetchAllUsers = (token) => {
+const fetchAllUsers = (token, page) => {
   return axios.get("/ssps/admin/get-all-students", {
     headers: {
       Authorization: `Bearer ${token}`, // Thêm token vào headers
+    },
+    params: {
+      page,
     },
   });
 };
@@ -93,6 +96,46 @@ async function deletePrinter(token, printerId) {
   }
 }
 
+const viewPrintLogs = async (token, startDate, endDate, page = 0, size = 3) => {
+  try {
+    const response = await axios.get("/ssps/admin/view-print-logs", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: { startDate, endDate, page, size },
+    });
+    return response.data; 
+  } catch (error) {
+    console.error("Error fetching print logs:", error.response || error);
+    throw error; 
+  }
+};
+
+const generateUsageReports = async (token, frequency) => {
+  try {
+    const response = await axios.get("/ssps/admin/generate-usage-reports", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        frequency: frequency,
+      },
+    });
+   // console.log("API Response:", response.data);
+    return response.data; 
+  } catch (error) {
+    if (error.response) {
+      console.error("Server responded with an error:", error.response.data);
+      console.error("Status Code:", error.response.status);
+    } else if (error.request) {
+      console.error("No response received from server:", error.request);
+    } else {
+      console.error("Error setting up request:", error.message);
+    }
+    throw error; 
+  }
+};
+
 export {
   apiAdminRegister,
   fetchAdminInfo,
@@ -101,4 +144,6 @@ export {
   fetchApprovePrint,
   addPrinter,
   deletePrinter,
+  viewPrintLogs,
+  generateUsageReports,
 };

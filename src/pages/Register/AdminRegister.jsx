@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import RegisterImg from "../../assets/img/login4.jpg"; // Đổi hình ảnh nếu cần
+import LogoHCMUT from "../../assets/img/logo.png";
 import { toast } from "react-toastify";
 import { apiAdminRegister } from "../../services/AdminService"; // Hàm đăng ký cho quản trị viên
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai"; // Import icon mắt
@@ -44,24 +45,33 @@ const AdminRegister = () => {
   };
 
   return (
-    <section className="flex items-center justify-center bg-blue-200 h-screen relative">
+    <section className="flex items-center justify-center h-screen bg-gradient-to-r from-blue-400 via-blue-300 to-blue-200">
       <div className="bg-white flex rounded-2xl shadow-2xl max-w-[900px] max-h-[600px] items-center justify-center">
-        <div className="hidden md:block h-[450px] w-[500px] overflow-hidden ml-4 rounded-2xl">
-          <img
-            src={RegisterImg}
-            alt="Register Background"
-            className="h-full w-full object-cover rounded-2xl"
-          />
+        <div className="hidden md:block w-[500px] h-[500px] relative rounded-3xl overflow-hidden">
+          {/* Nội dung */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center px-8">
+            {/* Logo */}
+            <img
+              src={LogoHCMUT}
+              alt="HCMUT Logo"
+              className="w-80 drop-shadow-2xl mb-4"
+            />
+
+            {/* Tiêu đề */}
+            <p className="text-5xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 leading-tight">
+              Student Smart Printing Service
+            </p>
+          </div>
         </div>
 
         <div className="w-[380px] px-10">
-          <h2 className="font-bold text-4xl text-primary text-center my-10">
+          <h2 className="font-extrabold text-4xl text-blue-600 text-center my-10">
             Đăng Ký Quản Lý
           </h2>
 
           <form onSubmit={handleRegister} className="flex flex-col gap-4">
             <input
-              className="p-2 rounded-xl border bg-gray-200"
+              className="p-4 rounded-full border bg-gray-100 focus:ring-2 focus:ring-blue-400 w-full"
               type="text"
               placeholder="Họ và tên"
               value={fullName}
@@ -69,7 +79,7 @@ const AdminRegister = () => {
               required
             />
             <input
-              className="p-2 rounded-xl border bg-gray-200"
+              className="p-4 rounded-full border bg-gray-100 focus:ring-2 focus:ring-blue-400 w-full"
               type="email"
               placeholder="Email"
               value={email}
@@ -78,7 +88,7 @@ const AdminRegister = () => {
             />
             <div className="relative">
               <input
-                className="p-2 rounded-xl border w-full bg-gray-200"
+                className="p-4 rounded-full border bg-gray-100 focus:ring-2 focus:ring-blue-400 w-full"
                 type={showPassword ? "text" : "password"}
                 placeholder="Mật khẩu"
                 value={password}
@@ -86,7 +96,7 @@ const AdminRegister = () => {
                 required
               />
               <div
-                className="absolute right-2 top-[10px] cursor-pointer"
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? (
@@ -98,7 +108,7 @@ const AdminRegister = () => {
             </div>
             <div className="relative">
               <input
-                className="p-2 rounded-xl border w-full bg-gray-200"
+                className="p-4 rounded-full border bg-gray-100 focus:ring-2 focus:ring-blue-400 w-full"
                 type={showConfirmPassword ? "text" : "password"}
                 placeholder="Xác nhận mật khẩu"
                 value={confirmPassword}
@@ -106,7 +116,7 @@ const AdminRegister = () => {
                 required
               />
               <div
-                className="absolute right-2 top-[10px] cursor-pointer"
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               >
                 {showConfirmPassword ? (
@@ -116,7 +126,7 @@ const AdminRegister = () => {
                 )}
               </div>
             </div>
-            <button className="bg-blue-500 rounded-xl text-white py-2 hover:opacity-60 transition-all">
+            <button className="bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 rounded-full font-bold text-lg hover:opacity-90 transition-all">
               Đăng Ký
             </button>
           </form>

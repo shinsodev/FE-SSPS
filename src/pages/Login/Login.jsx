@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../assets/img/login5.jpg";
+import LogoHCMUT from "../../assets/img/logo.png";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { AuthContext } from "../../context/AuthContext";
 import { apiLogin } from "../../services/UserService";
@@ -53,25 +54,26 @@ const Login = () => {
   };
 
   return (
-    <section className="flex items-center justify-center bg-blue-200 h-screen relative">
-      <div className="bg-white flex rounded-2xl shadow-2xl max-w-[900px] max-h-[500px] items-center justify-center">
-        <div className="w-[380px] px-10">
-          <h2 className="font-bold text-4xl text-primary text-center my-10">
+    <section className="flex items-center justify-center h-screen bg-gradient-to-r from-blue-400 via-blue-300 to-blue-200">
+      <div className="bg-white flex rounded-3xl shadow-2xl max-w-[900px] max-h-[600px] items-center overflow-hidden">
+        <div className="w-[400px] p-10">
+          <h2 className="font-extrabold text-5xl text-blue-600 text-center my-10">
             Đăng Nhập
           </h2>
-
-          <form onSubmit={handleLogin} className="flex flex-col gap-4">
-            <input
-              className="p-2 rounded-xl border bg-gray-200"
-              type="text"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+          <form onSubmit={handleLogin} className="flex flex-col gap-6">
             <div className="relative">
               <input
-                className="p-2 rounded-xl border w-full bg-gray-200"
+                className="p-4 rounded-full border bg-gray-100 focus:ring-2 focus:ring-blue-400 w-full"
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div className="relative">
+              <input
+                className="p-4 rounded-full border bg-gray-100 focus:ring-2 focus:ring-blue-400 w-full"
                 type={showPassword ? "text" : "password"}
                 placeholder="Mật khẩu"
                 value={password}
@@ -79,30 +81,27 @@ const Login = () => {
                 required
               />
               <div
-                className="absolute right-2 top-[10px] cursor-pointer"
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? (
-                  <AiFillEye size={20} />
+                  <AiFillEye size={24} />
                 ) : (
-                  <AiFillEyeInvisible size={20} />
+                  <AiFillEyeInvisible size={24} />
                 )}
               </div>
             </div>
-
-            <Link to="/" className="text-xs text-gray-500">
-              <div className="hover:underline">Quên mật khẩu?</div>
+            <Link to="/" className="text-sm text-blue-500 hover:underline">
+              Quên mật khẩu?
             </Link>
-
-            <button className="bg-blue-500 rounded-xl text-white py-2 hover:opacity-60 transition-all">
+            <button className="bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 rounded-full font-bold text-lg hover:opacity-90 transition-all">
               Đăng Nhập
             </button>
           </form>
-
-          <div className="mt-3 text-xs flex justify-between items-center mb-10">
-            <div>{"Bạn chưa có tài khoản?"}</div>
+          <div className="mt-6 text-sm flex justify-between items-center">
+            <span>Bạn chưa có tài khoản?</span>
             <button
-              onClick={handleRegisterClick} // Mở modal khi nhấn vào Đăng Ký
+              onClick={handleRegisterClick}
               className="py-2 px-5 bg-white border rounded-xl hover:scale-110 duration-300 border-gray-400"
             >
               Đăng Ký
@@ -110,13 +109,21 @@ const Login = () => {
           </div>
         </div>
 
-        {/* Image only visible on medium screens and larger */}
-        <div className="hidden md:block h-[400px] w-[400px] overflow-hidden">
-          <img
-            src={Logo}
-            alt=""
-            className="h-full w-full object-cover rounded-r-2xl"
-          />
+        <div className="hidden md:block w-[500px] h-[500px] relative rounded-3xl overflow-hidden">
+          {/* Nội dung */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center px-8">
+            {/* Logo */}
+            <img
+              src={LogoHCMUT}
+              alt="HCMUT Logo"
+              className="w-80 drop-shadow-2xl mb-4"
+            />
+
+            {/* Tiêu đề */}
+            <p className="text-5xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 leading-tight">
+              Student Smart Printing Service
+            </p>
+          </div>
         </div>
       </div>
 

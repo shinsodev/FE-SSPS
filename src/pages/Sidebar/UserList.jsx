@@ -5,12 +5,19 @@ import { CiEdit } from "react-icons/ci";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import User1 from "../../assets/img/user1.png";
 import { AuthContext } from "../../context/AuthContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
+import ReactPaginate from "react-paginate";
 
 const UserList = () => {
   const { user } = useContext(AuthContext);
-  const { userList } = useContext(AuthContext);
+  const { userList, page, setPage, totalPages } = useContext(AuthContext);
+  // const [page, setPage] = useState(0); // Số trang hiện tại
+  // const [totalPages, setTotalPages] = useState(0); // Tổng số trang từ API
+
+  const handlePageClick = (event) => {
+    setPage(event.selected);
+  };
 
   return (
     <section className="p-8">
@@ -92,6 +99,28 @@ const UserList = () => {
           </tbody>
         </table>
       </div>
+
+      <ReactPaginate
+        breakLabel="..."
+        nextLabel="NEXT →"
+        onPageChange={handlePageClick}
+        forcePage={page}
+        pageRangeDisplayed={5}
+        pageCount={totalPages}
+        previousLabel="← PREVIOUS"
+        className="flex space-x-2 items-center justify-center my-8"
+        pageClassName="page-item"
+        pageLinkClassName="page-link px-4 py-2 hover:bg-gray-900/10 rounded-md shadow-2xl"
+        activeLinkClassName="active bg-black text-white" // Active page style
+        previousClassName="page-item"
+        previousLinkClassName="page-link hover:bg-gray-900/10 px-4 py-2 rounded-md"
+        nextClassName="page-item"
+        nextLinkClassName="page-link hover:bg-gray-900/10 px-4 py-2 rounded-md"
+        breakClassName="page-item"
+        breakLinkClassName="page-link"
+        disabledLinkClassName="text-gray-400 cursor-not-allowed"
+        containerClassName="pagination"
+      />
     </section>
   );
 };
