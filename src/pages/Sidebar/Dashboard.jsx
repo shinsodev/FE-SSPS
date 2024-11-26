@@ -1,5 +1,10 @@
 import React from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useContext } from "react";
+import { fetchUserInfo } from "../../services/UserService";
+import { fetchAdminInfo } from "../../services/AdminService";
+import { AuthContext } from "../../context/AuthContext";
 import admin from "../../assets/img/admin.webp"
 const data = [
   { name: '09/2023', số_lượt_đăng_nhập: 10 },
@@ -12,8 +17,46 @@ const data = [
   { name: '4/2024', số_lượt_đăng_nhập: 17 }
 ];
 
+
 export const Dashboard = () => {
-  const role = "admin";
+  const { user, getRoleFromToken } = useContext(AuthContext);
+  const token = localStorage.getItem("token");
+  const role = getRoleFromToken(token);
+  const roleDisplay = role === "ROLE_ADMIN" ? "ADMIN" : "STUDENT";
+  const [userInfo, setUserInfo] = useState(null);
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate('/Payment');
+};
+
+useEffect(() => {
+  if (roleDisplay === "STUDENT") {
+    fetchUserInfo(token)
+    .then(response => {
+      if (response.data.code === 0) {
+        setUserInfo(response.data.result);
+      } else {
+        console.error("Error fetching user info: Invalid response code");
+      }
+    })
+    .catch(error => {
+      console.error("Error fetching user info:", error);
+    });
+  }
+  else {
+    fetchAdminInfo(token)
+      .then(response => {
+        if (response.data.code === 0) {
+          setUserInfo(response.data.result);
+        } else {
+          console.error("Error fetching admin info: Invalid response code");
+        }
+      })
+      .catch(error => {
+        console.error("Error fetching admin info:", error);
+      });
+  }
+}, [roleDisplay]);
   return (
     <div className="min-h-screen bg-gray-100 p-8 lg:rounded-2xl">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -23,32 +66,47 @@ export const Dashboard = () => {
           <div className="w-full lg:w-100 rounded-lg shadow-lg overflow-hidden">
             
             <div className="p-4 bg-slate-500">
-              <h2 className="text-xl font-semibold mb-2 text-white text-center">Thông tin sinh viên</h2>
+              <h2 className="text-xl font-semibold mb-2 text-white text-center">Thông tin người dùng</h2>
             </div>
 
             <div className="p-4 bg-white">
-              <p className="text-black">
-                <span className="font-bold">Họ tên:</span> Trần Hải Đăng
-              </p>
-              <p className="text-black">
-                <span className="font-bold">MSSV:</span> 2211666
-              </p>
-              <p className="text-black">
-                <span className="font-bold">Khoa:</span> KH&KT Máy tính
-              </p>
-              <p className="text-black">
-                <span className="font-bold">Lớp:</span> MT22KH06
-              </p>
-              <p className="text-black">
-                <span className="font-bold">Số trang còn lại:</span> 15
-              </p>
-              <p className="text-black">
-                <span className="font-bold">Số dư BK Pay:</span> 12,000 VND
-              </p>
-
-              <button className="mt-4 bg-blue-500 hover:opacity-60 transition-all text-white px-4 py-2 rounded-lg">
-                Mua thêm giấy
-              </button>
+              {userInfo ? (
+                <>
+                  {roleDisplay === "STUDENT" ? (
+                    <>
+                      <p className="text-black">
+                        <span className="font-bold">Họ tên:</span> {userInfo.fullName}
+                      </p>
+                      <p className="text-black">
+                        <span className="font-bold">MSSV:</span> {userInfo.studentId}
+                      </p>
+                      <p className="text-black">
+                        <span className="font-bold">Email:</span> {userInfo.email}
+                      </p>
+                      <p className="text-black">
+                        <span className="font-bold">Số trang còn lại:</span> {userInfo.numOfPages}
+                      </p>
+                      <button className="mt-4 bg-blue-500 hover:opacity-60 transition-all text-white px-4 py-2 rounded-lg" onClick={handleClick}>
+                        Mua thêm giấy
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-black">
+                        <span className="font-bold">ID:</span> {userInfo.id}
+                      </p>
+                      <p className="text-black">
+                        <span className="font-bold">Email:</span> {userInfo.email}
+                      </p>
+                      <p className="text-black">
+                        <span className="font-bold">Họ tên:</span> {userInfo.fullName}
+                      </p>
+                    </>
+                  )}
+                </>
+              ) : (
+                <p>Đang tải thông tin...</p>
+              )}
             </div>
           </div>
 
