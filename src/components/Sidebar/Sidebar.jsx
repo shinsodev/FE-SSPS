@@ -111,6 +111,13 @@ const Sidebar = () => {
               <MdReport size={22} />
               <span>Report</span>
             </NavLink>
+            <NavLink
+              to="/admin/UserReviews"
+              className={({ isActive }) => getNavLinkClass(isActive)}
+            >
+              <CgProductHunt size={22} />
+              <span>UserReviews</span>
+            </NavLink>
           </>
         )}
 

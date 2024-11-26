@@ -62,7 +62,7 @@ function ItemPriter(props) {
         const token = localStorage.getItem('token');
         const response = await enablePrinter(token, printerID);
         console.log("res", response)
-        if (response.data.result === "Printer enabled successfully") {
+        if (response.data.result === "Printer enabled successfully.") {
           setCurrentStatus("ONLINE");
         }
         else {

@@ -160,7 +160,7 @@ export default function EditDialog(props) {
                 alignSelf={"center"}
                 fontWeight={"bold"}
               >
-                AvailabDoctype:
+                Doctype:
               </Grid2>
               <Grid2 size={{ xs: 12, sm: 9 }}>
                 {/* Available DocType */}
