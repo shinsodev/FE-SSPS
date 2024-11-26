@@ -132,8 +132,14 @@ const getRatingByStudentId = (token, studentId, page, size) => {
 };
 
 export {
-  apiAdminRegister, fetchAdminInfo, fetchAllUsers,
-  fetchAllPrinters, updatePrinter, enablePrinter,
-  disablePrinter, getRatingByPrintingId, getAllRating,
+  apiAdminRegister,
+  fetchAdminInfo,
+  fetchAllUsers,
+  fetchAllPrinters,
+  updatePrinter,
+  enablePrinter,
+  disablePrinter, 
+  getRatingByPrintingId,
+  getAllRating,
   getRatingByStudentId
 };
