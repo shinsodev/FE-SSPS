@@ -28,7 +28,7 @@ export default function PrinterDetail(props) {
         case "application/pdf":
           arrDocType += "pdf";
           break;
-        case "pplication/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+        case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
           arrDocType += "excel";
           break;
         case "image/tiff":
@@ -40,6 +40,8 @@ export default function PrinterDetail(props) {
         case "image/gif":
           arrDocType += "gif";
           break;
+        case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+          arrDocType += "doc";
       }
       if (index !== lengthList - 1) {
         arrDocType += ", ";
