@@ -3,6 +3,7 @@ import ReactPaginate from "react-paginate";
 import {
   fetchPrintRequests,
   fetchApprovePrint,
+  fetchAllPrintRequests,
 } from "../../services/AdminService";
 import { toast } from "react-toastify";
 
@@ -13,20 +14,55 @@ const PrintRequests = () => {
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedPrinterId, setSelectedPrintId] = useState(null);
-  const [printerIdInput, setPrinterIdInput] = useState("1");
-  const [isConfirm, setIsConfirm] = useState(false);
+  const [printerIdInput, setPrinterIdInput] = useState("");
+  const [printerIds, setPrinterIds] = useState([]);
   const [approving, setApproving] = useState(false);
 
   const [page, setPage] = useState(0); // Số trang hiện tại
   const [totalPages, setTotalPages] = useState(0); // Tổng số trang từ API
 
   const token = localStorage.getItem("token");
+  //get all printer id
+  useEffect(() => {
+    const getAllPrintRequests = async (token) => {
+      try {
+        let allRequests = [];
+        let page = 0;
+        let totalPages = 1;
+
+        while (page < totalPages) {
+          const response = await fetchAllPrintRequests(token, page, 3);
+          allRequests = allRequests.concat(response.data.result);
+          totalPages = response.data.totalPages; 
+          page++; 
+        }
+
+        const ids = Array.from(
+          new Set(
+            allRequests.map((printRequest) => printRequest.printerToPrintID)
+          )
+        ).sort((a, b) => a - b);
+
+        setPrinterIds(ids);
+      } catch (error) {
+        if (err.response && err.response.status === 400) {
+          setEmpty(true); 
+          setPrinterIds([]);
+        } else
+          toast.error("Failed to fetch print requests!");
+      }
+    };
+
+    getAllPrintRequests(token);
+  }, [approving]);
 
   // Fetch print requests from the API on component mount
   useEffect(() => {
+    if (!printerIdInput) {
+      setPrintRequests([]);
+      return;
+    }
     const getPrintRequests = async () => {
-      if (!printerIdInput) return;
-
       try {
         setLoading(true);
         const response = await fetchPrintRequests(
@@ -37,7 +73,7 @@ const PrintRequests = () => {
         );
         setPrintRequests(response.data.result);
 
-        setTotalPages(Math.ceil(response.data.result.length / 6 + 1)); // Đảm bảo totalPages được cập nhật chính xác
+        setTotalPages(response.data.totalPages);
         setEmpty(response.data.result.length === 0);
         setError(null);
       } catch (err) {
@@ -51,13 +87,14 @@ const PrintRequests = () => {
     };
 
     getPrintRequests();
-  }, [printerIdInput, page, isConfirm]);
+  }, [printerIdInput, page]);
 
   const approvePrintRequest = async (printerId) => {
     try {
       setApproving(true);
       await fetchApprovePrint(token, printerId);
       toast.success("Print request approved successfully!");
+      setPrinterIdInput("");
     } catch (err) {
       toast.error(
         `Error approving print request: ${err.message || "Unknown error"}`
@@ -65,11 +102,14 @@ const PrintRequests = () => {
     } finally {
       setApproving(false);
       setShowModal(false);
-      setIsConfirm(!isConfirm);
     }
   };
 
   const handleApprove = (printerId) => {
+    if (!printerId) {
+      toast.error("Please select a Printer ID.");
+      return;
+    }
     setSelectedPrintId(printerId);
     setShowModal(true);
   };
@@ -79,7 +119,7 @@ const PrintRequests = () => {
   const handlePrintInput = (value) => {
     setPrinterIdInput(value);
     setPage(0);
-  }
+  };
 
   return (
     <section className="p-8">
@@ -92,14 +132,19 @@ const PrintRequests = () => {
           <label htmlFor="printerIdInput" className="mr-2 font-medium">
             Enter Printer ID:
           </label>
-          <input
-            type="text"
+          <select
             id="printerIdInput"
             value={printerIdInput}
             onChange={(e) => handlePrintInput(e.target.value)}
             className="px-3 py-2 border border-gray-300 rounded-md"
-            placeholder="Enter printer ID"
-          />
+          >
+            <option value="">Select a Printer ID</option>
+            {printerIds.map((id, index) => (
+              <option key={index} value={id}>
+                {id}
+              </option>
+            ))}
+          </select>
         </div>
         <button
           className="ml-6 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700"
@@ -151,7 +196,7 @@ const PrintRequests = () => {
           <div className="flex items-center justify-center h-full py-10">
             <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-blue-500"></div>
             <span className="ml-3 text-lg font-medium text-blue-600">
-              Loading...
+              Choose printer ID ...
             </span>
           </div>
         )}

@@ -54,6 +54,18 @@ const fetchPrintRequests = (token, printerId, page = 0, size = 3) => {
   });
 };
 
+const fetchAllPrintRequests = (token, page = 0, size = 3) => {
+  return axios.get("/ssps/admin/get-all-print-requests", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    params: {
+      page: page,
+      size: size,
+    }
+  });
+}
+
 const fetchApprovePrint = (token, printId) => {
   return axios.post(`/ssps/admin/print/${printId}`, null, {
     headers: {
@@ -163,4 +175,5 @@ export {
   viewPrintLogs,
   generateUsageReports,
   deleteRatingAdmin,
+  fetchAllPrintRequests,
 };
