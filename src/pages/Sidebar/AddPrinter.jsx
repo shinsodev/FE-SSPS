@@ -19,14 +19,13 @@ import { useNavigate } from "react-router-dom";
 const listType = [
   { value: "application/pdf", name: "pdf" },
   {
-    value: "pplication/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    value: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     name: "excel",
   },
   { value: "image/tiff", name: "TIFF" },
   { value: "image/jpeg", name: "jpeg" },
   { value: "image/gif", name: "gif" },
-  {value: "application/vnd.openxmlformats-officedocument.wordprocessingml.document", name:"doc"},
-  {value: "application/vnd.openxmlformats-officedocument.spreadsheetml.document", name:"excel"}
+  { value: "application/vnd.openxmlformats-officedocument.wordprocessingml.document", name:"doc"},
 ];
 
 function AddPrinter() {
@@ -52,7 +51,7 @@ function AddPrinter() {
             break;
           case "excel":
             res =
-              "pplication/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
             break;
           case "TIFF":
             res = "image/tiff";
@@ -65,9 +64,6 @@ function AddPrinter() {
             break;
           case "doc":
             res = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-            break;
-          case "excel":
-            res = "application/vnd.openxmlformats-officedocument.spreadsheetml.document";
             break;
         }
         newData.push(res);

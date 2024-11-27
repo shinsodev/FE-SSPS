@@ -77,12 +77,11 @@ export default function FilterPrinter(props) {
 const availableTypes = [
   { value: "application/pdf", title: "pdf" },
   {
-    value: "pplication/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    value: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     title: "excel",
   },
   { value: "image/tiff", title: "TIFF" },
   { value: "image/jpeg", title: "jpeg" },
   { value: "image/gif", title: "gif" },
   {value: "application/vnd.openxmlformats-officedocument.wordprocessingml.document", title:"doc"},
-  {value: "application/vnd.openxmlformats-officedocument.spreadsheetml.document", title:"excel"}
 ];
