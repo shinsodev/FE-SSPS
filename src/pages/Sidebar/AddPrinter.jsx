@@ -25,6 +25,8 @@ const listType = [
   { value: "image/tiff", name: "TIFF" },
   { value: "image/jpeg", name: "jpeg" },
   { value: "image/gif", name: "gif" },
+  {value: "application/vnd.openxmlformats-officedocument.wordprocessingml.document", name:"doc"},
+  {value: "application/vnd.openxmlformats-officedocument.spreadsheetml.document", name:"excel"}
 ];
 
 function AddPrinter() {
@@ -60,6 +62,12 @@ function AddPrinter() {
             break;
           case "jpeg":
             res = "image/jpeg";
+            break;
+          case "doc":
+            res = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+            break;
+          case "excel":
+            res = "application/vnd.openxmlformats-officedocument.spreadsheetml.document";
             break;
         }
         newData.push(res);
