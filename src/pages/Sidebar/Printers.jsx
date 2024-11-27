@@ -11,7 +11,7 @@ const Printers = () => {
   const [pageCurr, setPageCurr] = useState(0);
   const [printerDetail, setPrinterDetail] = useState(null);
   const [listPrinter, setListPrinter] = useState([]);
-  const [isFilter, setFilter] = useState(false);
+  const [dataFilter, setDataFilter] = useState([]);
 
   function handleSelectPrinter(printerId) {
     setSelectPrinter({ id: printerId });
@@ -39,6 +39,7 @@ const Printers = () => {
       if (data.status === 200) {
         setListPrinter(data.data.result);
         setPageCurr(pageN);
+        setTotalPages(data.data.totalPages);
       } else {
         throw "Error from fetching data";
       }
@@ -47,27 +48,29 @@ const Printers = () => {
     }
   }
 
-  async function getListPrinterFilter(listFilter) {
+  async function getListPrinterFilter(listFilter, pageN) {
+    const dataBody = {
+      requiredDocumentType: listFilter,
+      page: pageN,
+      size: 3,
+    };
     const token = localStorage.getItem("token");
 
     try {
       const result = await axios.post(
         "/ssps/students/match-printers",
-        listFilter,
+        dataBody,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          params: {
-            page : 0,
-            size : 3
-          }
         }
       );
 
       if (result.status === 200) {
         setListPrinter(result.data.result);
-        setFilter(true);
+        setPageCurr(pageN);
+        setTotalPages(result.data.totalPages);
       } else {
         throw "Error from querying match printers";
       }
@@ -78,7 +81,13 @@ const Printers = () => {
 
   async function handlePageClick(e) {
     try {
-      await getListPrinter(e.selected);
+      if (dataFilter.length !== 0) {
+        // Truong hop filter
+        await getListPrinterFilter(dataFilter, e.selected);
+      } else {
+        // Truong hop filter
+        await getListPrinter(e.selected);
+      }
     } catch (err) {
       console.error(err.message);
     }
@@ -95,7 +104,7 @@ const Printers = () => {
   async function restoreOrigin() {
     try {
       await getListPrinter(0);
-      setFilter(false);
+      setDataFilter([]);
     } catch (err) {
       console.log(err);
     }
@@ -104,16 +113,17 @@ const Printers = () => {
   async function setFilterType(data) {
     try {
       // Khong loc
-      if (data.length === 0 && isFilter === false) {
+      if (data.length === 0 && dataFilter.length === 0) {
         return;
-      } else if (data.length === 0 && isFilter === true) {
+      } else if (data.length === 0 && dataFilter.length !== 0) {
         await restoreOrigin();
       } else {
         let listData = [];
         data.map((item) => {
           listData.push(item.value);
         });
-        await getListPrinterFilter(listData);
+        setDataFilter(listData);
+        await getListPrinterFilter(listData, 0);
       }
     } catch (err) {
       console.log(err);
@@ -189,35 +199,33 @@ const Printers = () => {
                 ))}
               </div>
             </div>
-            {!isFilter && (
-              <ReactPaginate
-                breakLabel="..."
-                nextLabel="NEXT →"
-                onPageChange={handlePageClick}
-                pageRangeDisplayed={3}
-                pageCount={totalPages}
-                previousLabel="← PREVIOUS"
-                className="flex space-x-2 items-center justify-center my-8"
-                pageClassName="page-item"
-                pageLinkClassName="page-link px-4 py-2 hover:bg-gray-900/10 rounded-md shadow-2xl"
-                activeLinkClassName="active bg-black text-white" // Active page style
-                previousClassName="page-item"
-                previousLinkClassName="page-link hover:bg-gray-900/10 px-4 py-2 rounded-md"
-                nextClassName="page-item"
-                nextLinkClassName="page-link hover:bg-gray-900/10 px-4 py-2 rounded-md"
-                breakClassName="page-item"
-                breakLinkClassName="page-link"
-                disabledLinkClassName="text-gray-400 cursor-not-allowed"
-                containerClassName="pagination"
-                forcePage={pageCurr}
-              />
-            )}
+            <ReactPaginate
+              breakLabel="..."
+              nextLabel="NEXT →"
+              onPageChange={handlePageClick}
+              pageRangeDisplayed={3}
+              pageCount={totalPages}
+              previousLabel="← PREVIOUS"
+              className="flex space-x-2 items-center justify-center my-8"
+              pageClassName="page-item"
+              pageLinkClassName="page-link px-4 py-2 hover:bg-gray-900/10 rounded-md shadow-2xl"
+              activeLinkClassName="active bg-black text-white" // Active page style
+              previousClassName="page-item"
+              previousLinkClassName="page-link hover:bg-gray-900/10 px-4 py-2 rounded-md"
+              nextClassName="page-item"
+              nextLinkClassName="page-link hover:bg-gray-900/10 px-4 py-2 rounded-md"
+              breakClassName="page-item"
+              breakLinkClassName="page-link"
+              disabledLinkClassName="text-gray-400 cursor-not-allowed"
+              containerClassName="pagination"
+              forcePage={pageCurr}
+            />
           </section>
         </>
       )}
       {selectPrinter !== null && (
         <>
-          <UploadFilePage idPrinter={selectPrinter.id}/>
+          <UploadFilePage idPrinter={selectPrinter.id} />
         </>
       )}
       {printerDetail !== null && (
