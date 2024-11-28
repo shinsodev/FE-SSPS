@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { getRatingByPrintingLogId, getAllRating, getRatingByStudentId, } from "../../services/AdminService";
+import { getRatingByPrintingLogId, getAllRating, getRatingByStudentId, deleteRatingAdmin, } from "../../services/AdminService";
+import { Button } from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const Rating = () => {
     const [activeTab, setActiveTab] = useState("all"); // "all", "printingRequest", "student"
@@ -208,7 +210,24 @@ const Rating = () => {
         );
     };
 
-
+    // delete rating
+    const handleDeleteRating = async (idRating) => {
+        try {
+            await deleteRatingAdmin(idRating)
+            // handle fetch data again
+            // fetch data again
+            // setPage(1)
+            // if(activeTab === "all") {
+            //     await fetchAllRating();
+            // } else if( activeTab === "printingRequest"){
+            //     await fetchRatingByPrintingLogId()
+            // } else if (activeTab === "student") {
+            //     await fetchRatingByStudentId()
+            // }
+        } catch(err) {
+            console.error(err.message)
+        }
+    }
 
     // Render ratings list
     const renderRatings = () => {
@@ -217,7 +236,7 @@ const Rating = () => {
                 key={rating.id}
                 className="bg-gray-200 p-8 rounded-md shadow-md grid items-center mb-5"
                 style={{
-                    gridTemplateColumns: "3fr 1.5fr 1fr 2fr 3fr", // Tùy chỉnh khoảng cách
+                    gridTemplateColumns: "3fr 1.5fr 1fr 2fr 2fr 1fr", // Tùy chỉnh khoảng cách
                     columnGap: "15px", // Khoảng cách giữa các cột
                 }}
             >
@@ -284,6 +303,9 @@ const Rating = () => {
                     })}
                 </div>
             </div>
+                <div className="flex items-center">
+                <Button color= "error" startIcon={<DeleteIcon />} onClick={()=>handleDeleteRating(rating.id)}>DELETE</Button>
+                </div>
         
 
             </div>
