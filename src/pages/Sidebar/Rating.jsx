@@ -213,7 +213,18 @@ const Rating = () => {
     // delete rating
     const handleDeleteRating = async (idRating) => {
         try {
-            await deleteRatingAdmin(idRating)
+            await deleteRatingAdmin(idRating);
+            if (activeTab === "all") {
+                fetchAllRating();
+            } 
+            // Nếu đang ở tab "printingRequest"
+            else if (activeTab === "printingRequest") {
+                fetchRatingByPrintingLogId();
+            } 
+            // Nếu đang ở tab "student"
+            else if (activeTab === "student") {
+                fetchRatingByStudentId();
+            }
             // handle fetch data again
             // fetch data again
             // setPage(1)
