@@ -35,7 +35,7 @@ import ConfirmDocument from "./pages/Sidebar/ConfirmDocument";
 import { RatingPageStudent } from "./pages/Rating/RatingPrinting";
 import { RatingPageAdmin } from "./pages/Rating/RatingPrintingAdmin";
 // import PrivateRoute from './router/PrivateRoutes'
-
+import Rating from "./pages/Sidebar/Rating";
 function App() {
   return (
     <>
@@ -232,6 +232,18 @@ function App() {
             <DashboardLayout>
               <PrintRequests />
             </DashboardLayout>
+          }
+        />
+        <Route
+          path="/admin/Rating"
+          element={
+            // <PrivateRoute>
+            // <Layout>
+            <DashboardLayout>
+              <Rating />
+            </DashboardLayout>
+            // </Layout>
+            // </PrivateRoute>
           }
         />
         <Route

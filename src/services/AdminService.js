@@ -163,12 +163,78 @@ async function deleteRatingAdmin(idRating) {
     notifyError("Delete failed!!!");
   }
 }
-
+const fetchPrinterById = (token, printerId) => {
+  return axios.get(`/ssps/admin/get-printer/${printerId}`,{
+    headers: {
+      Authorization: `Bearer ${token}`, // Thêm token vào headers
+    },
+  });
+};
+const enablePrinter = (token, printerID) => {
+  return axios.put(`/ssps/admin/enable-printer/${printerID}`,{}, {
+    headers: {
+      Authorization: `Bearer ${token}`, // Thêm token vào headers
+    },
+  });
+};
+const disablePrinter = (token, printerID) => {
+  return axios.put(`/ssps/admin/disable-printer/${printerID}`,{}, {
+    headers: {
+      Authorization: `Bearer ${token}`, // Thêm token vào headers
+    },
+  });
+};
+const updatePrinter = (token, printerID, printerLocation, status, papersLeft, availableDocType) => {
+  return axios.patch(`/ssps/admin/update-printer/${printerID}`,
+    {
+      printerLocation: printerLocation,
+      // status: status,
+      papersLeft: papersLeft,
+      availableDocType: availableDocType
+    }
+    ,{
+    headers: {
+      Authorization: `Bearer ${token}`, // Thêm token vào headers
+    },
+  });
+};
+const getRatingByPrintingLogId = (token, printingId, page, size) => {
+  return axios.get(`/ssps/admin/get-rating-by-printingLog-id/${printingId}?page=${page}&size=${size}`,{
+    headers: {
+      Authorization: `Bearer ${token}`, // Thêm token vào headers
+    },
+  });
+};
+const getAllRating = (token, page, size) => {
+  return axios.get(`/ssps/admin/get-all-ratings?page=${page}&size=${size}`, {
+    headers: {
+      Authorization: `Bearer ${token}`, // Thêm token vào headers
+    },
+  });
+};
+const getRatingByStudentId = (token, studentId, page, size) => {
+  return axios.get(`/ssps/admin/get-ratings-by-student-id/${studentId}?page=${page}&size=${size}`,{
+    headers: {
+      Authorization: `Bearer ${token}`, // Thêm token vào headers
+    },
+  });
+};
+const fetchAllPrinters = (token, currentPage, size) => {
+  return axios.get(`/ssps/admin/get-all-printers?page=${currentPage - 1}&size=${size}`, {
+    headers: {
+      Authorization: `Bearer ${token}`, // Thêm token vào headers
+    },
+  });
+};
 export {
+  fetchPrinterById,
   apiAdminRegister,
   fetchAdminInfo,
   fetchAllUsers,
   fetchPrintRequests,
+  updatePrinter,
+  enablePrinter,
+  disablePrinter,
   fetchApprovePrint,
   addPrinter,
   deletePrinter,
@@ -176,4 +242,8 @@ export {
   generateUsageReports,
   deleteRatingAdmin,
   fetchAllPrintRequests,
+  getRatingByPrintingLogId,
+  getAllRating,
+  getRatingByStudentId,
+  fetchAllPrinters
 };

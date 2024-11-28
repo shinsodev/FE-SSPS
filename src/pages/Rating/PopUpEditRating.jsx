@@ -12,18 +12,18 @@ import { notifySuccess } from "../../components/Notification/NotifySuccess";
 
 export default function EditRatingPopUp(props) {
   const { closeEdit, restoreDefault } = props;
-  const { idRating } = props.data;
+  const [idRating, setIdRating ] =  React.useState(props.data.id);
   const [open, setOpen] = React.useState(props.open);
   const [rating, setRating] = React.useState(props.data.rating);
   const [comment, setComment] = React.useState(props.data.comment);
-
+  const [reload, setReload] = React.useState(0);
   const handleClose = () => {
     closeEdit();
   };
 
   React.useEffect(() => {
     setOpen(props.open);
-  }, [props.open]);
+  }, [props.open, reload]);
 
   async function updateRating() {
     const token = localStorage.getItem("token");
@@ -44,6 +44,8 @@ export default function EditRatingPopUp(props) {
       if (result.status === 200) {
         notifySuccess("Update success");
         restoreDefault();
+        props.reloadData();
+        // window.location.reload()
       } else {
         throw "Update rating failed!!!";
       }

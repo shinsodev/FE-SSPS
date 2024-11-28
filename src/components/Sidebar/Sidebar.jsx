@@ -114,6 +114,13 @@ const Sidebar = () => {
               <span>Print Request</span>
             </NavLink>
             <NavLink
+              to="/admin/Rating"
+              className={({ isActive }) => getNavLinkClass(isActive)}
+            >
+              <FaSignalMessenger size={22} />
+              <span>Rating</span>
+            </NavLink>
+            <NavLink
               to="/admin/printerlist"
               className={({ isActive }) => getNavLinkClass(isActive)}
             >

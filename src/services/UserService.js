@@ -141,5 +141,14 @@ async function deleteRatingStudents(idRating) {
     notifyError("Delete failed!!!");
   }
 }
+const getStudentRatingsByPrintingLogId = (token, printingLogId, page, size) => {
+  return axios.get(`/ssps/students/get-rating-by-printingLog-id/${printingLogId}?page=${page}&size=${size}`, {
+    headers: {
+      Authorization: `Bearer ${token}`, // Gửi token xác thực
+    }
+  });
+};
 
-export { apiUserRegister, apiLogin, fetchUserInfo, buyPaper, confirmReceive, getPrintLogs, getPrintRequests, deleteRatingStudents };
+export { apiUserRegister, apiLogin, fetchUserInfo, buyPaper, confirmReceive, getPrintLogs, getPrintRequests, deleteRatingStudents,
+  getStudentRatingsByPrintingLogId
+ };
