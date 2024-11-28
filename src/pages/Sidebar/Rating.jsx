@@ -90,7 +90,9 @@ const Rating = () => {
     const handleStudentId = () => {
         setActiveTab("student")
     }
-
+    const handlePreviousPage = () => {
+        if (page > 0) setPage(page - 1);
+    };
     // Fetch ratings based on active tab
     useEffect(() => {
 
@@ -113,9 +115,7 @@ const Rating = () => {
         if (page < totalPages - 1) setPage(page + 1);
     };
 
-    const handlePreviousPage = () => {
-        if (page > 0) setPage(page - 1);
-    };
+    
 
     // Render pagination
     const renderPagination = () => {
