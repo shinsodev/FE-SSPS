@@ -25,7 +25,7 @@ import Payment from "./pages/Sidebar/Payment";
 import UploadFilePage from "./pages/Sidebar/UploadFile";
 import FileConfigurationPage from "./pages/Printer/FileConfiguration";
 import { ToastContainer } from "react-toastify";
-import Report from "./pages/Sidebar/Report";
+// import Report from "./pages/Sidebar/Report";
 import StudentReport from "./pages/Sidebar/StudentReport";
 import StudentRegister from "./pages/Register/StudentRegister";
 import AdminRegister from "./pages/Register/AdminRegister";
@@ -188,7 +188,7 @@ function App() {
             // </PrivateRoute>
           }
         />
-        <Route
+        {/* <Route
           path="/admin/report"
           element={
             // <PrivateRoute>
@@ -199,7 +199,7 @@ function App() {
             // </Layout>
             // </PrivateRoute>
           }
-        />
+        /> */}
 
         <Route
           path="/admin/printerlist"
