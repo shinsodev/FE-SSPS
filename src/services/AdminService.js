@@ -157,8 +157,8 @@ async function deleteRatingAdmin(idRating) {
     notifyError("Delete failed!!!");
   }
 }
-const getRatingByPrintingId = (token, printingId, page, size) => {
-  return axios.get(`/ssps/admin/get-rating-by-printing-id/${printingId}?page=${page}&size=${size}`,{
+const getRatingByPrintingLogId = (token, printingId, page, size) => {
+  return axios.get(`/ssps/admin/get-rating-by-printingLog-id/${printingId}?page=${page}&size=${size}`,{
     headers: {
       Authorization: `Bearer ${token}`, // Thêm token vào headers
     },
@@ -233,7 +233,7 @@ export {
   viewPrintLogs,
   generateUsageReports,
   deleteRatingAdmin,
-  getRatingByPrintingId,
+  getRatingByPrintingLogId,
   getAllRating,
   getRatingByStudentId,
   fetchAllPrinters

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getRatingByPrintingId, getAllRating, getRatingByStudentId, } from "../../services/AdminService";
+import { getRatingByPrintingLogId, getAllRating, getRatingByStudentId, } from "../../services/AdminService";
 
 const Rating = () => {
     const [activeTab, setActiveTab] = useState("all"); // "all", "printingRequest", "student"
@@ -8,11 +8,11 @@ const Rating = () => {
     const [size, setSize] = useState(3);
     const [totalPages, setTotalPages] = useState(0);
 
-    const fetchRatingByPrintingId = async () => {
+    const fetchRatingByPrintingLogId = async () => {
         try {
             const token = localStorage.getItem("token");
 
-            const response = await getRatingByPrintingId(token, printingLogId, page, size);
+            const response = await getRatingByPrintingLogId(token, printingLogId, page, size);
             setTotalPages(response.data.totalPages);
             setRatings(response.data.result);
 
@@ -65,12 +65,13 @@ const Rating = () => {
     // States for filtering
     const [printingRequestId, setPrintingRequestId] = useState("");
     const [studentId, setStudentId] = useState("");
+    const [printingLogId, setPrintingLogId] = useState("");
 
     const handleOnSearch = () => {
         const token = localStorage.getItem('token');
         if (activeTab === "printingRequest") {
             console.log(">>PrintingLogId", printingRequestId)
-            fetchRatingByPrintingId(token, printingRequestId, page, size);
+            fetchRatingByPrintingLogId(token, printingRequestId, page, size);
         }
         else {
             console.log(">>student", studentId)
@@ -95,7 +96,7 @@ const Rating = () => {
 
         if (activeTab === "printingRequest") {
             if (printingRequestId) {
-                fetchRatingByPrintingId(printingRequestId);
+                fetchRatingByPrintingLogId(printingRequestId);
             }
         } else if (activeTab === "student") {
             if (studentId) {
@@ -334,8 +335,8 @@ const Rating = () => {
                         type="text"
                         placeholder="Nhập mã yêu cầu in"
                         className="p-2 border border-gray-300 rounded flex-grow max-w-[300px] w-full"
-                        value={printingRequestId}
-                        onChange={(e) => setPrintingRequestId(e.target.value)}
+                        value={printingLogId}
+                        onChange={(e) => setPrintingLogId(e.target.value)}
                     />
                     <button
                         className="bg-blue-600 text-white px-4 py-2 rounded"
