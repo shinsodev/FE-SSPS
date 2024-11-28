@@ -49,9 +49,9 @@ const UserList = () => {
               <th scope="col" className="px-6 py-3">
                 StudentID
               </th>
-              <th scope="col" className="px-6 py-3">
+              {/* <th scope="col" className="px-6 py-3">
                 Action
-              </th>
+              </th> */}
             </tr>
           </thead>
           <tbody>
@@ -71,7 +71,7 @@ const UserList = () => {
                     </div>
                   </td>
                   <td className="px-6 py-4">{user.studentId}</td>
-                  <td className="px-6 py-4 text-center">
+                  {/* <td className="px-6 py-4 text-center">
                     <div className="flex items-center gap-3">
                       <NavLink to="#" className="font-medium text-indigo-500">
                         <FaEye size={20} />
@@ -86,7 +86,7 @@ const UserList = () => {
                         <FaTrash size={20} />
                       </button>
                     </div>
-                  </td>
+                  </td> */}
                 </tr>
               ))
             ) : (

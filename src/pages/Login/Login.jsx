@@ -35,7 +35,7 @@ const Login = () => {
         }
 
         toast.success("Đăng nhập thành công!");
-        navigate("/dashboard");
+        navigate("/");
       } else {
         toast.error("Đăng nhập thất bại.");
       }

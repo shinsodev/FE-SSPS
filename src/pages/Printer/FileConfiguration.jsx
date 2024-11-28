@@ -6,15 +6,16 @@ import SelectComponent from "./SelectComponent";
 import { notifySuccess } from "../../components/Notification/NotifySuccess";
 import { TextField, Box } from "@mui/material";
 import { uploadFile } from "../../services/UserService";
-const listSelect = ["A1", "A2", "A3", "A4"];
+import { Bounce, toast } from "react-toastify";
+const listSelect = ["A3", "A4"];
 const listSelect1 = ["1 mặt", "2 mặt"];
 const listSelect2 = ["Có", "Không"];
 
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 function FileConfigurationPage({ printerId, uploadedFile }) {
   const [copies, setCopies] = useState(1);
-  const [size, setSize] = useState("A1"); // Kích thước mặc định
+  const [size, setSize] = useState("A4"); // Kích thước mặc định
   const [printType, setPrintType] = useState("1 mặt"); // Loại in mặc định
   const [color, setColor] = useState("Không"); // Màu in mặc định
   // const { userId, fileId } = useParams();
@@ -43,6 +44,7 @@ function FileConfigurationPage({ printerId, uploadedFile }) {
     console.log(size);
     console.log(printType);
     console.log(color);
+    console.log(printerId);
     try {
       const uploadConfig = {
         printerId,
@@ -70,18 +72,20 @@ function FileConfigurationPage({ printerId, uploadedFile }) {
         // có thể thêm các trường hợp response khác nếu có
         const { result } = response.data;
 
-        notifySuccess(result); // Hiển thị thông báo
+        // notifySuccess(result); // Hiển thị thông báo
 
         if (
-          result.includes(
-            "Student's account doesn't have enough pages to print this document"
-          )
+          result ===
+          "Student's account doesn't have enough pages to print this document"
         ) {
           navigate("/payment"); // Chuyển hướng đến trang thanh toán
-        } else if (result.includes("not supported")) {
-          navigate("/printers"); // Chuyển hướng đến trang tải tài liệu
+          toast.error(result);
+        } else if (result === "Printer is not supported") {
+          handleCancel(); // Chuyển hướng đến trang tải tài liệu
+          toast.error(result);
         } else {
-          navigate("/studentreport"); // Chuyển hướng đến trang báo cáo
+          navigate("/confirm"); // Chuyển hướng đến trang báo cáo
+          notifySuccess(result); // Hiển thị thông báo
         }
       } else {
         console.error("Lỗi cấu hình:", response.data);

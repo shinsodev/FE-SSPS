@@ -36,156 +36,163 @@ import { RatingPageStudent } from "./pages/Rating/RatingPrinting";
 import { RatingPageAdmin } from "./pages/Rating/RatingPrintingAdmin";
 // import PrivateRoute from './router/PrivateRoutes'
 import Rating from "./pages/Sidebar/Rating";
+import PublicRoute from "./public/PublicRoute";
+import PrivateRoute from "./admin/PrivateRoute";
+import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 function App() {
   return (
     <>
       <Routes>
-        <Route
+        {/* <Route
           path="/"
           element={
             // <DashboardLayout>
             <Home />
             // </DashboardLayout>
           }
-        ></Route>
+        ></Route> */}
 
         <Route
           path="login"
           element={
-            // <DashboardLayout>
-            <Login />
-            // </DashboardLayout>
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
           }
         ></Route>
 
-        <Route path="/register/student" element={<StudentRegister />} />
-        <Route path="/register/admin" element={<AdminRegister />} />
+        <Route
+          path="/register/student"
+          element={
+            <PublicRoute>
+              <StudentRegister />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/register/admin"
+          element={
+            <PublicRoute>
+              <AdminRegister />
+            </PublicRoute>
+          }
+        />
 
         <Route
-          path="/dashboard"
+          path="/"
           element={
-            // <PrivateRoute>
-            // <Layout>
-            <DashboardLayout>
-              <Dashboard />
-            </DashboardLayout>
-            // </Layout>
-            // </PrivateRoute>
+            <PrivateRoute>
+              <DashboardLayout>
+                <Dashboard />
+              </DashboardLayout>
+            </PrivateRoute>
           }
         />
         <Route
           path="/Payment"
           element={
-            // <PrivateRoute>
-            // <Layout>
-            <DashboardLayout>
-              <Payment />
-            </DashboardLayout>
-            // </Layout>
-            // </PrivateRoute>
+            <PrivateRoute studentOnly={true}>
+              <DashboardLayout>
+                <Payment />
+              </DashboardLayout>
+            </PrivateRoute>
           }
         />
         <Route
           path="/printers"
           element={
-            // <PrivateRoute>
-            // <Layout>
-            <DashboardLayout>
-              <Printers />
-            </DashboardLayout>
-            // </Layout>
-            // </PrivateRoute>
+            <PrivateRoute studentOnly={true}>
+              <DashboardLayout>
+                <Printers />
+              </DashboardLayout>
+            </PrivateRoute>
           }
         />
 
         <Route
           path="/uploadFile/fileConfigurationPage"
           element={
-            // <Layout>
-            <DashboardLayout>
-              <FileConfigurationPage />
-            </DashboardLayout>
-            // </Layout>
+            <PrivateRoute studentOnly={true}>
+              <DashboardLayout>
+                <FileConfigurationPage />
+              </DashboardLayout>
+            </PrivateRoute>
           }
         />
 
         <Route
           path="/uploadFile"
           element={
-            // <Layout>
-            <DashboardLayout>
-              <UploadFilePage />
-            </DashboardLayout>
-            // </Layout>
+            <PrivateRoute studentOnly={true}>
+              <DashboardLayout>
+                <UploadFilePage />
+              </DashboardLayout>
+            </PrivateRoute>
           }
         />
 
         <Route
           path="/profile"
           element={
-            // <PrivateRoute>
-            // <Layout>
-            <DashboardLayout>
-              <UserProfile />
-            </DashboardLayout>
-            // </Layout>
-            // </PrivateRoute>
+            <PrivateRoute>
+              <DashboardLayout>
+                <UserProfile />
+              </DashboardLayout>
+            </PrivateRoute>
           }
         />
 
         <Route
           path="/studentreport"
           element={
-            // <PrivateRoute>
-            // <Layout>
-            <DashboardLayout>
-              <StudentReport />
-            </DashboardLayout>
-            // </Layout>
-            // </PrivateRoute>
+            <PrivateRoute studentOnly={true}>
+              <DashboardLayout>
+                <StudentReport />
+              </DashboardLayout>
+            </PrivateRoute>
           }
         />
         <Route
           path="/confirm"
           element={
-            // <PrivateRoute>
-            // <Layout>
-            <DashboardLayout>
-              <ConfirmDocument />
-            </DashboardLayout>
-            // </Layout>
-            // </PrivateRoute>
+            <PrivateRoute studentOnly={true}>
+              <DashboardLayout>
+                <ConfirmDocument />
+              </DashboardLayout>
+            </PrivateRoute>
           }
         />
 
         <Route
           path="/student/rating/:idPrinting"
           element={
-            <DashboardLayout>
-              <RatingPageStudent />
-            </DashboardLayout>
+            <PrivateRoute studentOnly={true}>
+              <DashboardLayout>
+                <RatingPageStudent />
+              </DashboardLayout>
+            </PrivateRoute>
           }
         />
-        
+
         <Route
           path="/admin/rating/:idPrinting"
           element={
-            <DashboardLayout>
-              <RatingPageAdmin />
-            </DashboardLayout>
+            <PrivateRoute adminOnly={true}>
+              <DashboardLayout>
+                <RatingPageAdmin />
+              </DashboardLayout>
+            </PrivateRoute>
           }
         />
 
         <Route
           path="/admin/userlist"
           element={
-            // <PrivateRoute>
-            // <Layout>
-            <DashboardLayout>
-              <UserList />
-            </DashboardLayout>
-            // </Layout>
-            // </PrivateRoute>
+            <PrivateRoute adminOnly={true}>
+              <DashboardLayout>
+                <UserList />
+              </DashboardLayout>
+            </PrivateRoute>
           }
         />
         {/* <Route
@@ -204,56 +211,57 @@ function App() {
         <Route
           path="/admin/printerlist"
           element={
-            // <PrivateRoute>
-            // <Layout>
-            <DashboardLayout>
-              <AdminPrinterList />
-            </DashboardLayout>
-            // </Layout>
-            // </PrivateRoute>
+            <PrivateRoute adminOnly={true}>
+              <DashboardLayout>
+                <AdminPrinterList />
+              </DashboardLayout>
+            </PrivateRoute>
           }
         />
 
         <Route
           path="/admin/addprinter"
           element={
-            // <PrivateRoute>
-            // <Layout>
-            <DashboardLayout>
-              <AddPrinter />
-            </DashboardLayout>
-            // </Layout>
-            // </PrivateRoute>
+            <PrivateRoute adminOnly={true}>
+              <DashboardLayout>
+                <AddPrinter />
+              </DashboardLayout>
+            </PrivateRoute>
           }
         />
         <Route
           path="/admin/printrequests"
           element={
-            <DashboardLayout>
-              <PrintRequests />
-            </DashboardLayout>
+            <PrivateRoute adminOnly={true}>
+              <DashboardLayout>
+                <PrintRequests />
+              </DashboardLayout>
+            </PrivateRoute>
           }
         />
         <Route
           path="/admin/Rating"
           element={
-            // <PrivateRoute>
-            // <Layout>
-            <DashboardLayout>
-              <Rating />
-            </DashboardLayout>
-            // </Layout>
-            // </PrivateRoute>
+            <PrivateRoute adminOnly={true}>
+              <DashboardLayout>
+                <Rating />
+              </DashboardLayout>
+            </PrivateRoute>
           }
         />
         <Route
           path="/admin/generate"
           element={
-            <DashboardLayout>
-              <GenerateReport />
-            </DashboardLayout>
+            <PrivateRoute adminOnly={true}>
+              <DashboardLayout>
+                <GenerateReport />
+              </DashboardLayout>
+            </PrivateRoute>
           }
         />
+
+        {/* Route cho 404 - Bất kỳ đường dẫn nào không khớp */}
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <ToastContainer />
     </>

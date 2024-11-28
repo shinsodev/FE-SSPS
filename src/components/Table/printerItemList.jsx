@@ -12,9 +12,7 @@ function ItemPriter(props) {
   const { editPrinter, deletePrinter } = props;
   const [isModalOpen, setIsModalOpen] = useState(false);
   function handleEditPrinter() {
-
     editPrinter(printerID);
-
   }
   const getReadableDocTypes = (types) => {
     return types
@@ -38,13 +36,18 @@ function ItemPriter(props) {
   const listType = [
     { value: "application/pdf", title: "pdf" },
     {
-      value: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      value:
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       title: "excel",
     },
     { value: "image/tiff", title: "TIFF" },
     { value: "image/jpeg", title: "jpeg" },
     { value: "image/gif", title: "gif" },
-    { value: "application/vnd.openxmlformats-officedocument.wordprocessingml.document", title: "doc" },
+    {
+      value:
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      title: "doc",
+    },
   ];
   const [open, setOpen] = useState(false);
   function handleDeletePrinter() {
@@ -66,9 +69,7 @@ function ItemPriter(props) {
 
   //  }
   // }
-  useEffect(() => {
-
-  }, [status]);
+  useEffect(() => {}, [status]);
 
   const confirmStatusChange = async () => {
     const token = localStorage.getItem("token");
@@ -76,7 +77,6 @@ function ItemPriter(props) {
       const response = await disablePrinter(token, printerID);
       if (response.data.result === "Printer disabled successfully") {
         setCurrentStatus("OFFLINE");
-
       }
     } else {
       const response = await enablePrinter(token, printerID);
@@ -86,8 +86,7 @@ function ItemPriter(props) {
     }
     setIsModalOpen(false);
   };
-  useEffect(() => {
-  }, [currentStatus]);
+  useEffect(() => {}, [currentStatus]);
   return (
     <>
       <tr className="bg-white border-b hover:bg-gray-50">
@@ -110,13 +109,13 @@ function ItemPriter(props) {
         </td>
         <td className="px-6 py-4 text-center">
           <div className="flex items-center gap-3">
-            <NavLink
+            {/* <NavLink
               to="#"
               type="button"
               className="font-medium text-indigo-500"
             >
               <FaEye size={20} />
-            </NavLink>
+            </NavLink> */}
             <button
               className="font-medium text-green-500"
               onClick={handleEditPrinter}
@@ -138,12 +137,13 @@ function ItemPriter(props) {
         closeDialog={closeDialog}
         submitDelete={submitDelete}
       />
-    {isModalOpen && (
+      {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-6 rounded shadow-md max-w-sm w-full">
             <h2 className="text-lg font-bold mb-4">Thông báo!</h2>
             <p>
-              Bạn có muốn thay đổi trạng thái máy in thành <strong>{newStatus}</strong>?
+              Bạn có muốn thay đổi trạng thái máy in thành{" "}
+              <strong>{newStatus}</strong>?
             </p>
             <div className="flex justify-end gap-3 mt-6">
               <button
@@ -162,8 +162,7 @@ function ItemPriter(props) {
           </div>
         </div>
       )}
-      </>
-
+    </>
   );
 }
 export default ItemPriter;
