@@ -114,19 +114,26 @@ const Sidebar = () => {
               <span>Print Request</span>
             </NavLink>
             <NavLink
+              to="/admin/Rating"
+              className={({ isActive }) => getNavLinkClass(isActive)}
+            >
+              <FaSignalMessenger size={22} />
+              <span>Rating</span>
+            </NavLink>
+            <NavLink
               to="/admin/printerlist"
               className={({ isActive }) => getNavLinkClass(isActive)}
             >
               <CgProductHunt size={22} />
               <span>All Printer List</span>
             </NavLink>
-            <NavLink
+            {/* <NavLink
               to="/admin/report"
               className={({ isActive }) => getNavLinkClass(isActive)}
             >
               <MdReport size={22} />
               <span>Printing Log</span>
-            </NavLink>
+            </NavLink> */}
             <NavLink
               to="/admin/generate"
               className={({ isActive }) => getNavLinkClass(isActive)}

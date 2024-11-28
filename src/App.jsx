@@ -25,7 +25,7 @@ import Payment from "./pages/Sidebar/Payment";
 import UploadFilePage from "./pages/Sidebar/UploadFile";
 import FileConfigurationPage from "./pages/Printer/FileConfiguration";
 import { ToastContainer } from "react-toastify";
-import Report from "./pages/Sidebar/Report";
+// import Report from "./pages/Sidebar/Report";
 import StudentReport from "./pages/Sidebar/StudentReport";
 import StudentRegister from "./pages/Register/StudentRegister";
 import AdminRegister from "./pages/Register/AdminRegister";
@@ -35,7 +35,7 @@ import ConfirmDocument from "./pages/Sidebar/ConfirmDocument";
 import { RatingPageStudent } from "./pages/Rating/RatingPrinting";
 import { RatingPageAdmin } from "./pages/Rating/RatingPrintingAdmin";
 // import PrivateRoute from './router/PrivateRoutes'
-
+import Rating from "./pages/Sidebar/Rating";
 function App() {
   return (
     <>
@@ -188,7 +188,7 @@ function App() {
             // </PrivateRoute>
           }
         />
-        <Route
+        {/* <Route
           path="/admin/report"
           element={
             // <PrivateRoute>
@@ -199,7 +199,7 @@ function App() {
             // </Layout>
             // </PrivateRoute>
           }
-        />
+        /> */}
 
         <Route
           path="/admin/printerlist"
@@ -232,6 +232,18 @@ function App() {
             <DashboardLayout>
               <PrintRequests />
             </DashboardLayout>
+          }
+        />
+        <Route
+          path="/admin/Rating"
+          element={
+            // <PrivateRoute>
+            // <Layout>
+            <DashboardLayout>
+              <Rating />
+            </DashboardLayout>
+            // </Layout>
+            // </PrivateRoute>
           }
         />
         <Route

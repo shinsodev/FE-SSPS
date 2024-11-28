@@ -86,10 +86,14 @@ const Table = () => {
 
   const [isEdit, setEdit] = useState(false);
   function EditPrinter(id) {
+    setprinterIdSelection(id);
     setEdit(true);
   }
+  const [printerIdSelection,setprinterIdSelection] = useState();
+
   function setOpenEdit(open) {
     setEdit(open);
+
   }
 
   async function deletePrinterWithId(id) {
@@ -156,6 +160,9 @@ const Table = () => {
                 Location
               </th>
               <th scope="col" className="px-6 py-3">
+                Doctype
+              </th>
+              <th scope="col" className="px-6 py-3">
                 Paper left
               </th>
               <th scope="col" className="px-6 py-3">
@@ -181,7 +188,7 @@ const Table = () => {
           </tbody>
         </table>
       </div>
-      <EditDialog open={isEdit} setOpenEdit={setOpenEdit} />
+      <EditDialog open={isEdit} setOpenEdit={setOpenEdit} printerID={printerIdSelection}  />
       <ReactPaginate
         breakLabel="..."
         nextLabel="NEXT →"
