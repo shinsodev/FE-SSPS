@@ -7,7 +7,7 @@ const AdminPrinterList = () => {
     <>
       <section className="p-8">
         <div>
-          <h2 className="font-medium text-3xl">User Lists</h2>
+          <h2 className="font-medium text-3xl">Printers</h2>
         </div>
         <hr className="my-5" />
         <div className="flex items-center justify-end">
