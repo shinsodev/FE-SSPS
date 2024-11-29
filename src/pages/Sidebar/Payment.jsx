@@ -122,7 +122,7 @@ const Payment = () => {
 
       {/* Hiển thị thông báo thanh toán */}
       {message && (
-        <div className="mt-4 p-4 bg-green-100 text-green-800 rounded-md">
+        <div className="mt-4 p-4 bg-red-100 text-red-800 rounded-md">
           {message}
         </div>
       )}

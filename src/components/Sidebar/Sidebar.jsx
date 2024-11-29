@@ -3,7 +3,7 @@ import User1 from "../../assets/img/user1.png";
 import { CiGrid41 } from "react-icons/ci";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoIosLogOut } from "react-icons/io";
-import { MdOutlineCategory, MdReport,MdBarChart } from "react-icons/md";
+import { MdOutlineCategory, MdReport, MdBarChart } from "react-icons/md";
 import { TbFileUpload, TbCurrencyDollar } from "react-icons/tb";
 import { AiOutlineFileProtect } from "react-icons/ai";
 import { FiUser } from "react-icons/fi";
@@ -49,10 +49,7 @@ const Sidebar = () => {
       </div>
 
       <div>
-        <NavLink
-          to="/dashboard"
-          className={({ isActive }) => getNavLinkClass(isActive)}
-        >
+        <NavLink to="/" className={({ isActive }) => getNavLinkClass(isActive)}>
           <CiGrid41 size={22} />
           <span>Dashboard</span>
         </NavLink>
@@ -141,7 +138,6 @@ const Sidebar = () => {
               <MdBarChart size={22} />
               <span>Generate reports</span>
             </NavLink>
-
           </>
         )}
 
