@@ -2,10 +2,12 @@ import React, { useState, useRef, useEffect } from "react";
 import ReactPaginate from "react-paginate";
 import { MdSearch, MdFilterList } from "react-icons/md";
 import { getPrintLogs } from "../../services/UserService";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 const StudentReport = () => {
   const inputRef = useRef(null);
+  const navigate = useNavigate();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [initialData, setInitialData] = useState([]);
@@ -183,7 +185,7 @@ const StudentReport = () => {
               <th scope="col" className="px-6 py-3">
                 Printer ID
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 text-center">
                 Rating
               </th>
             </tr>
@@ -202,8 +204,15 @@ const StudentReport = () => {
                     {new Date(item.printingEndTime).toLocaleString("vi-VN")}
                   </td>
                   <td className="px-6 py-4 ">{item.printerToPrintID}</td>
-                  <td className="px-6 py-4 ">
-                    <Link to={`/student/rating/${item.logId}`}>Rating</Link>
+                  <td className="px-6 py-4">
+                    <button
+                      onClick={() => {
+                        navigate(`/student/rating/${item.logId}`);
+                      }}
+                      className="bg-gray-300 text-gray-800 px-4 py-2 ml-4 rounded-lg hover:bg-blue-500 hover:text-white"
+                    >
+                      Rating
+                    </button>
                   </td>
                 </tr>
               ))

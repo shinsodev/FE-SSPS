@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import User1 from "../../assets/img/user1.png";
 import { CiGrid41 } from "react-icons/ci";
+import { FaRegStar } from "react-icons/fa";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoIosLogOut } from "react-icons/io";
 import { MdOutlineCategory, MdReport, MdBarChart } from "react-icons/md";
@@ -114,7 +115,7 @@ const Sidebar = () => {
               to="/admin/Rating"
               className={({ isActive }) => getNavLinkClass(isActive)}
             >
-              <FaSignalMessenger size={22} />
+              <FaRegStar size={22} />
               <span>Rating</span>
             </NavLink>
             <NavLink

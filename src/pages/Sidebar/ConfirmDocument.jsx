@@ -57,7 +57,8 @@ const ConfirmDocument = () => {
   const handleConfirmAll = async () => {
     let successCount = 0;
     let errorOccurred = false;
-    if (completedPrints != []) {
+    
+    if (completedPrints.length === 0) {
       toast.error("No documents are complete yet.");
       return;
     }
