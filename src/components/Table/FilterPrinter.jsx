@@ -83,5 +83,5 @@ const availableTypes = [
   { value: "image/tiff", title: "TIFF" },
   { value: "image/jpeg", title: "jpeg" },
   { value: "image/gif", title: "gif" },
-  {value: "application/vnd.openxmlformats-officedocument.wordprocessingml.document", title:"doc"},
+  {value: "application/vnd.openxmlformats-officedocument.wordprocessingml.document", title:"docx"},
 ];
