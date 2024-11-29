@@ -56,7 +56,6 @@ const AuthProvider = ({ children }) => {
       if (response && response.status === 200) {
         const userData = response.data.result;
         setUser(userData);
-        localStorage.setItem("user", JSON.stringify(userData));
       } else {
         console.error("Failed to fetch student data");
       }
@@ -74,7 +73,6 @@ const AuthProvider = ({ children }) => {
       if (response && response.status === 200) {
         const userData = response.data.result;
         setUser(userData);
-        localStorage.setItem("user", JSON.stringify(userData));
 
         await fetchAllUsersData(token, page);
         // const id = setInterval(() => fetchAllUsersData(token), 3000);
@@ -95,7 +93,7 @@ const AuthProvider = ({ children }) => {
       if (response.status === 200) {
         const data = response.data;
         setUserList(data.result);
-        localStorage.setItem("userList", JSON.stringify(data.result));
+
         setTotalPages(data.totalPages);
       } else {
         console.error("Failed to fetch userList");
@@ -107,8 +105,7 @@ const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    localStorage.removeItem("userList");
+
     setUser(null);
     setUserList(null);
     // if (intervalId) clearInterval(intervalId);
