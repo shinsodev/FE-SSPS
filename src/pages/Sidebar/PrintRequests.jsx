@@ -45,7 +45,7 @@ const PrintRequests = () => {
 
         setPrinterIds(ids);
       } catch (error) {
-        if (err.response && err.response.status === 400) {
+        if (error.response.status === 400) {
           setEmpty(true); 
           setPrinterIds([]);
         } else
@@ -78,9 +78,9 @@ const PrintRequests = () => {
         setError(null);
       } catch (err) {
         setError(err.message || "Unknown error occurred.");
-        if (err.response && err.response.status === 400) {
-          setEmpty(true);
-        }
+        // if (err.response && err.response.status === 400) {
+        //   setEmpty(true);
+        // }
       } finally {
         setLoading(false);
       }

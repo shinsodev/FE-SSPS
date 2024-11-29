@@ -57,6 +57,10 @@ const ConfirmDocument = () => {
   const handleConfirmAll = async () => {
     let successCount = 0;
     let errorOccurred = false;
+    if (completedPrints != []) {
+      toast.error("No documents are complete yet.");
+      return;
+    }
     for (const print of completedPrints) {
       try {
         const response = await confirmReceive(token, print.printingId);
@@ -110,6 +114,7 @@ const ConfirmDocument = () => {
             <tr>
               <th className="px-6 py-5">ID</th>
               <th className="px-6 py-5">Expired Time</th>
+              <th className="px-6 py-5">Printer ID</th>
               <th className="px-6 py-5">File Name</th>
               <th className="px-6 py-5">Page Count</th>
               <th className="px-6 py-5">Paper Size</th>
@@ -137,6 +142,7 @@ const ConfirmDocument = () => {
                 >
                   <td className="px-6 py-4">{index + 1 + currentPage * itemsPerPage}</td>
                   <td className="px-6 py-4">{print.expiredTime ? new Date(print.expiredTime).toLocaleDateString("vi-VN") : "N/A"}</td>
+                  <td className="px-6 py-4">{print.printerId}</td>
                   <td className="px-6 py-4">{print.fileName}</td>
                   <td className="px-6 py-4">{print.pageCount}</td>
                   <td className="px-6 py-4">{print.paperSize}</td>
