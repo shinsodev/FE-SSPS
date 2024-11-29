@@ -46,10 +46,10 @@ function UploadFilePage(props) {
       // Kiểm tra nếu là file ảnh
       setFile({ type: "image", name: fileData.name }); // Lưu toàn bộ file ảnh
     }else if (
-      fileData.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
-      fileData.type === "application/vnd.ms-excel"
+      fileData.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      // fileData.type === "application/vnd.ms-excel"
     ) {
-      // Kiểm tra nếu là file Excel (xlsx hoặc xls)
+      // Kiểm tra nếu là file Excel (xlsx )
       setFile({ type: "excel", name: fileData.name }); // Lưu toàn bộ file Excel
     }
     else{
@@ -68,6 +68,13 @@ function UploadFilePage(props) {
       fileInputRef.current.value = "";
     }
   }
+
+  function deleteFile(){
+    setFile(null);
+    setFileContent(null);
+    setSelectPrinter(null);
+  }
+  
 
   return (
     <>
@@ -147,7 +154,7 @@ function UploadFilePage(props) {
         </div>)}
       {selectPrinter !== null && (
         <>
-          <FileConfigurationPage printerId={selectPrinter.id} uploadedFile={fileContent} />
+          <FileConfigurationPage printerId={selectPrinter.id} uploadedFile={fileContent} deleteFile={deleteFile} />
         </>
       )}
 
