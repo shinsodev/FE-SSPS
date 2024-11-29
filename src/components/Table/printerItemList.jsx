@@ -46,7 +46,7 @@ function ItemPriter(props) {
     {
       value:
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-      title: "doc",
+      title: "docx",
     },
   ];
   const [open, setOpen] = useState(false);

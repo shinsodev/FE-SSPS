@@ -28,7 +28,7 @@ const listType = [
   { value: "image/tiff", title: "TIFF" },
   { value: "image/jpeg", title: "jpeg" },
   { value: "image/gif", title: "gif" },
-  {value: "application/vnd.openxmlformats-officedocument.wordprocessingml.document", title:"doc"},
+  {value: "application/vnd.openxmlformats-officedocument.wordprocessingml.document", title:"docx"},
 ];
 export default function EditDialog(props) {
   const navigate = useNavigate();

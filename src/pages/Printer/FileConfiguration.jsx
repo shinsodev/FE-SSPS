@@ -13,7 +13,7 @@ const listSelect2 = ["Có", "Không"];
 
 import PropTypes from "prop-types";
 
-function FileConfigurationPage({ printerId, uploadedFile }) {
+function FileConfigurationPage({ printerId, uploadedFile, deleteFile }) {
   const [copies, setCopies] = useState(1);
   const [size, setSize] = useState("A4"); // Kích thước mặc định
   const [printType, setPrintType] = useState("1 mặt"); // Loại in mặc định
@@ -23,13 +23,15 @@ function FileConfigurationPage({ printerId, uploadedFile }) {
   const location = useLocation();
 
   function handleCancel() {
-    if (location.pathname === "/uploadFile") {
-      // Nếu hiện tại ở trang uploadFile, chuyển sang trang printer
-      navigate("/printers");
-    } else {
-      // Nếu không ở trang uploadFile, chuyển sang trang uploadFile
-      navigate("/uploadFile");
-    }
+    // navigate(0);
+    // if (location.pathname === "/uploadFile") {
+    //   // Nếu hiện tại ở trang uploadFile, chuyển sang trang printer
+    //   navigate("/printers");
+    // } else {
+    //   // Nếu không ở trang uploadFile, chuyển sang trang uploadFile
+    //   navigate("/uploadFile");
+    // }
+    deleteFile()
   }
 
   async function handleSubmit(
@@ -81,8 +83,11 @@ function FileConfigurationPage({ printerId, uploadedFile }) {
           navigate("/payment"); // Chuyển hướng đến trang thanh toán
           toast.error(result);
         } else if (result === "Printer is not supported") {
-          handleCancel(); // Chuyển hướng đến trang tải tài liệu
-          toast.error(result);
+          // handleCancel(); // Chuyển hướng đến trang tải tài liệu
+          toast.error(result,{autoClose: 1000});
+          setTimeout(() => {
+            navigate(0); // Làm mới trang hoặc điều hướng
+          }, 1500);
         } else {
           navigate("/confirm"); // Chuyển hướng đến trang báo cáo
           notifySuccess(result); // Hiển thị thông báo
