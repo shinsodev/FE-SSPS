@@ -90,7 +90,7 @@ const Sidebar = () => {
               className={({ isActive }) => getNavLinkClass(isActive)}
             >
               <MdReport size={22} />
-              <span>History Printer</span>
+              <span>Printing History</span>
             </NavLink>
           </>
         )}

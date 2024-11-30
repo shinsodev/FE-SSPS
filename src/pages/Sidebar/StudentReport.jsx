@@ -108,7 +108,7 @@ const StudentReport = () => {
   return (
     <section className="p-8">
       <div>
-        <h2 className="font-medium text-3xl text-center">History printer</h2>
+        <h2 className="font-medium text-3xl text-center">Printing History</h2>
       </div>
       <hr className="my-5" />
 
