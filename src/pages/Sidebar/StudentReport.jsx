@@ -168,7 +168,7 @@ const StudentReport = () => {
           <thead className="text-xs text-gray-700 uppercase bg-gray-100">
             <tr>
               <th scope="col" className="px-6 py-5">
-                ID
+                Log ID
               </th>
               <th scope="col" className="px-6 py-5">
                 File Name

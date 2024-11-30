@@ -9,6 +9,7 @@ const ConfirmDocument = () => {
   const [selectedData, setSelectData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
+  const [isEmpty, setIsEmpty] = useState(false);
   const [isConfirm, setIsConfirm] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 8;
@@ -32,6 +33,9 @@ const ConfirmDocument = () => {
 
     fetchPrintRequests();
   }, [isConfirm]);
+  useEffect(() => {
+    setIsEmpty(completedPrints.length === 0 && isPendingPrints.length === 0);
+  }, [completedPrints, isPendingPrints]);
 
   const handleOpenModal = (print) => {
     setIsOpen(true);
@@ -165,6 +169,11 @@ const ConfirmDocument = () => {
           </tbody>
         </table>
       </div>
+      {isEmpty && (
+          <div className="text-sm text-gray-700 px-6 py-4 text-center">
+              No data found.
+          </div>
+        )}
       {isOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white rounded-lg shadow-lg w-96 p-6">

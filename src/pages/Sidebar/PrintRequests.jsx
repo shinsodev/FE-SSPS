@@ -192,12 +192,9 @@ const PrintRequests = () => {
               ))}
           </tbody>
         </table>
-        {loading && (
-          <div className="flex items-center justify-center h-full py-10">
-            <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-blue-500"></div>
-            <span className="ml-3 text-lg font-medium text-blue-600">
+        {loading && printerIds.length > 0 && (
+          <div className="text-sm text-gray-700 px-6 py-4 text-center">
               Choose printer ID ...
-            </span>
           </div>
         )}
 
@@ -219,9 +216,9 @@ const PrintRequests = () => {
             </div>
           </div>
         )}
-        {!loading && empty && (
+        {((!loading && empty) || printerIds.length === 0) && (
           <div className="text-sm text-gray-700 px-6 py-4 text-center">
-            Hiện tại chưa có yêu cầu in nào.
+            No print requests yet.
           </div>
         )}
       </div>
