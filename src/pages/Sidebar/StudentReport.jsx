@@ -19,22 +19,55 @@ const StudentReport = () => {
   const [page, setPage] = useState(0);
   const itemsPerPage = 7; // Số dòng mỗi trang
 
+  const filterData = () => {
+    const startDateObj = startDate ? new Date(startDate) : null;
+    const endDateObj = endDate ? new Date(endDate) : null;
+
+    if (startDateObj) {
+          startDateObj.setHours(0, 0, 0, 0); 
+        }
+        if (endDateObj) {
+          endDateObj.setHours(23, 59, 59, 999); 
+        }
+  
+    const filtered = initialData.filter((item) => {
+      const itemDate = new Date(item.printingStartTime);
+  
+      const dateCondition =
+        (!startDateObj || itemDate >= startDateObj) &&
+        (!endDateObj || itemDate <= endDateObj);
+  
+      const searchCondition =
+        item.logId.toString().includes(searchTerm) ||
+        item.documentName.toLowerCase().includes(searchTerm) ||
+        item.pagesPrinted.toString().includes(searchTerm) ||
+        item.printingStartTime.toLowerCase().includes(searchTerm) ||
+        item.printingEndTime.toLowerCase().includes(searchTerm) ||
+        item.printerToPrintID.toString().includes(searchTerm);
+  
+      return dateCondition && searchCondition; 
+    });
+  
+    setFilteredData(filtered);
+  };
+  
   const handleSearch = (event) => {
     const value = event.target.value.toLowerCase();
     setSearchTerm(value);
-
-    const filtered = initialData.filter(
-      (item) =>
-        item.logId.toString().includes(value) ||
-        item.documentName.toLowerCase().includes(value) ||
-        item.pagesPrinted.toLowerCase().includes(value) ||
-        item.printingStartTime.toLowerCase().includes(value) ||
-        item.printingEndTime.toLowerCase().includes(value) ||
-        item.printerToPrintID.toString().includes(value)
-    );
-
-    setFilteredData(filtered);
+  
+    filterData(); 
   };
+
+  useEffect(() => {
+    filterData(); 
+  }, [initialData, searchTerm, startDate, endDate]);
+  
+  
+  const handleApplyFilter = () => {
+    filterData(); 
+    setIsFilterVisible(false); 
+  };
+  
 
   const handleIconClick = () => {
     if (inputRef.current) {
@@ -43,31 +76,9 @@ const StudentReport = () => {
   };
 
   const handleFilterClick = () => {
-    setIsFilterVisible(true); // Hiển thị các trường lọc khi nhấn nút lọc
+    setIsFilterVisible(true); 
   };
 
-  const handleApplyFilter = () => {
-    const startDateObj = startDate ? new Date(startDate) : null;
-    const endDateObj = endDate ? new Date(endDate) : null;
-
-    if (startDateObj) {
-      startDateObj.setHours(0, 0, 0, 0); // Set to midnight
-    }
-    if (endDateObj) {
-      endDateObj.setHours(23, 59, 59, 999); // Set to end of day
-    }
-
-    const filtered = initialData.filter((item) => {
-      const itemDate = new Date(item.printingStartTime);
-      return (
-        (!startDateObj || itemDate >= startDateObj) &&
-        (!endDateObj || itemDate <= endDateObj)
-      );
-    });
-
-    setFilteredData(filtered);
-    setIsFilterVisible(false);
-  };
 
   const handlePageClick = (event) => {
     setPage(event.selected); // Chuyển sang trang mới
@@ -218,7 +229,7 @@ const StudentReport = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="6" className="px-6 py-4 text-center">
+                <td colSpan="7" className="px-6 py-4 text-center">
                   No data found
                 </td>
               </tr>
