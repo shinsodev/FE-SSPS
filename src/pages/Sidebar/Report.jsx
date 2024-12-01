@@ -2,20 +2,22 @@ import { MdSearch } from "react-icons/md";
 import React, { useState, useEffect, useRef } from "react";
 import { viewPrintLogs } from "../../services/AdminService";
 import { Link } from "react-router-dom";
+import ReactPaginate from "react-paginate";
 
 const Report = () => {
   const inputRef = useRef(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchId, setSearchId] = useState(""); // State for searching by Id
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const [page, setPage] = useState(0);
-  const [size, setSize] = useState(3);
+  const [size, setSize] = useState(10);
 
   const [filteredData, setFilteredData] = useState([]);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [totalPages, setTotalPages] = useState(0);
 
   const fetchData = async () => {
     try {
@@ -23,12 +25,13 @@ const Report = () => {
       const token = localStorage.getItem("token");
       const responseData = await viewPrintLogs(
         token,
-        startDate || "2023-01-01",
-        endDate || "2025-12-31",
+        startDate ,
+        endDate ,
         page,
         size
       );
       setData(responseData.result.content);
+      setTotalPages(responseData.result.totalPages);
       setFilteredData(responseData.result.content);
     } catch (err) {
       console.error("Error fetching data:", err);
@@ -72,6 +75,20 @@ const Report = () => {
       inputRef.current.focus();
     }
   };
+
+  async function handlePageClick(e) {
+    try {
+      if (dataFilter.length !== 0) {
+        // Truong hop filter
+        await getListPrinterFilter(dataFilter, e.selected);
+      } else {
+        // Truong hop filter
+        await getListPrinter(e.selected);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
 
   return (
     <section className="p-8">
@@ -117,7 +134,7 @@ const Report = () => {
         </div>
 
         {/* Filters */}
-        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 w-full max-w-[800px] mt-10">
+        <div className="gap-4 w-full max-w-[400px] mt-3" >
           <div className="flex flex-col">
             <label htmlFor="size" className="mb-2 text-sm text-black font-bold">
               Start Date:
@@ -142,7 +159,7 @@ const Report = () => {
               className="px-4 py-2 border border-gray-300 rounded-lg"
             />
           </div>
-          <div className="flex flex-col">
+          {/* <div className="flex flex-col">
             <label htmlFor="size" className="mb-2 text-sm text-black font-bold">
               Page Number:
             </label>
@@ -175,7 +192,7 @@ const Report = () => {
               min="1"
               className="px-4 py-2 border border-gray-300 rounded-lg"
             />
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -227,9 +244,16 @@ const Report = () => {
                     <td className="px-6 py-4 text-center">{item.studentId}</td>
                     <td className="px-6 py-4 text-center">{item.email}</td>
                     <td className="px-6 py-4 text-center">
+                      <div style={{
+                        borderRadius: "2px",
+                        padding: 5,
+                        backgroundColor: "#80C4E9",
+                      }}>
+
                       <Link to={`/admin/rating/${item.printingLogId}`}>
                         Rating
                       </Link>
+                      </div>
                     </td>
                   </tr>
                 ))
@@ -244,6 +268,27 @@ const Report = () => {
           </table>
         )}
       </div>
+      <ReactPaginate
+              breakLabel="..."
+              nextLabel="NEXT →"
+              onPageChange={handlePageClick}
+              pageRangeDisplayed={5}
+              pageCount={totalPages}
+              previousLabel="← PREVIOUS"
+              className="flex space-x-2 items-center justify-center my-8"
+              pageClassName="page-item"
+              pageLinkClassName="page-link px-4 py-2 hover:bg-gray-900/10 rounded-md shadow-2xl"
+              activeLinkClassName="active bg-black text-white" // Active page style
+              previousClassName="page-item"
+              previousLinkClassName="page-link hover:bg-gray-900/10 px-4 py-2 rounded-md"
+              nextClassName="page-item"
+              nextLinkClassName="page-link hover:bg-gray-900/10 px-4 py-2 rounded-md"
+              breakClassName="page-item"
+              breakLinkClassName="page-link"
+              disabledLinkClassName="text-gray-400 cursor-not-allowed"
+              containerClassName="pagination"
+              forcePage={page}
+            />
     </section>
   );
 };
