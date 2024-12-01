@@ -8,8 +8,8 @@ const Report = () => {
   const inputRef = useRef(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchId, setSearchId] = useState(""); // State for searching by Id
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+  const [startDate, setStartDate] = useState(undefined);
+  const [endDate, setEndDate] = useState(undefined);
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(10);
 
@@ -217,9 +217,9 @@ const Report = () => {
                 <th className="px-6 py-5 text-center font-bold">
                   Student Email
                 </th>
-                <th className="px-6 py-5 text-center font-bold">
+                {/* <th className="px-6 py-5 text-center font-bold">
                   Rating
-                </th>
+                </th> */}
               </tr>
             </thead>
             <tbody>
@@ -243,7 +243,7 @@ const Report = () => {
                     </td>
                     <td className="px-6 py-4 text-center">{item.studentId}</td>
                     <td className="px-6 py-4 text-center">{item.email}</td>
-                    <td className="px-6 py-4 text-center">
+                    {/* <td className="px-6 py-4 text-center">
                       <div style={{
                         borderRadius: "2px",
                         padding: 5,
@@ -254,7 +254,7 @@ const Report = () => {
                         Rating
                       </Link>
                       </div>
-                    </td>
+                    </td> */}
                   </tr>
                 ))
               ) : (
