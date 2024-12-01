@@ -33,7 +33,7 @@ import PrintRequests from "./pages/Sidebar/PrintRequests";
 import GenerateReport from "./pages/Sidebar/GenerateReport";
 import ConfirmDocument from "./pages/Sidebar/ConfirmDocument";
 import { RatingPageStudent } from "./pages/Rating/RatingPrinting";
-import { RatingPageAdmin } from "./pages/Rating/RatingPrintingAdmin";
+// import { RatingPageAdmin } from "./pages/Rating/RatingPrintingAdmin";
 // import PrivateRoute from './router/PrivateRoutes'
 import Rating from "./pages/Sidebar/Rating";
 import PublicRoute from "./public/PublicRoute";
@@ -174,7 +174,7 @@ function App() {
           }
         />
 
-        <Route
+        {/* <Route
           path="/admin/rating/:idPrinting"
           element={
             <PrivateRoute adminOnly={true}>
@@ -183,7 +183,7 @@ function App() {
               </DashboardLayout>
             </PrivateRoute>
           }
-        />
+        /> */}
 
         <Route
           path="/admin/userlist"
